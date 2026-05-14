@@ -5,6 +5,8 @@ import { ProjectsGrid } from "@/components/ProjectsGrid";
 import { ExperienceList } from "@/components/ExperienceList";
 import { OpenSourceContributions } from "@/components/OpenSourceContributions";
 import { BlogList } from "@/components/BlogList";
+import { FooterBackground } from "@/components/FooterBackground";
+import { RightNavbar } from "@/components/RightNavbar";
 import Link from "next/link";
 
 const skills = [
@@ -42,6 +44,9 @@ export default function Home() {
   return (
     <div className="min-h-screen w-full bg-white dark:bg-[#0a0a0a] relative overflow-x-hidden transition-colors duration-300">
 
+      {/* Right Side Blueprint Navigation */}
+      <RightNavbar />
+
       {/* Vertical Lines - Ultra-fine Micro Dots */}
       <div className="absolute top-0 bottom-0 left-[31%] w-0 border-r border-zinc-200 dark:border-zinc-800 pointer-events-none" style={{ maskImage: 'repeating-linear-gradient(to bottom, black 0, black 1px, transparent 1px, transparent 6px)', WebkitMaskImage: 'repeating-linear-gradient(to bottom, black 0, black 1px, transparent 1px, transparent 6px)' }} />
       <div className="absolute top-0 bottom-0 right-[31%] w-0 border-r border-zinc-200 dark:border-zinc-800 pointer-events-none" style={{ maskImage: 'repeating-linear-gradient(to bottom, black 0, black 1px, transparent 1px, transparent 6px)', WebkitMaskImage: 'repeating-linear-gradient(to bottom, black 0, black 1px, transparent 1px, transparent 6px)' }} />
@@ -76,6 +81,7 @@ export default function Home() {
             backgroundPosition: 'center',
           }}
         />
+
         <div className="absolute bottom-3 right-2 z-10 pointer-events-auto">
           <CurrentTime />
         </div>
@@ -109,7 +115,7 @@ export default function Home() {
       </div>
 
       {/* Flowing Content Section */}
-      <div className="ml-[31%] mr-[31%] pt-[calc(22vh+112px)] pb-12 px-4 flex flex-col z-10 relative">
+      <div className="ml-[31%] mr-[31%] pt-[calc(22vh+112px)] pb-0 px-4 flex flex-col z-10 relative min-h-screen">
         <p className="text-[14px] sm:text-[15px] text-zinc-600 dark:text-zinc-300 leading-relaxed mt-4">
           Engineer / Artist. I love building, breaking, and shipping things.
         </p>
@@ -141,7 +147,7 @@ export default function Home() {
         </div>
 
         {/* Socials */}
-        <div className="mt-6">
+        <div id="contact" className="mt-6 scroll-mt-24">
           <h2 className="text-[14px] text-zinc-500 mb-2">Here are my <span className="font-medium text-zinc-800 dark:text-zinc-200">socials</span></h2>
           <div className="flex flex-wrap gap-1.5">
             {[
@@ -163,7 +169,7 @@ export default function Home() {
         </div>
 
         {/* Experiences */}
-        <div className="mt-6 flex flex-col relative z-10">
+        <div id="experience" className="mt-6 flex flex-col relative z-10 scroll-mt-24">
           {/* Top full-width line */}
           <div
             className="absolute top-0 left-[-100vw] right-[-100vw] h-0 border-t border-zinc-200 dark:border-zinc-800 pointer-events-none"
@@ -215,7 +221,7 @@ export default function Home() {
         </div>
 
         {/* Projects */}
-        <div className="mt-0 flex flex-col relative z-10">
+        <div id="projects" className="mt-0 flex flex-col relative z-10 scroll-mt-24">
           <div className="py-2 relative mt-1">
             <h2 className="text-[18px] font-bold text-zinc-900 dark:text-zinc-100 tracking-tight">Projects</h2>
 
@@ -261,10 +267,12 @@ export default function Home() {
         <GithubGraph />
 
         {/* Open Source Contributions */}
-        <OpenSourceContributions />
+        <div id="opensource" className="scroll-mt-24">
+          <OpenSourceContributions />
+        </div>
 
         {/* Skills */}
-        <div className="mt-6 flex flex-col relative z-10">
+        <div id="skills" className="mt-6 flex flex-col relative z-10 scroll-mt-24">
           {/* Top full-width line */}
           <div
             className="absolute top-0 left-[-100vw] right-[-100vw] h-0 border-t border-zinc-200 dark:border-zinc-800 pointer-events-none"
@@ -300,7 +308,7 @@ export default function Home() {
         </div>
 
         {/* Blogs */}
-        <div className="mt-6 flex flex-col relative">
+        <div id="blogs" className="mt-6 flex flex-col relative scroll-mt-24">
           {/* Top full-width line */}
           <div
             className="absolute top-0 left-[-100vw] right-[-100vw] h-0 border-t border-zinc-200 dark:border-zinc-800 pointer-events-none"
@@ -343,6 +351,38 @@ export default function Home() {
               </div>
             </Link>
           </div>
+        </div>
+
+        {/* Minimal Quote Section */}
+        <div className="mt-12 flex flex-col items-center justify-center relative py-12">
+          <div className="max-w-[480px] w-full flex flex-col items-center">
+            <h3 className="text-[16px] font-medium text-center leading-relaxed text-zinc-500 dark:text-zinc-400 mb-6 italic">
+              &quot;Do so much work that it would be unreasonable<br className="hidden md:block" /> for you to not be successful.&quot;
+            </h3>
+
+            <div className="flex items-center gap-3 text-[10px] font-medium tracking-[0.2em] text-zinc-400 dark:text-zinc-600 uppercase">
+              <div className="w-4 h-[1px] bg-zinc-200 dark:bg-zinc-800" />
+              ALEX HORMOZI
+              <div className="w-4 h-[1px] bg-zinc-200 dark:bg-zinc-800" />
+            </div>
+          </div>
+        </div>
+
+        {/* Fading Grid Filler */}
+        <div className="flex-grow w-[calc(100%+32px)] -mx-4 h-[300px] relative mt-4">
+          {/* Top full-width line */}
+          <div
+            className="absolute top-0 left-[-100vw] right-[-100vw] h-0 border-t border-zinc-200 dark:border-zinc-800 pointer-events-none z-10"
+            style={{
+              maskImage: 'repeating-linear-gradient(to right, black 0, black 1px, transparent 1px, transparent 6px)',
+              WebkitMaskImage: 'repeating-linear-gradient(to right, black 0, black 1px, transparent 1px, transparent 6px)'
+            }}
+          />
+          {/* Intersections */}
+          <div className="absolute top-0 left-0 w-[2px] h-[2px] bg-zinc-300 dark:bg-zinc-600 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-20" />
+          <div className="absolute top-0 right-0 w-[2px] h-[2px] bg-zinc-300 dark:bg-zinc-600 translate-x-1/2 -translate-y-1/2 pointer-events-none z-20" />
+
+          <FooterBackground />
         </div>
 
       </div>
