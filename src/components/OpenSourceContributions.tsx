@@ -135,8 +135,8 @@ export function OpenSourceContributions({ isFullPage = false }: { isFullPage?: b
         {/* Horizontal line below heading */}
         <div className="absolute bottom-0 left-[-100vw] right-[-100vw] h-0 border-b border-zinc-200 dark:border-zinc-800 pointer-events-none" style={{ maskImage: 'repeating-linear-gradient(to right, black 0, black 1px, transparent 1px, transparent 6px)', WebkitMaskImage: 'repeating-linear-gradient(to right, black 0, black 1px, transparent 1px, transparent 6px)' }} />
         {/* Intersections */}
-        <div className="absolute bottom-0 left-0 w-[2px] h-[2px] bg-zinc-300 dark:bg-zinc-600 -translate-x-1/2 translate-y-1/2 pointer-events-none z-20" />
-        <div className="absolute bottom-0 right-0 w-[2px] h-[2px] bg-zinc-300 dark:bg-zinc-600 translate-x-1/2 translate-y-1/2 pointer-events-none z-20" />
+        <div className="absolute bottom-0 -left-4 w-[2px] h-[2px] bg-zinc-300 dark:bg-zinc-600 -translate-x-1/2 translate-y-1/2 pointer-events-none z-20" />
+        <div className="absolute bottom-0 -right-4 w-[2px] h-[2px] bg-zinc-300 dark:bg-zinc-600 translate-x-1/2 translate-y-1/2 pointer-events-none z-20" />
       </div>
 
       <div className="relative pt-0 pb-2">

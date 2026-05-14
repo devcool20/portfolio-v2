@@ -1,5 +1,5 @@
 import { ThemeToggle } from "@/components/theme-toggle";
-import { projectsData, iconMap, techNames, Project, TechItem, TechKey } from "@/components/ProjectsGrid";
+import { projectsData, iconMap, techNames, Project, TechItem, TechKey } from "@/data/projectsData";
 import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";

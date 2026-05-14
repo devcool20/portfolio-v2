@@ -1,7 +1,8 @@
 "use client";
 
 import { ThemeToggle } from "@/components/theme-toggle";
-import { projectsData, ProjectCard } from "@/components/ProjectsGrid";
+import { ProjectCard } from "@/components/ProjectsGrid";
+import { projectsData } from "@/data/projectsData";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
