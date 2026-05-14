@@ -5,7 +5,7 @@ import type { ComponentType } from "react";
 import { useTheme } from "next-themes";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { Globe, Github, Star, X, Network, Search } from "lucide-react";
+import { Globe, Star, X, Network, Search } from "lucide-react";
 import {
   SiNextdotjs,
   SiTypescript,
