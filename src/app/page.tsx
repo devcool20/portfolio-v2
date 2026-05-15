@@ -123,7 +123,7 @@ export default function Home() {
 
         {/* Buttons */}
         <div className="flex flex-wrap items-center gap-2 mt-4">
-          <button className="flex items-center gap-1.5 px-3 py-1.5 bg-zinc-100 dark:bg-zinc-800/40 hover:bg-zinc-200 dark:hover:bg-zinc-800 rounded-md text-[12px] font-medium text-zinc-800 dark:text-zinc-200 transition-colors border border-zinc-200/50 dark:border-zinc-700/50">
+          <Link href="/contact" className="flex items-center gap-1.5 px-3 py-1.5 bg-zinc-100 dark:bg-zinc-800/40 hover:bg-zinc-200 dark:hover:bg-zinc-800 rounded-md text-[12px] font-medium text-zinc-800 dark:text-zinc-200 transition-colors border border-zinc-200/50 dark:border-zinc-700/50">
             <svg viewBox="0 0 24 24" className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth="2">
               <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
               <line x1="16" y1="2" x2="16" y2="6"></line>
@@ -131,14 +131,14 @@ export default function Home() {
               <line x1="3" y1="10" x2="21" y2="10"></line>
             </svg>
             Book an intro call
-          </button>
-          <button className="flex items-center gap-1.5 px-3 py-1.5 bg-zinc-100 dark:bg-zinc-800/40 hover:bg-zinc-200 dark:hover:bg-zinc-800 rounded-md text-[12px] font-medium text-zinc-800 dark:text-zinc-200 transition-colors border border-zinc-200/50 dark:border-zinc-700/50">
+          </Link>
+          <Link href="/contact" className="flex items-center gap-1.5 px-3 py-1.5 bg-zinc-100 dark:bg-zinc-800/40 hover:bg-zinc-200 dark:hover:bg-zinc-800 rounded-md text-[12px] font-medium text-zinc-800 dark:text-zinc-200 transition-colors border border-zinc-200/50 dark:border-zinc-700/50">
             <svg viewBox="0 0 24 24" className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
               <polyline points="22,6 12,13 2,6"></polyline>
             </svg>
             Send an email
-          </button>
+          </Link>
         </div>
 
         {/* Socials */}
