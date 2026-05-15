@@ -123,11 +123,15 @@ export function CommandMenu() {
         <>
             <button 
                 onClick={() => setOpen(true)}
-                className="flex items-center text-[12px] font-medium text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 transition-colors group cursor-pointer"
+                className="relative group cursor-pointer transition-all duration-300 active:scale-95"
             >
-                <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border border-black/30 dark:border-white/10 bg-zinc-100 dark:bg-zinc-900 px-1.5 font-mono text-[10px] font-medium text-zinc-500 dark:text-zinc-400 group-hover:border-zinc-300 dark:group-hover:border-zinc-700 transition-colors">
-                    <span className="text-[10px] leading-none mt-[1px]">⌘</span><span className="leading-none mt-[1px]">K</span>
-                </kbd>
+                {/* Outer border wrapper matching View All style */}
+                <div className="absolute -inset-[4.5px] border border-black/5 dark:border-white/5 rounded-[9px] pointer-events-none transition-colors duration-300 group-hover:border-black/10 dark:group-hover:border-white/10" />
+                
+                <div className="relative flex items-center gap-1.5 px-3 py-1 bg-zinc-50 hover:bg-zinc-100 dark:bg-[#09090b] dark:hover:bg-[#121214] text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 rounded-[5px] text-[11px] font-medium transition-all duration-300 border border-black/5 dark:border-white/5 shadow-sm shadow-black/20 dark:shadow-lg dark:shadow-black/80 font-mono">
+                    <span className="leading-none mt-[0.5px]">⌘</span>
+                    <span className="leading-none mt-[0.5px]">K</span>
+                </div>
             </button>
 
             <CommandDialog open={open} onOpenChange={setOpen}>
