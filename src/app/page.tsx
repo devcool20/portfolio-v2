@@ -7,6 +7,7 @@ import { OpenSourceContributions } from "@/components/OpenSourceContributions";
 import { BlogList } from "@/components/BlogList";
 import { FooterBackground } from "@/components/FooterBackground";
 import { RightNavbar } from "@/components/RightNavbar";
+import { CommandMenu } from "@/components/command-menu";
 import Link from "next/link";
 
 const skills = [
@@ -72,9 +73,9 @@ export default function Home() {
       ))}
 
       {/* Cell 1: Nothing Design Dot Matrix Background */}
-      <div className="absolute left-[31%] right-[31%] top-0 h-[22vh] -z-0 pointer-events-none">
+      <div className="absolute left-[31%] right-[31%] top-16 h-[calc(22vh-4rem)] -z-0 pointer-events-none">
         <div
-          className="absolute inset-0 w-full h-full text-zinc-400 dark:text-zinc-500 opacity-30 dark:opacity-[0.15] pointer-events-none p-[12px]"
+          className="absolute inset-0 w-full h-full text-zinc-400 dark:text-zinc-500 opacity-30 dark:opacity-[0.15] pointer-events-none"
           style={{
             backgroundImage: 'radial-gradient(circle, currentColor 1px, transparent 1px)',
             backgroundSize: '16px 16px',
@@ -107,7 +108,8 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="flex flex-col items-end justify-start h-20 sm:h-24 py-1">
+          <div className="flex items-start justify-end gap-2 sm:gap-3 h-20 sm:h-24 py-1">
+            <CommandMenu />
             <ThemeToggle className="dark:text-zinc-400 hover:dark:text-zinc-300" />
           </div>
 
@@ -339,7 +341,7 @@ export default function Home() {
             {/* Bottom Line Intersections */}
             <div className="absolute bottom-0 left-0 w-[2px] h-[2px] bg-zinc-300 dark:bg-zinc-600 -translate-x-1/2 translate-y-1/2 pointer-events-none z-20" />
             <div className="absolute bottom-0 right-0 w-[2px] h-[2px] bg-zinc-300 dark:bg-zinc-600 translate-x-1/2 translate-y-1/2 pointer-events-none z-20" />
-            
+
             <Link href="https://medium.com/@ashutoshx7" target="_blank" rel="noopener noreferrer" className="relative group block mt-0">
               <div className="absolute -inset-[5px] border border-black/5 dark:border-white/5 rounded-[11px] pointer-events-none transition-colors duration-300 group-hover:border-black/10 dark:group-hover:border-white/10" />
               <div className="relative flex items-center gap-1.5 px-4 py-2 bg-zinc-50 hover:bg-zinc-100 dark:bg-[#09090b] dark:hover:bg-[#121214] text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 rounded-[6px] text-[13px] font-medium transition-all duration-300 border border-black/5 dark:border-white/5 shadow-sm shadow-black/20 dark:shadow-lg dark:shadow-black/80">
