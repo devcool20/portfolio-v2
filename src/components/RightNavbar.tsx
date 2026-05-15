@@ -36,7 +36,7 @@ export function RightNavbar() {
   ];
 
   return (
-    <div 
+    <div
       className="fixed inset-0 z-50 pointer-events-none hidden lg:block"
       style={{ width: 'calc(100vw - var(--removed-body-scroll-bar-size, 0px))' }}
     >
@@ -45,20 +45,18 @@ export function RightNavbar() {
         {links.map((link) => {
           const isActive = activeSection === link.href.slice(1);
           return (
-            <Link 
-              key={link.name} 
-              href={link.href} 
-              className={`text-[12px] font-medium tracking-[0.05em] transition-all duration-700 ease-out flex items-center gap-3 ${
-                isActive 
-                  ? "text-zinc-800 dark:text-zinc-200" 
+            <Link
+              key={link.name}
+              href={link.href}
+              className={`text-[12px] font-medium tracking-[0.05em] transition-all duration-700 ease-out flex items-center gap-3 ${isActive
+                  ? "text-zinc-800 dark:text-zinc-200"
                   : "text-zinc-400 dark:text-zinc-600 hover:text-zinc-600 dark:hover:text-zinc-400"
-              }`}
+                }`}
             >
-              <span className={`h-[1px] transition-all duration-700 ease-out ${
-                isActive
+              <span className={`h-[1px] transition-all duration-700 ease-out ${isActive
                   ? "w-3 bg-zinc-300 dark:bg-zinc-700"
                   : "w-0 bg-transparent"
-              }`} />
+                }`} />
               {link.name}
             </Link>
           );
