@@ -91,7 +91,12 @@ export default function AllProjectsPage() {
         </div>
 
         {/* Content Section */}
-        <div className="ml-[31%] mr-[31%] pt-[calc(22vh+112px)] pb-16 px-0 flex flex-col z-10 relative">
+        <motion.div 
+          initial={{ opacity: 0, filter: "blur(8px)", y: 12 }}
+          animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.05 }}
+          className="ml-[31%] mr-[31%] pt-[calc(22vh+112px)] pb-16 px-0 flex flex-col z-10 relative"
+        >
           <div className="relative pt-6 pb-6 px-4">
             {/* Center Vertical Line */}
             <div className="absolute top-0 bottom-6 left-1/2 w-0 border-r border-black/30 dark:border-white/[0.15] pointer-events-none -translate-x-1/2" style={{ maskImage: 'repeating-linear-gradient(to bottom, black 0, black 1px, transparent 1px, transparent 6px)', WebkitMaskImage: 'repeating-linear-gradient(to bottom, black 0, black 1px, transparent 1px, transparent 6px)' }} />
@@ -129,7 +134,7 @@ export default function AllProjectsPage() {
             <div className="absolute left-0 w-[2px] h-[2px] bg-black/50 dark:bg-white/[0.25] -translate-x-1/2 translate-y-[-1px] pointer-events-none z-20" />
             <div className="absolute right-0 w-[2px] h-[2px] bg-black/50 dark:bg-white/[0.25] translate-x-1/2 translate-y-[-1px] pointer-events-none z-20" />
           </div>
-        </div>
+        </motion.div>
       </div>
 
       {/* MODAL */}

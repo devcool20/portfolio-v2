@@ -1,3 +1,5 @@
+"use client";
+
 import { ThemeToggle } from "@/components/theme-toggle";
 import { CommandMenu } from "@/components/command-menu";
 import { CurrentTime } from "@/components/CurrentTime";
@@ -6,6 +8,7 @@ import { FooterBackground } from "@/components/FooterBackground";
 import { OpenSourceContributions } from "@/components/OpenSourceContributions";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
+import { motion } from "framer-motion";
 
 export default function PullRequestsPage() {
   return (
@@ -75,7 +78,12 @@ export default function PullRequestsPage() {
       </div>
 
       {/* Content Section */}
-      <div className="ml-[31%] mr-[31%] pt-[calc(22vh+112px)] pb-16 px-0 flex flex-col z-10 relative">
+      <motion.div 
+        initial={{ opacity: 0, filter: "blur(8px)", y: 12 }}
+        animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
+        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.05 }}
+        className="ml-[31%] mr-[31%] pt-[calc(22vh+112px)] pb-16 px-0 flex flex-col z-10 relative"
+      >
         <div className="px-4 mt-4">
           <OpenSourceContributions isFullPage />
         </div>
@@ -86,7 +94,7 @@ export default function PullRequestsPage() {
           <div className="absolute left-0 w-[2px] h-[2px] bg-black/50 dark:bg-white/[0.25] -translate-x-1/2 translate-y-[-1px] pointer-events-none z-20" />
           <div className="absolute right-0 w-[2px] h-[2px] bg-black/50 dark:bg-white/[0.25] translate-x-1/2 translate-y-[-1px] pointer-events-none z-20" />
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }
