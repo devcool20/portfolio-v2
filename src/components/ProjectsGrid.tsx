@@ -182,7 +182,7 @@ export const ProjectCard = ({ project, setActiveVideo }: { project: Project; set
                   {isIconItem ? (
                     (() => {
                       const TechIcon = iconMap[item];
-                      return <TechIcon className="w-3.5 h-3.5 text-zinc-400 dark:text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200 transition-colors" />;
+                      return <TechIcon className="w-4 h-4 md:w-3.5 md:h-3.5 text-zinc-400 dark:text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200 transition-colors" />;
                     })()
                   ) : (
                     <span className="px-1.5 py-0.5 rounded border border-black/30 dark:border-white/[0.15] text-[9px] text-zinc-500 dark:text-zinc-400 leading-none">
@@ -236,7 +236,7 @@ export function ProjectsGrid() {
     <>
       <div className="flex flex-col relative z-10 w-full">
         {/* Row 1 */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-8 md:gap-y-0 pb-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-10 md:gap-y-0 pb-10 md:pb-6">
           {projectsData.slice(0, 2).map((project, idx) => (
             <ProjectCard key={project.title} project={project} setActiveVideo={setActiveVideo} />
           ))}
@@ -252,7 +252,7 @@ export function ProjectsGrid() {
         </div>
 
         {/* Row 2 */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-8 md:gap-y-0 pt-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-10 md:gap-y-0 pt-0 md:pt-6">
           {projectsData.slice(2, 4).map((project, idx) => (
             <ProjectCard key={project.title} project={project} setActiveVideo={setActiveVideo} />
           ))}

@@ -10,6 +10,7 @@ import { FlightButton } from "@/components/FlightButton";
 import DisplacementText from "@/components/DisplacementText";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
+import SocialHoverCard from "@/components/pixel-perfect/social-hover-card";
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -78,8 +79,8 @@ export default function ContactPage() {
       <RightNavbar />
 
       {/* Blueprint Vertical Lines */}
-      <div className="absolute top-0 bottom-0 left-[31%] w-0 border-r border-black/30 dark:border-white/[0.15] pointer-events-none" style={{ maskImage: 'repeating-linear-gradient(to bottom, black 0, black 1px, transparent 1px, transparent 6px)', WebkitMaskImage: 'repeating-linear-gradient(to bottom, black 0, black 1px, transparent 1px, transparent 6px)' }} />
-      <div className="absolute top-0 bottom-0 right-[31%] w-0 border-r border-black/30 dark:border-white/[0.15] pointer-events-none" style={{ maskImage: 'repeating-linear-gradient(to bottom, black 0, black 1px, transparent 1px, transparent 6px)', WebkitMaskImage: 'repeating-linear-gradient(to bottom, black 0, black 1px, transparent 1px, transparent 6px)' }} />
+      <div className="absolute top-0 bottom-0 left-[31%] w-0 border-r border-black/30 dark:border-white/[0.15] pointer-events-none hidden md:block" style={{ maskImage: 'repeating-linear-gradient(to bottom, black 0, black 1px, transparent 1px, transparent 6px)', WebkitMaskImage: 'repeating-linear-gradient(to bottom, black 0, black 1px, transparent 1px, transparent 6px)' }} />
+      <div className="absolute top-0 bottom-0 right-[31%] w-0 border-r border-black/30 dark:border-white/[0.15] pointer-events-none hidden md:block" style={{ maskImage: 'repeating-linear-gradient(to bottom, black 0, black 1px, transparent 1px, transparent 6px)', WebkitMaskImage: 'repeating-linear-gradient(to bottom, black 0, black 1px, transparent 1px, transparent 6px)' }} />
 
       {/* Blueprint Horizontal Lines */}
       <div className="absolute left-0 right-0 top-[22vh] h-0 border-b border-black/30 dark:border-white/[0.15] pointer-events-none" style={{ maskImage: 'repeating-linear-gradient(to right, black 0, black 1px, transparent 1px, transparent 6px)', WebkitMaskImage: 'repeating-linear-gradient(to right, black 0, black 1px, transparent 1px, transparent 6px)' }} />
@@ -92,7 +93,7 @@ export default function ContactPage() {
         { top: 'calc(22vh + 112px)', left: '31%' },
         { top: 'calc(22vh + 112px)', right: '31%' },
       ].map((pos, i) => (
-        <div key={i} className="absolute w-[2px] h-[2px] bg-black/50 dark:bg-white/[0.25] pointer-events-none z-10"
+        <div key={i} className="absolute w-[2px] h-[2px] bg-black/50 dark:bg-white/[0.25] pointer-events-none z-10 hidden md:block"
           style={{
             top: pos.top,
             left: pos.left,
@@ -102,7 +103,7 @@ export default function ContactPage() {
       ))}
 
       {/* Cell 1: Dot Matrix Background */}
-      <div className="absolute left-[31%] right-[31%] top-0 h-[22vh] -z-0 pointer-events-auto">
+      <div className="absolute left-0 right-0 md:left-[31%] md:right-[31%] top-0 h-[22vh] -z-0 pointer-events-auto">
         <FooterBackground />
         <div className="absolute bottom-3 right-2 z-10 pointer-events-auto">
           <CurrentTime />
@@ -110,7 +111,7 @@ export default function ContactPage() {
       </div>
 
       {/* Cell 2: Header with Back Button + Title + Controls */}
-      <div className="absolute left-[31%] right-[31%] top-[22vh] h-[112px] flex items-center px-4 z-50">
+      <div className="absolute left-0 right-0 md:left-[31%] md:right-[31%] top-[22vh] h-[112px] flex items-center px-4 z-50">
         <div className="flex w-full items-center justify-between">
           {/* Left: Back + Title */}
           <div className="flex items-center gap-5">
@@ -139,7 +140,7 @@ export default function ContactPage() {
       </div>
 
       {/* Content Section */}
-      <div className="ml-[31%] mr-[31%] pt-[calc(22vh+112px)] pb-0 px-0 flex flex-col z-10 relative">
+      <div className="ml-0 mr-0 md:ml-[31%] md:mr-[31%] pt-[calc(22vh+112px)] pb-0 px-4 flex flex-col z-10 relative">
         {/* Form */}
         <form onSubmit={handleSubmit} className="mt-8 space-y-8">
           {/* FormSubmit Configuration */}
@@ -224,24 +225,30 @@ export default function ContactPage() {
           <div className="flex-shrink-0">
             <p className="text-[14px] text-zinc-500 mb-2">Find me on my <span className="font-medium text-zinc-800 dark:text-zinc-200">socials</span></p>
             <div className="flex flex-wrap gap-1.5">
-              <a href="https://github.com/Ashutoshx7?tab=overview&from=2026-05-01&to=2026-05-15" target="_blank" className="flex items-center gap-1.5 px-2.5 py-1.5 bg-zinc-100 dark:bg-zinc-800/40 hover:bg-zinc-200 dark:hover:bg-zinc-800 rounded-md text-[12px] font-medium text-zinc-600 dark:text-zinc-300 transition-colors border border-zinc-200/50 dark:border-zinc-700/50">
-                <svg viewBox="0 0 24 24" className="w-3.5 h-3.5">
-                  <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" stroke="currentColor" strokeWidth="2" fill="none" />
-                </svg>
-                GitHub
-              </a>
-              <a href="https://x.com/Ashutosh_7x7" target="_blank" className="flex items-center gap-1.5 px-2.5 py-1.5 bg-zinc-100 dark:bg-zinc-800/40 hover:bg-zinc-200 dark:hover:bg-zinc-800 rounded-md text-[12px] font-medium text-zinc-600 dark:text-zinc-300 transition-colors border border-zinc-200/50 dark:border-zinc-700/50">
-                <svg viewBox="0 0 24 24" className="w-3.5 h-3.5">
-                  <path d="M4 4l11.733 16h4.267l-11.733-16zM4 20l6.768-6.768M20 4l-6.768 6.768" stroke="currentColor" strokeWidth="2" fill="none" />
-                </svg>
-                Twitter
-              </a>
-              <a href="https://www.linkedin.com/in/ashutosh-singh-855177329/" target="_blank" className="flex items-center gap-1.5 px-2.5 py-1.5 bg-zinc-100 dark:bg-zinc-800/40 hover:bg-zinc-200 dark:hover:bg-zinc-800 rounded-md text-[12px] font-medium text-zinc-600 dark:text-zinc-300 transition-colors border border-zinc-200/50 dark:border-zinc-700/50">
-                <svg viewBox="0 0 24 24" className="w-3.5 h-3.5">
-                  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2zM4 2a2 2 0 1 1-2 2 2 2 0 0 1 2-2z" stroke="currentColor" strokeWidth="2" fill="none" />
-                </svg>
-                LinkedIn
-              </a>
+              <SocialHoverCard socialName="GitHub">
+                <a href="https://github.com/Ashutoshx7?tab=overview&from=2026-05-01&to=2026-05-15" target="_blank" className="flex items-center gap-1.5 px-2.5 py-1.5 bg-zinc-100 dark:bg-zinc-800/40 hover:bg-zinc-200 dark:hover:bg-zinc-800 rounded-md text-[12px] font-medium text-zinc-600 dark:text-zinc-300 transition-colors border border-zinc-200/50 dark:border-zinc-700/50">
+                  <svg viewBox="0 0 24 24" className="w-3.5 h-3.5">
+                    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" stroke="currentColor" strokeWidth="2" fill="none" />
+                  </svg>
+                  GitHub
+                </a>
+              </SocialHoverCard>
+              <SocialHoverCard socialName="Twitter">
+                <a href="https://x.com/Ashutosh_7x7" target="_blank" className="flex items-center gap-1.5 px-2.5 py-1.5 bg-zinc-100 dark:bg-zinc-800/40 hover:bg-zinc-200 dark:hover:bg-zinc-800 rounded-md text-[12px] font-medium text-zinc-600 dark:text-zinc-300 transition-colors border border-zinc-200/50 dark:border-zinc-700/50">
+                  <svg viewBox="0 0 24 24" className="w-3.5 h-3.5">
+                    <path d="M4 4l11.733 16h4.267l-11.733-16zM4 20l6.768-6.768M20 4l-6.768 6.768" stroke="currentColor" strokeWidth="2" fill="none" />
+                  </svg>
+                  Twitter
+                </a>
+              </SocialHoverCard>
+              <SocialHoverCard socialName="LinkedIn">
+                <a href="https://www.linkedin.com/in/ashutosh-singh-855177329/" target="_blank" className="flex items-center gap-1.5 px-2.5 py-1.5 bg-zinc-100 dark:bg-zinc-800/40 hover:bg-zinc-200 dark:hover:bg-zinc-800 rounded-md text-[12px] font-medium text-zinc-600 dark:text-zinc-300 transition-colors border border-zinc-200/50 dark:border-zinc-700/50">
+                  <svg viewBox="0 0 24 24" className="w-3.5 h-3.5">
+                    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2zM4 2a2 2 0 1 1-2 2 2 2 0 0 1 2-2z" stroke="currentColor" strokeWidth="2" fill="none" />
+                  </svg>
+                  LinkedIn
+                </a>
+              </SocialHoverCard>
             </div>
           </div>
 

@@ -10,6 +10,7 @@ import { RightNavbar } from "@/components/RightNavbar";
 import { CommandMenu } from "@/components/command-menu";
 import Link from "next/link";
 import SoftPillButton from "@/components/pixel-perfect/soft-pill-button";
+import SocialHoverCard from "@/components/pixel-perfect/social-hover-card";
 
 const skills = [
   { name: "React", icon: "react" },
@@ -50,8 +51,8 @@ export default function Home() {
       <RightNavbar />
 
       {/* Vertical Lines - Ultra-fine Micro Dots */}
-      <div className="absolute top-0 bottom-0 left-[31%] w-0 border-r border-black/30 dark:border-white/[0.15] pointer-events-none" style={{ maskImage: 'repeating-linear-gradient(to bottom, black 0, black 1px, transparent 1px, transparent 6px)', WebkitMaskImage: 'repeating-linear-gradient(to bottom, black 0, black 1px, transparent 1px, transparent 6px)' }} />
-      <div className="absolute top-0 bottom-0 right-[31%] w-0 border-r border-black/30 dark:border-white/[0.15] pointer-events-none" style={{ maskImage: 'repeating-linear-gradient(to bottom, black 0, black 1px, transparent 1px, transparent 6px)', WebkitMaskImage: 'repeating-linear-gradient(to bottom, black 0, black 1px, transparent 1px, transparent 6px)' }} />
+      <div className="absolute top-0 bottom-0 left-[31%] w-0 border-r border-black/30 dark:border-white/[0.15] pointer-events-none hidden md:block" style={{ maskImage: 'repeating-linear-gradient(to bottom, black 0, black 1px, transparent 1px, transparent 6px)', WebkitMaskImage: 'repeating-linear-gradient(to bottom, black 0, black 1px, transparent 1px, transparent 6px)' }} />
+      <div className="absolute top-0 bottom-0 right-[31%] w-0 border-r border-black/30 dark:border-white/[0.15] pointer-events-none hidden md:block" style={{ maskImage: 'repeating-linear-gradient(to bottom, black 0, black 1px, transparent 1px, transparent 6px)', WebkitMaskImage: 'repeating-linear-gradient(to bottom, black 0, black 1px, transparent 1px, transparent 6px)' }} />
 
       {/* Horizontal Lines - Ultra-fine Micro Dots */}
       <div className="absolute left-0 right-0 top-[22vh] h-0 border-b border-black/30 dark:border-white/[0.15] pointer-events-none" style={{ maskImage: 'repeating-linear-gradient(to right, black 0, black 1px, transparent 1px, transparent 6px)', WebkitMaskImage: 'repeating-linear-gradient(to right, black 0, black 1px, transparent 1px, transparent 6px)' }} />
@@ -64,7 +65,7 @@ export default function Home() {
         { top: 'calc(22vh + 112px)', left: '31%' },
         { top: 'calc(22vh + 112px)', right: '31%' },
       ].map((pos, i) => (
-        <div key={i} className="absolute w-[2px] h-[2px] bg-black/50 dark:bg-white/[0.25] pointer-events-none z-10"
+        <div key={i} className="absolute w-[2px] h-[2px] bg-black/50 dark:bg-white/[0.25] pointer-events-none z-10 hidden md:block"
           style={{
             top: pos.top,
             left: pos.left,
@@ -74,7 +75,7 @@ export default function Home() {
       ))}
 
       {/* Cell 1: Nothing Design Dot Matrix Background */}
-      <div className="absolute left-[31%] right-[31%] top-0 h-[22vh] -z-0 pointer-events-auto">
+      <div className="absolute left-0 right-0 md:left-[31%] md:right-[31%] top-0 h-[22vh] -z-0 pointer-events-auto">
         <FooterBackground />
 
         <div className="absolute bottom-3 right-2 z-10 pointer-events-auto">
@@ -83,7 +84,7 @@ export default function Home() {
       </div>
 
       {/* Cell 2: Profile Section - 112px height to wrap the framed image (13px gap top/bottom) */}
-      <div className="absolute left-[31%] right-[31%] top-[22vh] h-[112px] flex items-center px-4 z-50">
+      <div className="absolute left-0 right-0 md:left-[31%] md:right-[31%] top-[22vh] h-[112px] flex items-center px-4 z-50">
         <div className="flex w-full items-center justify-between">
 
           <div className="flex items-center gap-4 sm:gap-5">
@@ -111,7 +112,7 @@ export default function Home() {
       </div>
 
       {/* Flowing Content Section */}
-      <div className="ml-[31%] mr-[31%] pt-[calc(22vh+112px)] pb-0 px-4 flex flex-col z-10 relative min-h-screen">
+      <div className="ml-0 mr-0 md:ml-[31%] md:mr-[31%] pt-[calc(22vh+112px)] pb-0 px-4 flex flex-col z-10 relative min-h-screen">
         <p className="text-[14px] sm:text-[15px] text-zinc-600 dark:text-zinc-300 leading-relaxed mt-4">
           Engineer / Artist. I love building, breaking, and shipping things.
         </p>
@@ -168,22 +169,23 @@ export default function Home() {
               { name: 'LinkedIn', href: 'https://www.linkedin.com/in/ashutosh-singh-855177329/', icon: <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2zM4 2a2 2 0 1 1-2 2 2 2 0 0 1 2-2z" stroke="currentColor" strokeWidth="2" fill="none"></path> },
               { name: 'Discord', href: '#', icon: <path d="M18 5c-1.5-.7-3.2-1-5-1s-3.5.3-5 1c-1.5 3.5-2.5 8-2.5 8 1.5 2 4.5 3 7.5 3s6-1 7.5-3c0 0-1-4.5-2.5-8zM9 13c-.8 0-1.5-.7-1.5-1.5S8.2 10 9 10s1.5.7 1.5 1.5S9.8 13 9 13zm6 0c-.8 0-1.5-.7-1.5-1.5s.7-1.5 1.5-1.5 1.5.7 1.5 1.5-.7 1.5-1.5 1.5z" fill="currentColor"></path> },
             ].map((social, i) => (
-              <SoftPillButton
-                key={i}
-                as="a"
-                href={social.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                variant="secondary"
-                className="px-3 py-1.5 !text-[12px]"
-              >
-                <div className="flex items-center gap-1.5 opacity-70 group-hover:opacity-100 transition-opacity duration-300">
-                  <svg viewBox="0 0 24 24" className="w-3.5 h-3.5">
-                    {social.icon}
-                  </svg>
-                  {social.name}
-                </div>
-              </SoftPillButton>
+              <SocialHoverCard key={i} socialName={social.name}>
+                <SoftPillButton
+                  as="a"
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  variant="secondary"
+                  className="px-3 py-1.5 !text-[12px]"
+                >
+                  <div className="flex items-center gap-1.5 opacity-70 group-hover:opacity-100 transition-opacity duration-300">
+                    <svg viewBox="0 0 24 24" className="w-3.5 h-3.5">
+                      {social.icon}
+                    </svg>
+                    {social.name}
+                  </div>
+                </SoftPillButton>
+              </SocialHoverCard>
             ))}
           </div>
         </div>
@@ -256,7 +258,7 @@ export default function Home() {
           {/* Grid Container */}
           <div className="relative pt-6 pb-12 px-4">
             {/* Center Vertical Line */}
-            <div className="absolute top-0 bottom-6 left-1/2 w-0 border-r border-black/30 dark:border-white/[0.15] pointer-events-none -translate-x-1/2" style={{ maskImage: 'repeating-linear-gradient(to bottom, black 0, black 1px, transparent 1px, transparent 6px)', WebkitMaskImage: 'repeating-linear-gradient(to bottom, black 0, black 1px, transparent 1px, transparent 6px)' }} />
+            <div className="absolute top-0 bottom-6 left-1/2 w-0 border-r border-black/30 dark:border-white/[0.15] pointer-events-none -translate-x-1/2 hidden md:block" style={{ maskImage: 'repeating-linear-gradient(to bottom, black 0, black 1px, transparent 1px, transparent 6px)', WebkitMaskImage: 'repeating-linear-gradient(to bottom, black 0, black 1px, transparent 1px, transparent 6px)' }} />
 
             <ProjectsGrid />
 

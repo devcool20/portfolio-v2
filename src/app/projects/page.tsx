@@ -30,8 +30,8 @@ export default function AllProjectsPage() {
         <RightNavbar />
 
         {/* Vertical Lines - Ultra-fine Micro Dots */}
-        <div className="absolute top-0 bottom-0 left-[31%] w-0 border-r border-black/30 dark:border-white/[0.15] pointer-events-none" style={{ maskImage: 'repeating-linear-gradient(to bottom, black 0, black 1px, transparent 1px, transparent 6px)', WebkitMaskImage: 'repeating-linear-gradient(to bottom, black 0, black 1px, transparent 1px, transparent 6px)' }} />
-        <div className="absolute top-0 bottom-0 right-[31%] w-0 border-r border-black/30 dark:border-white/[0.15] pointer-events-none" style={{ maskImage: 'repeating-linear-gradient(to bottom, black 0, black 1px, transparent 1px, transparent 6px)', WebkitMaskImage: 'repeating-linear-gradient(to bottom, black 0, black 1px, transparent 1px, transparent 6px)' }} />
+        <div className="absolute top-0 bottom-0 left-[31%] w-0 border-r border-black/30 dark:border-white/[0.15] pointer-events-none hidden md:block" style={{ maskImage: 'repeating-linear-gradient(to bottom, black 0, black 1px, transparent 1px, transparent 6px)', WebkitMaskImage: 'repeating-linear-gradient(to bottom, black 0, black 1px, transparent 1px, transparent 6px)' }} />
+        <div className="absolute top-0 bottom-0 right-[31%] w-0 border-r border-black/30 dark:border-white/[0.15] pointer-events-none hidden md:block" style={{ maskImage: 'repeating-linear-gradient(to bottom, black 0, black 1px, transparent 1px, transparent 6px)', WebkitMaskImage: 'repeating-linear-gradient(to bottom, black 0, black 1px, transparent 1px, transparent 6px)' }} />
 
         {/* Horizontal Lines - Ultra-fine Micro Dots */}
         <div className="absolute left-0 right-0 top-[22vh] h-0 border-b border-black/30 dark:border-white/[0.15] pointer-events-none" style={{ maskImage: 'repeating-linear-gradient(to right, black 0, black 1px, transparent 1px, transparent 6px)', WebkitMaskImage: 'repeating-linear-gradient(to right, black 0, black 1px, transparent 1px, transparent 6px)' }} />
@@ -44,7 +44,7 @@ export default function AllProjectsPage() {
           { top: 'calc(22vh + 112px)', left: '31%' },
           { top: 'calc(22vh + 112px)', right: '31%' },
         ].map((pos, i) => (
-          <div key={i} className="absolute w-[2px] h-[2px] bg-black/50 dark:bg-white/[0.25] pointer-events-none z-10"
+          <div key={i} className="absolute w-[2px] h-[2px] bg-black/50 dark:bg-white/[0.25] pointer-events-none z-10 hidden md:block"
             style={{
               top: pos.top,
               left: pos.left,
@@ -54,7 +54,7 @@ export default function AllProjectsPage() {
         ))}
 
         {/* Cell 1: Dot Matrix Background */}
-        <div className="absolute left-[31%] right-[31%] top-0 h-[22vh] -z-0 pointer-events-auto">
+        <div className="absolute left-0 right-0 md:left-[31%] md:right-[31%] top-0 h-[22vh] -z-0 pointer-events-auto">
           <FooterBackground />
           <div className="absolute bottom-3 right-2 z-10 pointer-events-auto">
             <CurrentTime />
@@ -62,7 +62,7 @@ export default function AllProjectsPage() {
         </div>
 
         {/* Cell 2: Header with Back Button + Title + Controls */}
-        <div className="absolute left-[31%] right-[31%] top-[22vh] h-[112px] flex items-center px-4 z-50">
+        <div className="absolute left-0 right-0 md:left-[31%] md:right-[31%] top-[22vh] h-[112px] flex items-center px-4 z-50">
           <div className="flex w-full items-center justify-between">
             {/* Left: Back + Title */}
             <div className="flex items-center gap-5">
@@ -95,20 +95,20 @@ export default function AllProjectsPage() {
           initial={{ opacity: 0, filter: "blur(8px)", y: 12 }}
           animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.05 }}
-          className="ml-[31%] mr-[31%] pt-[calc(22vh+112px)] pb-16 px-0 flex flex-col z-10 relative"
+          className="ml-0 mr-0 md:ml-[31%] md:mr-[31%] pt-[calc(22vh+112px)] pb-16 px-0 flex flex-col z-10 relative"
         >
           <div className="relative pt-6 pb-6 px-4">
             {/* Center Vertical Line */}
-            <div className="absolute top-0 bottom-6 left-1/2 w-0 border-r border-black/30 dark:border-white/[0.15] pointer-events-none -translate-x-1/2" style={{ maskImage: 'repeating-linear-gradient(to bottom, black 0, black 1px, transparent 1px, transparent 6px)', WebkitMaskImage: 'repeating-linear-gradient(to bottom, black 0, black 1px, transparent 1px, transparent 6px)' }} />
+            <div className="absolute top-0 bottom-6 left-1/2 w-0 border-r border-black/30 dark:border-white/[0.15] pointer-events-none -translate-x-1/2 hidden md:block" style={{ maskImage: 'repeating-linear-gradient(to bottom, black 0, black 1px, transparent 1px, transparent 6px)', WebkitMaskImage: 'repeating-linear-gradient(to bottom, black 0, black 1px, transparent 1px, transparent 6px)' }} />
             {/* Top Center Intersection */}
-            <div className="absolute top-0 left-1/2 w-[2px] h-[2px] bg-black/40 dark:bg-white/[0.25] -translate-x-1/2 -translate-y-1/2 pointer-events-none z-20" />
+            <div className="absolute top-0 left-1/2 w-[2px] h-[2px] bg-black/40 dark:bg-white/[0.25] -translate-x-1/2 -translate-y-1/2 pointer-events-none z-20 hidden md:block" />
 
             <div className="flex flex-col relative z-10 w-full">
               {Array.from({ length: Math.ceil(projectsData.length / 2) }).map((_, rowIndex) => {
                 const rowProjects = projectsData.slice(rowIndex * 2, rowIndex * 2 + 2);
                 return (
                   <div key={rowIndex} className="flex flex-col relative w-full">
-                    <div className={`grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-8 md:gap-y-0 ${rowIndex === 0 ? 'pb-6' : rowIndex === Math.ceil(projectsData.length / 2) - 1 ? 'pt-6' : 'py-6'}`}>
+                    <div className={`grid grid-cols-1 md:grid-cols-2 gap-x-10 ${rowIndex === 0 ? 'pb-10 md:pb-6 gap-y-10 md:gap-y-0' : rowIndex === Math.ceil(projectsData.length / 2) - 1 ? 'pt-0 md:pt-6 gap-y-10 md:gap-y-0' : 'pb-10 md:pb-6 pt-0 md:pt-6 gap-y-10 md:gap-y-0'}`}>
                       {rowProjects.map((project) => (
                         <ProjectCard key={project.title} project={project} setActiveVideo={setActiveVideo} />
                       ))}
