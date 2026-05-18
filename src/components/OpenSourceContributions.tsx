@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import Link from "next/link";
 
 interface PR {
@@ -16,90 +16,136 @@ interface PR {
   closedAt?: string;
 }
 
+type FilterType = "merged" | "open" | "closed";
+
+const SEARCH_QUERIES: Record<FilterType, string> = {
+  merged: "author:Ashutoshx7 type:pr is:merged",
+  open: "author:Ashutoshx7 type:pr is:open",
+  closed: "author:Ashutoshx7 type:pr is:closed is:unmerged",
+};
+
+function buildGraphQLQuery(searchQuery: string) {
+  return `query {
+    search(query: "${searchQuery}", type: ISSUE, first: 100) {
+      edges {
+        node {
+          ... on PullRequest {
+            id
+            title
+            url
+            repository {
+              nameWithOwner
+            }
+            state
+            createdAt
+            mergedAt
+            closedAt
+          }
+        }
+      }
+    }
+  }`;
+}
+
 export function OpenSourceContributions({ isFullPage = false }: { isFullPage?: boolean }) {
-  const [prs, setPrs] = useState<PR[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [filterType, setFilterType] = useState<"merged" | "open" | "closed">("merged");
+  const [prsByType, setPrsByType] = useState<Record<FilterType, PR[]>>({
+    merged: [],
+    open: [],
+    closed: [],
+  });
+  const [loadedTypes, setLoadedTypes] = useState<Set<FilterType>>(new Set());
+  const [filterType, setFilterType] = useState<FilterType>("merged");
   const [closedPRIds] = useState<Set<number>>(new Set());
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
   const initialCount = 4;
+  const fetchedRef = useRef(false);
 
-  useEffect(() => {
-    const fetchPRs = async () => {
-      const cacheKey = `github_prs_${filterType}`;
-      const cachedData = typeof window !== 'undefined' ? localStorage.getItem(cacheKey) : null;
+  const fetchPRsForType = useCallback(async (type: FilterType) => {
+    const cacheKey = `github_prs_${type}`;
+    const cachedData = typeof window !== 'undefined' ? localStorage.getItem(cacheKey) : null;
 
-      if (cachedData) {
-        try {
-          setPrs(JSON.parse(cachedData));
-          setLoading(false);
-        } catch (e) {
-          setLoading(true);
+    // Immediately populate from cache if available
+    if (cachedData) {
+      try {
+        const parsed = JSON.parse(cachedData);
+        setPrsByType(prev => ({ ...prev, [type]: parsed }));
+        setLoadedTypes(prev => new Set(prev).add(type));
+      } catch {
+        // invalid cache, will fetch fresh
+      }
+    }
+
+    // Fetch fresh data in background
+    try {
+      const query = buildGraphQLQuery(SEARCH_QUERIES[type]);
+      const response = await fetch("/api/github", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ query }),
+      });
+
+      const data = await response.json();
+      if (data.data?.search?.edges) {
+        const fetchedPRs = data.data.search.edges
+          .map((edge: any) => edge.node)
+          .filter((pr: PR) => !(pr.title === "Main" && pr.repository.nameWithOwner === "Ashutoshx7/flexprice-storybook"));
+        fetchedPRs.sort((a: PR, b: PR) => {
+          const dateA = new Date(b.mergedAt || b.closedAt || b.createdAt).getTime();
+          const dateB = new Date(a.mergedAt || a.closedAt || a.createdAt).getTime();
+          return dateA - dateB;
+        });
+        setPrsByType(prev => ({ ...prev, [type]: fetchedPRs }));
+        setLoadedTypes(prev => new Set(prev).add(type));
+        if (typeof window !== 'undefined') {
+          localStorage.setItem(cacheKey, JSON.stringify(fetchedPRs));
         }
       } else {
-        setLoading(true);
-      }
-
-      try {
-        const searchQuery = filterType === "merged"
-          ? "author:Ashutoshx7 type:pr is:merged"
-          : filterType === "open"
-            ? "author:Ashutoshx7 type:pr is:open"
-            : "author:Ashutoshx7 type:pr is:closed is:unmerged";
-
-        const query = `query {
-          search(query: "${searchQuery}", type: ISSUE, first: 100) {
-            edges {
-              node {
-                ... on PullRequest {
-                  id
-                  title
-                  url
-                  repository {
-                    nameWithOwner
-                  }
-                  state
-                  createdAt
-                  mergedAt
-                  closedAt
-                }
-              }
-            }
-          }
-        }`;
-
-        const response = await fetch("/api/github", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ query }),
-        });
-
-        const data = await response.json();
-        if (data.data?.search?.edges) {
-          const fetchedPRs = data.data.search.edges.map((edge: any) => edge.node).filter((pr: PR) => !(pr.title === "Main" && pr.repository.nameWithOwner === "Ashutoshx7/flexprice-storybook"));
-          fetchedPRs.sort((a: PR, b: PR) => {
-            const dateA = new Date(b.mergedAt || b.closedAt || b.createdAt).getTime();
-            const dateB = new Date(a.mergedAt || a.closedAt || a.createdAt).getTime();
-            return dateA - dateB;
-          });
-          setPrs(fetchedPRs);
-          if (typeof window !== 'undefined') {
-            localStorage.setItem(cacheKey, JSON.stringify(fetchedPRs));
-          }
+        if (data.message === "Bad credentials" || data.error) {
+          console.warn("GitHub API: Invalid or missing GITHUB_TOKEN credentials. Fallback to cached/offline timeline state.");
         } else {
           console.error("GraphQL response missing expected data structure", data);
         }
-      } catch (error) {
-        console.error("Failed to fetch PRs:", error);
-      } finally {
-        setLoading(false);
+        // Even on error, mark as loaded so we don't show spinner forever
+        setLoadedTypes(prev => new Set(prev).add(type));
       }
-    };
+    } catch (error) {
+      console.error("Failed to fetch PRs:", error);
+      setLoadedTypes(prev => new Set(prev).add(type));
+    }
+  }, []);
 
-    fetchPRs();
+  // Prefetch ALL filter types on mount
+  useEffect(() => {
+    if (fetchedRef.current) return;
+    fetchedRef.current = true;
+
+    // Fetch merged first (visible by default), then others in parallel
+    fetchPRsForType("merged");
+    fetchPRsForType("open");
+    fetchPRsForType("closed");
+  }, [fetchPRsForType]);
+
+  // Smooth tab switching with a brief crossfade
+  const handleFilterChange = useCallback((type: FilterType) => {
+    if (type === filterType) return;
+    setIsTransitioning(true);
+    // Brief fade-out, then swap, then fade-in
+    requestAnimationFrame(() => {
+      setTimeout(() => {
+        setFilterType(type);
+        // Allow the new content to render, then fade in
+        requestAnimationFrame(() => {
+          setTimeout(() => {
+            setIsTransitioning(false);
+          }, 30);
+        });
+      }, 120);
+    });
   }, [filterType]);
+
+  const currentPrs = prsByType[filterType];
+  const isLoaded = loadedTypes.has(filterType);
 
   return (
     <div className="w-full flex flex-col">
@@ -117,10 +163,10 @@ export function OpenSourceContributions({ isFullPage = false }: { isFullPage?: b
             />
 
             {/* Buttons */}
-            {["merged", "open", "closed"].map((type) => (
+            {(["merged", "open", "closed"] as FilterType[]).map((type) => (
               <button
                 key={type}
-                onClick={() => setFilterType(type as any)}
+                onClick={() => handleFilterChange(type)}
                 className={`z-10 relative px-3 py-1.5 text-[12px] font-medium text-center transition-colors duration-200 capitalize ${filterType === type
                   ? "text-zinc-900 dark:text-zinc-100"
                   : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200"
@@ -140,21 +186,20 @@ export function OpenSourceContributions({ isFullPage = false }: { isFullPage?: b
       </div>
 
       <div className="relative pt-0 pb-2">
-        {loading ? (
-          <div className="text-[13px] text-zinc-500 py-4 flex justify-center">Loading pull requests...</div>
-        ) : prs.length > 0 ? (
-          <div className="flex flex-col">
-            {prs.slice(0, isFullPage ? prs.length : initialCount).filter(pr => !closedPRIds.has(pr.id)).map((pr, idx, arr) => {
-              const isLast = idx === arr.length - 1;
-              return (
-                <a
-                  key={pr.id}
-                  href={pr.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group relative flex flex-col gap-1.5 py-4 px-4 -mx-4 transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-900/20 rounded-lg"
-                >
-                  {!isLast && (
+        {/* Smooth crossfade container */}
+        <div
+          className="transition-all duration-150 ease-out"
+          style={{
+            opacity: isTransitioning ? 0 : 1,
+            transform: isTransitioning ? 'translateY(4px)' : 'translateY(0)',
+          }}
+        >
+          {!isLoaded && currentPrs.length === 0 ? (
+            /* Skeleton loading — only shows on truly first load with no cache */
+            <div className="flex flex-col">
+              {Array.from({ length: initialCount }).map((_, idx) => (
+                <div key={idx} className="relative flex flex-col gap-1.5 py-4 px-4 -mx-4">
+                  {idx < initialCount - 1 && (
                     <div
                       className="absolute bottom-0 left-0 right-0 h-0 border-b border-black/30 dark:border-white/[0.15] pointer-events-none z-10"
                       style={{
@@ -163,44 +208,76 @@ export function OpenSourceContributions({ isFullPage = false }: { isFullPage?: b
                       }}
                     />
                   )}
-                  <div className="flex items-center gap-2.5 relative z-20 min-w-0">
-                    <div className={`w-2 h-2 rounded-full shrink-0 ${pr.state === "MERGED"
-                      ? "bg-purple-500 shadow-[0_0_8px_rgba(168,85,247,0.4)]"
-                      : pr.state === "OPEN"
-                        ? "bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.4)]"
-                        : "bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.4)]"
-                      }`}></div>
-                    <h3 className="text-[14px] font-medium text-zinc-800 dark:text-zinc-200 group-hover:text-zinc-900 dark:group-hover:text-zinc-100 transition-colors truncate">
-                      {pr.title}
-                    </h3>
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-2 h-2 rounded-full bg-zinc-200 dark:bg-zinc-800 animate-pulse shrink-0" />
+                    <div className="h-3.5 bg-zinc-100 dark:bg-zinc-800/60 rounded-md animate-pulse w-3/4" />
                   </div>
-                  <p className="text-[12px] text-zinc-500 dark:text-zinc-400 ml-4.5 pl-0.5 relative z-20">
-                    {pr.repository.nameWithOwner}
-                  </p>
-                </a>
-              )
-            })}
+                  <div className="ml-4.5 pl-0.5">
+                    <div className="h-3 bg-zinc-100 dark:bg-zinc-800/40 rounded-md animate-pulse w-1/3 mt-0.5" />
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : currentPrs.length > 0 ? (
+            <div className="flex flex-col">
+              {currentPrs.slice(0, isFullPage ? currentPrs.length : initialCount).filter(pr => !closedPRIds.has(pr.id)).map((pr, idx, arr) => {
+                const isLast = idx === arr.length - 1;
+                return (
+                  <a
+                    key={pr.id}
+                    href={pr.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group relative flex flex-col gap-1.5 py-4 px-4 -mx-4 transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-900/20 rounded-lg"
+                  >
+                    {!isLast && (
+                      <div
+                        className="absolute bottom-0 left-0 right-0 h-0 border-b border-black/30 dark:border-white/[0.15] pointer-events-none z-10"
+                        style={{
+                          maskImage: "repeating-linear-gradient(to right, black 0, black 1px, transparent 1px, transparent 6px)",
+                          WebkitMaskImage: "repeating-linear-gradient(to right, black 0, black 1px, transparent 1px, transparent 6px)",
+                        }}
+                      />
+                    )}
+                    <div className="flex items-center gap-2.5 relative z-20 min-w-0">
+                      <div className={`w-2 h-2 rounded-full shrink-0 ${pr.state === "MERGED"
+                        ? "bg-purple-500 shadow-[0_0_8px_rgba(168,85,247,0.4)]"
+                        : pr.state === "OPEN"
+                          ? "bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.4)]"
+                          : "bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.4)]"
+                        }`}></div>
+                      <h3 className="text-[14px] font-medium text-zinc-800 dark:text-zinc-200 group-hover:text-zinc-900 dark:group-hover:text-zinc-100 transition-colors truncate">
+                        {pr.title}
+                      </h3>
+                    </div>
+                    <p className="text-[12px] text-zinc-500 dark:text-zinc-400 ml-4.5 pl-0.5 relative z-20">
+                      {pr.repository.nameWithOwner}
+                    </p>
+                  </a>
+                )
+              })}
 
-            {!isFullPage && prs.length > initialCount && (
-              <div className="flex justify-center mt-4 relative z-20">
-                <Link href="/pull-requests" className="relative group block">
-                  <div className="absolute -inset-[5px] border border-black/5 dark:border-white/5 rounded-[11px] pointer-events-none transition-colors duration-300 group-hover:border-black/10 dark:group-hover:border-white/10" />
-                  <div className="relative flex items-center gap-1.5 px-4 py-2 bg-zinc-50 hover:bg-zinc-100 dark:bg-[#09090b] dark:hover:bg-[#121214] text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 rounded-[6px] text-[13px] font-medium transition-all duration-300 border border-black/5 dark:border-white/5 shadow-sm shadow-black/20 dark:shadow-lg dark:shadow-black/80">
-                    View All ({prs.length - initialCount} more)
-                    <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 text-zinc-500 group-hover:text-zinc-900 dark:group-hover:text-zinc-300 transition-transform duration-300 -rotate-90" fill="none" stroke="currentColor" strokeWidth="2.5">
-                      <line x1="12" y1="5" x2="12" y2="19"></line>
-                      <polyline points="19 12 12 19 5 12"></polyline>
-                    </svg>
-                  </div>
-                </Link>
-              </div>
-            )}
-          </div>
-        ) : (
-          <div className="text-[13px] text-zinc-500 py-4 flex justify-center">
-            No pull requests found. <span className="text-zinc-400 ml-1">(Requires NEXT_PUBLIC_GITHUB_TOKEN)</span>
-          </div>
-        )}
+              {!isFullPage && currentPrs.length > initialCount && (
+                <div className="flex justify-center mt-4 relative z-20">
+                  <Link href="/pull-requests" className="relative group block">
+                    <div className="absolute -inset-[5px] border border-black/5 dark:border-white/5 rounded-[11px] pointer-events-none transition-colors duration-300 group-hover:border-black/10 dark:group-hover:border-white/10" />
+                    <div className="relative flex items-center gap-1.5 px-4 py-2 bg-zinc-50 hover:bg-zinc-100 dark:bg-[#09090b] dark:hover:bg-[#121214] text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 rounded-[6px] text-[13px] font-medium transition-all duration-300 border border-black/5 dark:border-white/5 shadow-sm shadow-black/20 dark:shadow-lg dark:shadow-black/80">
+                      View All ({currentPrs.length - initialCount} more)
+                      <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 text-zinc-500 group-hover:text-zinc-900 dark:group-hover:text-zinc-300 transition-transform duration-300 -rotate-90" fill="none" stroke="currentColor" strokeWidth="2.5">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <polyline points="19 12 12 19 5 12"></polyline>
+                      </svg>
+                    </div>
+                  </Link>
+                </div>
+              )}
+            </div>
+          ) : (
+            <div className="text-[13px] text-zinc-500 py-4 flex justify-center">
+              No pull requests found. <span className="text-zinc-400 ml-1">(Requires NEXT_PUBLIC_GITHUB_TOKEN)</span>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

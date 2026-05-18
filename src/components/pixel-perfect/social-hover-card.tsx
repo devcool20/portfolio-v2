@@ -110,10 +110,10 @@ export default function SocialHoverCard({ socialName, children }: SocialHoverCar
               className="z-50 select-none outline-none"
             >
               <motion.div
-                initial={{ opacity: 0, y: -4, scale: 0.98 }}
+                initial={{ opacity: 0, y: 4, scale: 0.985 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: -4, scale: 0.98 }}
-                transition={{ duration: 0.15, ease: [0.215, 0.61, 0.355, 1] }}
+                exit={{ opacity: 0, y: 3, scale: 0.985 }}
+                transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
                 className={cn(
                   "w-[230px] sm:w-[250px] rounded-xl shadow-2xl backdrop-blur-md overflow-hidden",
                   "bg-white/95 dark:bg-[#0c0c0e]/95 border border-black/5 dark:border-white/5",

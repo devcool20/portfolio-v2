@@ -3,13 +3,21 @@ import { NextResponse } from 'next/server';
 export async function POST(request: Request) {
   try {
     const { query } = await request.json();
+    const token = process.env.GITHUB_TOKEN || process.env.NEXT_PUBLIC_GITHUB_TOKEN || "";
+
+    if (!token) {
+      return NextResponse.json({ 
+        error: "Missing GITHUB_TOKEN credential",
+        message: "Bad credentials",
+        status: "401"
+      }, { status: 401 });
+    }
 
     const response = await fetch("https://api.github.com/graphql", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        // Notice we don't use NEXT_PUBLIC_ here, keeping it secret on the server!
-        "Authorization": `Bearer ${process.env.GITHUB_TOKEN || process.env.NEXT_PUBLIC_GITHUB_TOKEN || ""}`,
+        "Authorization": `Bearer ${token}`,
       },
       body: JSON.stringify({ query }),
     });
