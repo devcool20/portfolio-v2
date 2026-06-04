@@ -140,9 +140,9 @@ export default function ContactPage() {
       </div>
 
       {/* Content Section */}
-      <div className="ml-0 mr-0 md:ml-[31%] md:mr-[31%] pt-[calc(22vh+112px)] pb-0 px-4 flex flex-col z-10 relative">
+      <div className="ml-0 mr-0 md:ml-[31%] md:mr-[31%] pt-[calc(22vh+112px)] pb-0 px-8 md:px-12 flex flex-col z-10 relative">
         {/* Form */}
-        <form onSubmit={handleSubmit} className="mt-8 space-y-8">
+        <form onSubmit={handleSubmit} className="mt-12 space-y-10">
           {/* FormSubmit Configuration */}
           <input type="hidden" name="_captcha" value="false" />
           <input type="hidden" name="_template" value="table" />
@@ -213,7 +213,7 @@ export default function ContactPage() {
         </form>
 
         {/* Separator */}
-        <div className="relative mt-12 mb-0">
+        <div className="relative mt-16 mb-0">
           <div className="absolute left-[-100vw] right-[-100vw] h-0 border-b border-black/30 dark:border-white/[0.15] pointer-events-none" style={{ maskImage: 'repeating-linear-gradient(to right, black 0, black 1px, transparent 1px, transparent 6px)', WebkitMaskImage: 'repeating-linear-gradient(to right, black 0, black 1px, transparent 1px, transparent 6px)' }} />
           {/* Intersection nodes */}
           <div className="absolute left-0 w-[2px] h-[2px] bg-black/50 dark:bg-white/[0.25] -translate-x-1/2 translate-y-[-1px] pointer-events-none z-20" />
@@ -221,7 +221,7 @@ export default function ContactPage() {
         </div>
 
         {/* Footer - Socials + Displacement Text */}
-        <div className="pt-0 -mt-6 pb-5 px-4 flex flex-col md:flex-row md:items-center justify-between gap-6 overflow-hidden">
+        <div className="pt-2 -mt-4 pb-5 px-4 flex flex-col md:flex-row md:items-center justify-between gap-8 overflow-hidden">
           <div className="flex-shrink-0">
             <p className="text-[14px] text-zinc-500 mb-2">Find me on my <span className="font-medium text-zinc-800 dark:text-zinc-200">socials</span></p>
             <div className="flex flex-wrap gap-1.5">
