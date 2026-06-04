@@ -84,8 +84,8 @@ export default function AllExperiencePage() {
       <RightNavbar />
 
       {/* Vertical Lines - Ultra-fine Micro Dots */}
-      <div className="absolute top-0 bottom-0 left-[31%] w-0 border-r border-black/30 dark:border-white/[0.15] pointer-events-none hidden md:block" style={{ maskImage: 'repeating-linear-gradient(to bottom, black 0, black 1px, transparent 1px, transparent 6px)', WebkitMaskImage: 'repeating-linear-gradient(to bottom, black 0, black 1px, transparent 1px, transparent 6px)' }} />
-      <div className="absolute top-0 bottom-0 right-[31%] w-0 border-r border-black/30 dark:border-white/[0.15] pointer-events-none hidden md:block" style={{ maskImage: 'repeating-linear-gradient(to bottom, black 0, black 1px, transparent 1px, transparent 6px)', WebkitMaskImage: 'repeating-linear-gradient(to bottom, black 0, black 1px, transparent 1px, transparent 6px)' }} />
+      <div className="absolute top-0 bottom-0 left-[30%] w-0 border-r border-black/30 dark:border-white/[0.15] pointer-events-none hidden md:block" style={{ maskImage: 'repeating-linear-gradient(to bottom, black 0, black 1px, transparent 1px, transparent 6px)', WebkitMaskImage: 'repeating-linear-gradient(to bottom, black 0, black 1px, transparent 1px, transparent 6px)' }} />
+      <div className="absolute top-0 bottom-0 right-[30%] w-0 border-r border-black/30 dark:border-white/[0.15] pointer-events-none hidden md:block" style={{ maskImage: 'repeating-linear-gradient(to bottom, black 0, black 1px, transparent 1px, transparent 6px)', WebkitMaskImage: 'repeating-linear-gradient(to bottom, black 0, black 1px, transparent 1px, transparent 6px)' }} />
 
       {/* Horizontal Lines - Ultra-fine Micro Dots */}
       <div className="absolute left-0 right-0 top-[22vh] h-0 border-b border-black/30 dark:border-white/[0.15] pointer-events-none" style={{ maskImage: 'repeating-linear-gradient(to right, black 0, black 1px, transparent 1px, transparent 6px)', WebkitMaskImage: 'repeating-linear-gradient(to right, black 0, black 1px, transparent 1px, transparent 6px)' }} />
@@ -93,10 +93,10 @@ export default function AllExperiencePage() {
 
       {/* Ultra-Tiny Solid Nodes */}
       {[
-        { top: '22vh', left: '31%' },
-        { top: '22vh', right: '31%' },
-        { top: 'calc(22vh + 112px)', left: '31%' },
-        { top: 'calc(22vh + 112px)', right: '31%' },
+        { top: '22vh', left: '28%' },
+        { top: '22vh', right: '28%' },
+        { top: 'calc(22vh + 112px)', left: '28%' },
+        { top: 'calc(22vh + 112px)', right: '28%' },
       ].map((pos, i) => (
         <div key={i} className="absolute w-[2px] h-[2px] bg-black/50 dark:bg-white/[0.25] pointer-events-none z-10 hidden md:block"
           style={{
@@ -108,7 +108,7 @@ export default function AllExperiencePage() {
       ))}
 
       {/* Cell 1: Dot Matrix Background */}
-      <div className="absolute left-0 right-0 md:left-[31%] md:right-[31%] top-0 h-[22vh] -z-0 pointer-events-auto">
+      <div className="absolute left-0 right-0 md:left-[30%] md:right-[30%] top-0 h-[22vh] -z-0 pointer-events-auto">
         <FooterBackground />
         <div className="absolute bottom-3 right-2 z-10 pointer-events-auto">
           <CurrentTime />
@@ -116,7 +116,7 @@ export default function AllExperiencePage() {
       </div>
 
       {/* Cell 2: Header with Back Button + Title + Controls */}
-      <div className="absolute left-0 right-0 md:left-[31%] md:right-[31%] top-[22vh] h-[112px] flex items-center px-4 z-50">
+      <div className="absolute left-0 right-0 md:left-[30%] md:right-[30%] top-[22vh] h-[112px] flex items-center px-4 z-50">
         <div className="flex w-full items-center justify-between">
           {/* Left: Back + Title */}
           <div className="flex items-center gap-5">
@@ -149,7 +149,7 @@ export default function AllExperiencePage() {
         initial={{ opacity: 0, filter: "blur(8px)", y: 12 }}
         animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.05 }}
-        className="ml-0 mr-0 md:ml-[31%] md:mr-[31%] pt-[calc(22vh+112px)] pb-16 px-12 flex flex-col z-10 relative"
+        className="ml-0 mr-0 md:ml-[30%] md:mr-[30%] pt-[calc(22vh+112px)] pb-16 px-4 flex flex-col z-10 relative"
       >
         <div className="relative pt-0 pb-6 px-4">
 
