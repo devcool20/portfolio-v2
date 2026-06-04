@@ -14,7 +14,7 @@ const settings = {
   rotationSpeed: 0,
   tumbleStrength: 0.3,
   staticTilt: 0,
-  particleCount: 60,
+  particleCount: 40,
   direction: 1 // 1 = left to right
 };
 
