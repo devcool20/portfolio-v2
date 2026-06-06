@@ -20,8 +20,8 @@ type ExperienceData = {
 
 const experiences: ExperienceData[] = [
   {
-    title: "Vercel Open Source Program",
-    role: "Founder & Maintainer, VengenceUI",
+    title: "Vercel OSS Program x VengenceUI",
+    role: "Founder & Maintainer",
     dates: "Oct 2025 - Present",
     location: "Remote",
     type: "Selected",
@@ -29,7 +29,7 @@ const experiences: ExperienceData[] = [
     imageFit: "contain",
     imageZoom: 0.72,
     description: `
-      Selection: Chosen for Vercel's Winter 2026 Open Source Program in March 2026 as the creator of VengenceUI, a composable, performance-first UI system for real-world product workflows
+      Selection: VengenceUI was chosen for Vercel's Winter 2026 Open Source Program in March 2026 as a composable, performance-first UI system for real-world product workflows
       VengenceUI v1: Founded the open-source animated component library in October 2025 and grew it to 683 GitHub stars, 40 forks, and a 10-contributor community
       Monthly traction: Grew from 30,000 to 40,000 monthly visitors and from 120,000 to 200,000 monthly page views while maintaining a 34% bounce rate
       VengenceUI v2: Rebuilt the product from the ground up with 50+ production-ready components, stronger visual consistency, improved documentation, and a faster component-discovery experience
@@ -182,8 +182,8 @@ export function ExperienceList() {
               className="flex flex-col items-start gap-3 py-4 px-4 -mx-4 hover:bg-zinc-50 dark:hover:bg-zinc-900/20 transition-colors cursor-pointer relative z-20 rounded-lg 2xl:flex-row 2xl:items-center 2xl:justify-between"
               onClick={() => setOpenIdx(isOpen ? null : idx)}
             >
-              <div className="flex items-start sm:items-center gap-3 sm:gap-4 flex-1 min-w-0">
-                <div className="w-10 h-10 rounded-[10px] border border-black/10 dark:border-zinc-800 p-[2px] bg-zinc-50 dark:bg-[#111111] shrink-0 shadow-sm dark:shadow-md dark:shadow-black/50 mt-[3px] 2xl:mt-0">
+              <div className="flex items-start gap-3 sm:gap-4 flex-1 min-w-0">
+                <div className="w-10 h-10 rounded-[10px] border border-black/10 dark:border-zinc-800 p-[2px] bg-zinc-50 dark:bg-[#111111] shrink-0 shadow-sm dark:shadow-md dark:shadow-black/50">
                   <div className="w-full h-full rounded-[7px] border border-black/5 dark:border-black/20 bg-white flex items-center justify-center overflow-hidden relative">
                     <Image
                       src={item.src}
@@ -197,8 +197,38 @@ export function ExperienceList() {
                 </div>
                 <div className="flex flex-col gap-0.5 min-w-0 pr-4">
                   <div className="flex flex-wrap items-center gap-2">
-                    <span className="text-[14px] font-bold leading-tight text-zinc-900 dark:text-zinc-100 sm:truncate sm:text-[17px]">
-                      {item.title}
+                    <span className="text-[14px] font-bold leading-none text-zinc-900 dark:text-zinc-100 sm:text-[17px]">
+                      {item.title === "Vercel OSS Program x VengenceUI" ? (
+                        <span className="inline-flex flex-wrap items-center gap-x-2 gap-y-1 align-middle">
+                          <span className="inline-flex h-10 items-center">
+                            Vercel OSS Program
+                          </span>
+                          <span className="inline-flex h-10 items-center text-[12px] font-semibold leading-none text-zinc-500 dark:text-zinc-500 sm:text-[13px]">
+                            x
+                          </span>
+                          <span className="inline-flex h-10 items-center gap-2 leading-none">
+                            <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-[10px] border border-black/10 bg-zinc-50 p-[2px] shadow-sm shadow-black/15 dark:border-zinc-800 dark:bg-[#111111] dark:shadow-black/50">
+                              <span className="inline-flex h-full w-full items-center justify-center rounded-[7px] border border-black/5 bg-white">
+                                <Image
+                                  src="/Experience-image/vengenceui-title-bg-less.png"
+                                  alt=""
+                                  width={113}
+                                  height={96}
+                                  aria-hidden="true"
+                                  className="h-[21px] w-auto object-contain"
+                                />
+                              </span>
+                            </span>
+                            <span className="inline-flex h-10 items-center">
+                              <span className="vengence-title-shimmer">
+                                VengenceUI
+                              </span>
+                            </span>
+                          </span>
+                        </span>
+                      ) : (
+                        item.title
+                      )}
                     </span>
                     {item.type && (
                       <span className="px-1.5 py-[1px] rounded-[4px] text-[11px] font-medium text-zinc-600 dark:text-zinc-400 bg-zinc-200/50 dark:bg-zinc-800/50 border border-zinc-300/50 dark:border-zinc-700/50 whitespace-nowrap">
