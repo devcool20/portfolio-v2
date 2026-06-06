@@ -22,9 +22,45 @@ type ExperienceData = {
   imageZoom?: number;
   description: string;
   tech: string[];
+  metrics?: { label: string; value: string }[];
 };
 
 const experiences: ExperienceData[] = [
+  {
+    title: "Open Source Contributor",
+    role: "Sugar Labs, Joplin, kgateway & more",
+    dates: "Sep 2025 - Apr 2026",
+    location: "Remote",
+    type: "Latest",
+    src: "/Experience-image/pngegg (1).png",
+    imageFit: "contain",
+    imageZoom: 1.5,
+    description: `
+      Sugar Labs: Delivered 82 pull requests across Music Blocks, Music Blocks V4, and www-v2, covering performance, reliability, testing, accessibility, CI, and developer tooling
+      Sugar Labs: Reduced memory usage by 70-120 MB through lazy bitmap caching and by 50-115 MB by fixing leaked Tone.js synthesizers
+      Sugar Labs: Improved canvas rendering, block interactions, audio loading, retry and timer handling, crash recovery, Lighthouse CI, PR automation, and unit-test coverage
+      Joplin: Authored 18 pull requests with 11 merged across desktop and mobile, improving global shortcuts, E2EE, plugins, sync, exports, editors, localization, updates, and rendering
+      Joplin: Prevented failing plugins from blocking startup, removed JSDOM from the Turndown renderer, reused the master-password flow for E2EE, fixed duplicate code blocks and Ctrl+wheel zoom, and enriched frontmatter exports
+      Kmesh: Authored a macOS development guide to make local setup and contributor onboarding clearer
+      Additional work: Improved kgateway migration documentation and HTTPS security, alongside contributions to FOSSology, FOSSASIA Eventyay, Extralit, and React JSON Schema Form covering scheduler stability, SPDX compliance, authentication flows, and React 19 compatibility
+    `,
+    tech: [
+      "JavaScript",
+      "TypeScript",
+      "React",
+      "Electron",
+      "Python",
+      "C",
+      "Vue",
+      "GitHub Actions",
+    ],
+    metrics: [
+      { label: "Repositories", value: "10" },
+      { label: "Pull Requests", value: "112" },
+      { label: "Merged", value: "72" },
+      { label: "Still Open", value: "8" },
+    ],
+  },
   {
     title: "Google Summer Of Code",
     role: "Open Source Contributor",
@@ -181,11 +217,11 @@ export default function AllExperiencePage() {
                   )}
 
                   <div
-                    className="flex items-center justify-between py-4 px-4 -mx-4 hover:bg-zinc-50 dark:hover:bg-zinc-900/20 transition-colors cursor-pointer relative z-20 rounded-lg"
+                    className="flex items-start justify-between py-4 px-4 -mx-4 hover:bg-zinc-50 dark:hover:bg-zinc-900/20 transition-colors cursor-pointer relative z-20 rounded-lg sm:items-center"
                     onClick={() => setOpenIdx(isOpen ? null : idx)}
                   >
-                    <div className="flex items-center gap-4">
-                      <div className="w-10 h-10 rounded-[10px] border border-black/10 dark:border-zinc-800 p-[2px] bg-zinc-50 dark:bg-[#111111] shrink-0 shadow-sm dark:shadow-md dark:shadow-black/50">
+                    <div className="flex min-w-0 flex-1 items-start gap-3 sm:items-center sm:gap-4">
+                      <div className="mt-[3px] w-10 h-10 rounded-[10px] border border-black/10 dark:border-zinc-800 p-[2px] bg-zinc-50 dark:bg-[#111111] shrink-0 shadow-sm dark:shadow-md dark:shadow-black/50 sm:mt-0">
                         <div className="w-full h-full rounded-[7px] border border-black/5 dark:border-black/20 bg-white flex items-center justify-center overflow-hidden relative">
                           <Image
                             src={item.src}
@@ -197,24 +233,24 @@ export default function AllExperiencePage() {
                           />
                         </div>
                       </div>
-                      <div className="flex flex-col gap-0.5">
-                        <div className="flex items-center gap-2">
-                          <span className="text-[17px] font-bold text-zinc-900 dark:text-zinc-100">
+                      <div className="flex min-w-0 flex-col gap-0.5 pr-4">
+                        <div className="flex flex-wrap items-center gap-2">
+                          <span className="text-[14px] font-bold leading-tight text-zinc-900 dark:text-zinc-100 sm:truncate sm:text-[17px]">
                             {item.title}
                           </span>
                           {item.type && (
-                            <span className="px-1.5 py-[1px] rounded-[4px] text-[11px] font-medium text-zinc-600 dark:text-zinc-400 bg-zinc-200/50 dark:bg-zinc-800/50 border border-zinc-300/50 dark:border-zinc-700/50">
+                            <span className="whitespace-nowrap px-1.5 py-[1px] rounded-[4px] text-[11px] font-medium text-zinc-600 dark:text-zinc-400 bg-zinc-200/50 dark:bg-zinc-800/50 border border-zinc-300/50 dark:border-zinc-700/50">
                               {item.type}
                             </span>
                           )}
                         </div>
-                        <span className="text-[15px] text-zinc-600 dark:text-zinc-400">
+                        <span className="truncate text-[14px] text-zinc-600 dark:text-zinc-400 sm:text-[15px]">
                           {item.role}
                         </span>
                       </div>
                     </div>
-                    <div className="flex flex-col items-end gap-0.5 text-right pr-5">
-                      <div className="flex items-center text-[14px] font-medium text-zinc-900 dark:text-zinc-100 relative">
+                    <div className="mt-[3px] flex shrink-0 flex-col items-end gap-0.5 pr-5 text-right sm:mt-0">
+                      <div className="relative flex items-center text-[13px] font-medium text-zinc-900 dark:text-zinc-100 sm:text-[14px]">
                         <span>{item.dates}</span>
                         <svg
                           viewBox="0 0 24 24"
@@ -227,7 +263,7 @@ export default function AllExperiencePage() {
                           <polyline points="6 9 12 15 18 9"></polyline>
                         </svg>
                       </div>
-                      <span className="text-[14px] text-zinc-500 dark:text-zinc-400">
+                      <span className="text-[13px] text-zinc-500 dark:text-zinc-400 sm:text-[14px]">
                         {item.location}
                       </span>
                     </div>
@@ -235,24 +271,106 @@ export default function AllExperiencePage() {
 
                   {/* Expandable Details Section */}
                   <div
-                    className={`grid transition-[grid-template-rows] duration-500 ease-[cubic-bezier(0.33,1,0.68,1)] ${isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
+                    className={`-mx-4 grid transition-[grid-template-rows] duration-500 ease-[cubic-bezier(0.33,1,0.68,1)] ${isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
                       }`}
                   >
                     <div className="overflow-hidden">
                       <div
                         className={`${isOpen ? "pb-4 pt-0 opacity-100 translate-y-0" : "pb-0 pt-0 opacity-0 -translate-y-2"
-                          } transition-all duration-500 ease-[cubic-bezier(0.33,1,0.68,1)] pl-2 pr-4 text-[14px] text-zinc-600 dark:text-zinc-400`}
+                          } transition-all duration-500 ease-[cubic-bezier(0.33,1,0.68,1)] pl-6 pr-8 text-[14px] text-zinc-600 dark:text-zinc-400`}
                       >
+                        {item.metrics && (
+                          <div className="relative -ml-6 -mr-8 mb-4 grid grid-cols-2 sm:grid-cols-4">
+                            {item.metrics.map((metric) => (
+                              <div
+                                key={metric.label}
+                                className="relative px-3 py-2 after:absolute after:bottom-0 after:right-0 after:top-0 after:w-0 after:border-r after:border-black/30 after:[mask-image:repeating-linear-gradient(to_bottom,black_0,black_1px,transparent_1px,transparent_6px)] dark:after:border-white/[0.15] [&:nth-child(2n)]:after:hidden sm:[&:not(:last-child)]:after:block sm:[&:last-child]:after:hidden"
+                              >
+                                <p className="text-[16px] font-bold leading-none text-zinc-900 dark:text-zinc-100">
+                                  {metric.value}
+                                </p>
+                                <p className="mt-1 text-[10px] font-medium uppercase text-zinc-400 dark:text-zinc-600">
+                                  {metric.label}
+                                </p>
+                              </div>
+                            ))}
+                            <span
+                              className="pointer-events-none absolute inset-x-0 top-0 h-0 border-t border-black/30 dark:border-white/[0.15]"
+                              style={{
+                                maskImage:
+                                  "repeating-linear-gradient(to right, black 0, black 1px, transparent 1px, transparent 6px)",
+                                WebkitMaskImage:
+                                  "repeating-linear-gradient(to right, black 0, black 1px, transparent 1px, transparent 6px)",
+                              }}
+                            />
+                            <span
+                              className="pointer-events-none absolute inset-x-0 top-1/2 h-0 border-t border-black/30 dark:border-white/[0.15] sm:hidden"
+                              style={{
+                                maskImage:
+                                  "repeating-linear-gradient(to right, black 0, black 1px, transparent 1px, transparent 6px)",
+                                WebkitMaskImage:
+                                  "repeating-linear-gradient(to right, black 0, black 1px, transparent 1px, transparent 6px)",
+                              }}
+                            />
+                            <span
+                              className="pointer-events-none absolute inset-x-0 bottom-0 h-0 border-b border-black/30 dark:border-white/[0.15]"
+                              style={{
+                                maskImage:
+                                  "repeating-linear-gradient(to right, black 0, black 1px, transparent 1px, transparent 6px)",
+                                WebkitMaskImage:
+                                  "repeating-linear-gradient(to right, black 0, black 1px, transparent 1px, transparent 6px)",
+                              }}
+                            />
+                            <span className="pointer-events-none absolute left-0 top-0 h-[2px] w-[2px] -translate-x-1/2 -translate-y-1/2 bg-black/50 dark:bg-white/[0.25]" />
+                            <span className="pointer-events-none absolute right-0 top-0 h-[2px] w-[2px] translate-x-1/2 -translate-y-1/2 bg-black/50 dark:bg-white/[0.25]" />
+                            <span className="pointer-events-none absolute bottom-0 left-0 h-[2px] w-[2px] -translate-x-1/2 translate-y-1/2 bg-black/50 dark:bg-white/[0.25]" />
+                            <span className="pointer-events-none absolute bottom-0 right-0 h-[2px] w-[2px] translate-x-1/2 translate-y-1/2 bg-black/50 dark:bg-white/[0.25]" />
+                          </div>
+                        )}
+
                         <ul className="mb-4 space-y-2 text-[13px] leading-relaxed">
                           {item.description
                             .split("\n")
                             .filter((line) => line.trim() !== "")
-                            .map((point, i) => (
-                              <li key={i} className="flex items-start gap-1.5">
-                                <span className="text-zinc-400 dark:text-zinc-500 mt-[2px] text-[14px] leading-none">•</span>
-                                <span>{point.trim()}</span>
-                              </li>
-                            ))}
+                            .map((point, i) => {
+                              const [label, ...detail] = point.trim().split(":");
+
+                              return (
+                                <li key={i} className="flex items-start gap-1.5">
+                                  <span className="text-zinc-400 dark:text-zinc-500 mt-[2px] text-[14px] leading-none">•</span>
+                                  <span>
+                                    {detail.length > 0 ? (
+                                      <>
+                                        <strong className="font-semibold text-zinc-800 dark:text-zinc-200">
+                                          {label}:
+                                        </strong>
+                                        {detail
+                                          .join(":")
+                                          .split(
+                                            /(kgateway|FOSSology|FOSSASIA Eventyay|Extralit|React JSON Schema Form)/,
+                                          )
+                                          .map((part, partIndex) =>
+                                            /^(kgateway|FOSSology|FOSSASIA Eventyay|Extralit|React JSON Schema Form)$/.test(
+                                              part,
+                                            ) ? (
+                                              <strong
+                                                key={partIndex}
+                                                className="font-semibold text-zinc-800 dark:text-zinc-200"
+                                              >
+                                                {part}
+                                              </strong>
+                                            ) : (
+                                              part
+                                            ),
+                                          )}
+                                      </>
+                                    ) : (
+                                      point.trim()
+                                    )}
+                                  </span>
+                                </li>
+                              );
+                            })}
                         </ul>
 
                         {item.tech && (

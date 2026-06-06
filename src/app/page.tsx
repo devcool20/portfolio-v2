@@ -12,6 +12,7 @@ import Link from "next/link";
 import SoftPillButton from "@/components/pixel-perfect/soft-pill-button";
 import SocialHoverCard from "@/components/pixel-perfect/social-hover-card";
 import { BannerParticles } from "@/components/BannerParticles";
+import { FileText } from "lucide-react";
 
 const skills = [
   { name: "React", icon: "react" },
@@ -200,6 +201,18 @@ export default function Home() {
                 </SoftPillButton>
               </SocialHoverCard>
             ))}
+            <Link href="/resume">
+              <SoftPillButton
+                as="span"
+                variant="secondary"
+                className="px-3 py-1.5 !text-[12px]"
+              >
+                <span className="flex items-center gap-1.5 opacity-70 transition-opacity duration-300 group-hover:opacity-100">
+                  <FileText className="h-3.5 w-3.5" />
+                  Resume
+                </span>
+              </SoftPillButton>
+            </Link>
           </div>
         </div>
 
