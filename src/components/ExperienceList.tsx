@@ -20,6 +20,73 @@ type ExperienceData = {
 
 const experiences: ExperienceData[] = [
   {
+    title: "Linux Foundation AI Security Mentorship",
+    role: "AI Security Intern, Caracal",
+    dates: "Jun 2026 - Present",
+    location: "Remote",
+    src: "/Experience-image/lf-decentralized-trust.png",
+    imageFit: "contain",
+    imageZoom: 1,
+    description: `
+      Building Caracal, an AI-agent security platform that enforces pre-execution authority checks before humans, agents, or services can trigger delegated actions
+      Designing policy-driven AI execution controls for request routing, approval gates, revocation checks, and common human-to-agent and agent-to-service workflows
+      Modeling delegation graphs that evaluate long and deep authority chains, resolve valid permission paths, and block unauthorized agent actions before execution
+      Integrating a secret vault layer so AI agents can use API keys and service credentials through policy-approved access without exposing raw secrets
+      Recording tamper-evident audit records and immutable proofs to a ledger-backed adapter for compliance, traceability, and AI-action accountability
+      Extending the platform toward agent policy negotiation, security reasoning modules, decentralized identity, verifiable credentials, and audit-derived policy recommendations
+    `,
+    tech: [
+      "AI Security",
+      "AI Agents",
+      "Policy Engines",
+      "Delegation Graphs",
+      "Secret Vaults",
+      "DLT",
+      "Audit Logs",
+      "DID/VC",
+      "Agent Security",
+    ],
+    metrics: [
+      { label: "Core Components", value: "5" },
+      { label: "Principals", value: "3" },
+      { label: "Term", value: "Jun-Nov" },
+      { label: "Audit Trail", value: "Ledger" },
+    ],
+  },
+  {
+    title: "Google Summer of Code 2026",
+    role: "AI Intern, Sugar Labs",
+    dates: "May 2026 - Present",
+    location: "Remote",
+    src: "/Experience-image/Google_Summer_of_Code_sun_logo_2022.svg (1).png",
+    imageFit: "contain",
+    imageZoom: 0.9,
+    description: `
+      Building Activity On Demand, a constructionist AI workflow that helps learners create, inspect, modify, and remix real Sugar activities instead of passively receiving generated code
+      Designing a GTK3 experience launched from Sugar's Home View with prompt ideation, template selection, provider policy, generation progress, and Use - Modify - Create learning modes
+      Implementing the core Python architecture across ActivitySpec, template inference, RAG-grounded planning, Gemini/local provider flows, SQLite job history, session revisions, provenance, and validation
+      Developing a guided Studio with file tree navigation, annotated source viewing, AST-based code explanations, editable-region challenges, live validation, version diffs, and reflection prompts
+      Building classroom-ready safeguards with provider profiles, teacher-controlled settings, API-key storage, forbidden import/call validation, template fallback, and retry-on-validation loops
+      Supporting the Sugar Labs community by reviewing contributor pull requests, onboarding new developers, discussing issues, and helping applicants clarify GSoC proposal problem statements
+    `,
+    tech: [
+      "Python",
+      "GTK3",
+      "Sugar",
+      "Gemini API",
+      "SQLite",
+      "AST",
+      "RAG",
+      "LLM Safety",
+    ],
+    metrics: [
+      { label: "Learning Modes", value: "3" },
+      { label: "Architecture Layers", value: "5" },
+      { label: "Modules", value: "14+" },
+      { label: "RAG Docs", value: "16+" },
+    ],
+  },
+  {
     title: "Vercel OSS Program x VengenceUI",
     role: "Founder & Maintainer",
     dates: "Oct 2025 - Present",
@@ -233,7 +300,9 @@ export function ExperienceList() {
                       </span>
                     )}
                   </div>
-                  <span className="text-[14px] sm:text-[15px] text-zinc-600 dark:text-zinc-400 truncate">
+                  <span
+                    className={`${item.title === "Vercel OSS Program x VengenceUI" ? "-mt-2" : ""} text-[14px] sm:text-[15px] text-zinc-600 dark:text-zinc-400 truncate`}
+                  >
                     {item.role}
                   </span>
                 </div>
