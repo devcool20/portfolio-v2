@@ -27,11 +27,43 @@ type ExperienceData = {
 
 const experiences: ExperienceData[] = [
   {
+    title: "Vercel Open Source Program",
+    role: "Founder & Maintainer, VengenceUI",
+    dates: "Oct 2025 - Present",
+    location: "Remote",
+    type: "Selected",
+    src: "/Experience-image/vercel-symbol-colored-light.png",
+    imageFit: "contain",
+    imageZoom: 0.72,
+    description: `
+      Selection: Chosen for Vercel's Winter 2026 Open Source Program in March 2026 as the creator of VengenceUI, a composable, performance-first UI system for real-world product workflows
+      VengenceUI v1: Founded the open-source animated component library in October 2025 and grew it to 683 GitHub stars, 40 forks, and a 10-contributor community
+      Monthly traction: Reached 40,152 monthly visitors and 215,734 monthly page views while maintaining a 34% bounce rate
+      VengenceUI v2: Rebuilt the product from the ground up with 50+ production-ready components, stronger visual consistency, improved documentation, and a faster component-discovery experience
+      Developer experience: Designed copy-paste installation flows, reusable registry components, interactive previews, responsive documentation, and clearer integration guidance
+      Engineering: Led architecture, design systems, component APIs, animation quality, performance optimization, accessibility, deployment, analytics, and community contributions across both versions
+    `,
+    tech: [
+      "Next.js",
+      "React",
+      "TypeScript",
+      "Tailwind CSS",
+      "Framer Motion",
+      "MDX",
+      "Vercel",
+    ],
+    metrics: [
+      { label: "GitHub Stars", value: "683" },
+      { label: "Monthly Visitors", value: "40,152" },
+      { label: "Monthly Page Views", value: "215,734" },
+      { label: "V2 Components", value: "50+" },
+    ],
+  },
+  {
     title: "Open Source Contributor",
     role: "Sugar Labs, Joplin, kgateway & more",
     dates: "Sep 2025 - Apr 2026",
     location: "Remote",
-    type: "Latest",
     src: "/Experience-image/pngegg (1).png",
     imageFit: "contain",
     imageZoom: 1.5,
