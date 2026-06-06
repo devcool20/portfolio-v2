@@ -15,6 +15,7 @@ type ExperienceData = {
   description: string;
   tech: string[];
   metrics?: { label: string; value: string }[];
+  screenshot?: string;
 };
 
 const experiences: ExperienceData[] = [
@@ -30,7 +31,7 @@ const experiences: ExperienceData[] = [
     description: `
       Selection: Chosen for Vercel's Winter 2026 Open Source Program in March 2026 as the creator of VengenceUI, a composable, performance-first UI system for real-world product workflows
       VengenceUI v1: Founded the open-source animated component library in October 2025 and grew it to 683 GitHub stars, 40 forks, and a 10-contributor community
-      Monthly traction: Reached 40,152 monthly visitors and 215,734 monthly page views while maintaining a 34% bounce rate
+      Monthly traction: Grew from 30,000 to 40,000 monthly visitors and from 120,000 to 200,000 monthly page views while maintaining a 34% bounce rate
       VengenceUI v2: Rebuilt the product from the ground up with 50+ production-ready components, stronger visual consistency, improved documentation, and a faster component-discovery experience
       Developer experience: Designed copy-paste installation flows, reusable registry components, interactive previews, responsive documentation, and clearer integration guidance
       Engineering: Led architecture, design systems, component APIs, animation quality, performance optimization, accessibility, deployment, analytics, and community contributions across both versions
@@ -46,10 +47,11 @@ const experiences: ExperienceData[] = [
     ],
     metrics: [
       { label: "GitHub Stars", value: "683" },
-      { label: "Monthly Visitors", value: "40,152" },
-      { label: "Monthly Page Views", value: "215,734" },
+      { label: "Monthly Visitors", value: "30,000 - 40,000" },
+      { label: "Monthly Page Views", value: "120,000 - 200,000" },
       { label: "V2 Components", value: "50+" },
     ],
+    screenshot: "/Experience-image/vercel-analytics.png",
   },
   {
     title: "Open Source Contributor",
@@ -177,11 +179,11 @@ export function ExperienceList() {
             )}
 
             <div
-              className="flex items-start sm:items-center justify-between py-4 px-4 -mx-4 hover:bg-zinc-50 dark:hover:bg-zinc-900/20 transition-colors cursor-pointer relative z-20 rounded-lg"
+              className="flex flex-col items-start gap-3 py-4 px-4 -mx-4 hover:bg-zinc-50 dark:hover:bg-zinc-900/20 transition-colors cursor-pointer relative z-20 rounded-lg 2xl:flex-row 2xl:items-center 2xl:justify-between"
               onClick={() => setOpenIdx(isOpen ? null : idx)}
             >
               <div className="flex items-start sm:items-center gap-3 sm:gap-4 flex-1 min-w-0">
-                <div className="w-10 h-10 rounded-[10px] border border-black/10 dark:border-zinc-800 p-[2px] bg-zinc-50 dark:bg-[#111111] shrink-0 shadow-sm dark:shadow-md dark:shadow-black/50 mt-[3px] sm:mt-0">
+                <div className="w-10 h-10 rounded-[10px] border border-black/10 dark:border-zinc-800 p-[2px] bg-zinc-50 dark:bg-[#111111] shrink-0 shadow-sm dark:shadow-md dark:shadow-black/50 mt-[3px] 2xl:mt-0">
                   <div className="w-full h-full rounded-[7px] border border-black/5 dark:border-black/20 bg-white flex items-center justify-center overflow-hidden relative">
                     <Image
                       src={item.src}
@@ -209,7 +211,7 @@ export function ExperienceList() {
                   </span>
                 </div>
               </div>
-              <div className="flex flex-col items-end gap-0.5 text-right pr-5 mt-[3px] sm:mt-0 shrink-0">
+              <div className="flex flex-col items-start gap-0.5 text-left pr-5 pl-[56px] shrink-0 2xl:mt-0 2xl:items-end 2xl:pl-0 2xl:text-right">
                 <div className="flex items-center text-[13px] sm:text-[14px] font-medium text-zinc-900 dark:text-zinc-100 relative">
                   <span>{item.dates}</span>
                   <svg
@@ -240,20 +242,24 @@ export function ExperienceList() {
                     } transition-all duration-500 ease-[cubic-bezier(0.33,1,0.68,1)] pl-6 pr-8 text-[14px] text-zinc-600 dark:text-zinc-400`}
                 >
                   {item.metrics && (
-                    <div className="relative -ml-6 -mr-8 mb-4 grid grid-cols-2 sm:grid-cols-4">
-                      {item.metrics.map((metric) => (
-                        <div
-                          key={metric.label}
-                          className="relative px-3 py-2 after:absolute after:bottom-0 after:right-0 after:top-0 after:w-0 after:border-r after:border-black/30 after:[mask-image:repeating-linear-gradient(to_bottom,black_0,black_1px,transparent_1px,transparent_6px)] dark:after:border-white/[0.15] [&:nth-child(2n)]:after:hidden sm:[&:not(:last-child)]:after:block sm:[&:last-child]:after:hidden"
-                        >
-                          <p className="text-[16px] font-bold leading-none text-zinc-900 dark:text-zinc-100">
-                            {metric.value}
-                          </p>
-                          <p className="mt-1 text-[10px] font-medium uppercase text-zinc-400 dark:text-zinc-600">
-                            {metric.label}
-                          </p>
-                        </div>
-                      ))}
+                    <div className="relative -ml-6 -mr-8 mb-4">
+                      <div className="grid max-w-full grid-cols-2 pl-6 pr-8 2xl:grid-cols-4">
+                        {item.metrics.map((metric) => (
+                          <div
+                            key={metric.label}
+                            className="relative min-w-0 px-3 py-2 after:absolute after:bottom-0 after:right-0 after:top-0 after:w-0 after:border-r after:border-black/30 after:[mask-image:repeating-linear-gradient(to_bottom,black_0,black_1px,transparent_1px,transparent_6px)] dark:after:border-white/[0.15] [&:nth-child(2n)]:after:hidden 2xl:[&:not(:last-child)]:after:block 2xl:[&:last-child]:after:hidden"
+                          >
+                            <p
+                              className={`${metric.value.includes(" - ") ? "text-[13px]" : "text-[16px]"} whitespace-nowrap font-bold leading-none text-zinc-900 dark:text-zinc-100`}
+                            >
+                              {metric.value}
+                            </p>
+                            <p className="mt-1 text-[10px] font-medium uppercase text-zinc-400 dark:text-zinc-600">
+                              {metric.label}
+                            </p>
+                          </div>
+                        ))}
+                      </div>
                       <span
                         className="pointer-events-none absolute inset-x-0 top-0 h-0 border-t border-black/30 dark:border-white/[0.15]"
                         style={{
@@ -264,7 +270,7 @@ export function ExperienceList() {
                         }}
                       />
                       <span
-                        className="pointer-events-none absolute inset-x-0 top-1/2 h-0 border-t border-black/30 dark:border-white/[0.15] sm:hidden"
+                        className="pointer-events-none absolute inset-x-0 top-1/2 h-0 border-t border-black/30 dark:border-white/[0.15] 2xl:hidden"
                         style={{
                           maskImage:
                             "repeating-linear-gradient(to right, black 0, black 1px, transparent 1px, transparent 6px)",
@@ -285,6 +291,18 @@ export function ExperienceList() {
                       <span className="pointer-events-none absolute right-0 top-0 h-[2px] w-[2px] translate-x-1/2 -translate-y-1/2 bg-black/50 dark:bg-white/[0.25]" />
                       <span className="pointer-events-none absolute bottom-0 left-0 h-[2px] w-[2px] -translate-x-1/2 translate-y-1/2 bg-black/50 dark:bg-white/[0.25]" />
                       <span className="pointer-events-none absolute bottom-0 right-0 h-[2px] w-[2px] translate-x-1/2 translate-y-1/2 bg-black/50 dark:bg-white/[0.25]" />
+                    </div>
+                  )}
+
+                  {item.screenshot && (
+                    <div className="relative mb-4 overflow-hidden bg-black">
+                      <Image
+                        src={item.screenshot}
+                        alt={`${item.title} analytics screenshot`}
+                        width={1186}
+                        height={646}
+                        className="h-auto w-full object-cover"
+                      />
                     </div>
                   )}
 
