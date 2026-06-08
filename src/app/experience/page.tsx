@@ -9,7 +9,6 @@ import Link from "next/link";
 import { useState } from "react";
 import { ArrowLeft } from "lucide-react";
 import Image from "next/image";
-import { motion } from "framer-motion";
 
 type ExperienceData = {
   title: string;
@@ -281,10 +280,7 @@ export default function AllExperiencePage() {
       </div>
 
       {/* Content Section */}
-      <motion.div 
-        initial={{ opacity: 0, filter: "blur(8px)", y: 12 }}
-        animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
-        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.05 }}
+      <div
         className="ml-0 mr-0 md:ml-[30%] md:mr-[30%] pt-[calc(22vh+112px)] pb-16 px-4 flex flex-col z-10 relative"
       >
         <div className="relative pt-0 pb-6">
@@ -317,7 +313,7 @@ export default function AllExperiencePage() {
                   )}
 
                   <div
-                    className="flex flex-col items-start gap-3 py-4 px-4 -mx-4 hover:bg-zinc-50 dark:hover:bg-zinc-900/20 transition-colors cursor-pointer relative z-20 rounded-lg 2xl:flex-row 2xl:items-center 2xl:justify-between"
+                    className="flex flex-col items-start gap-2.5 py-3.5 px-4 -mx-4 hover:bg-zinc-50 dark:hover:bg-zinc-900/20 transition-colors cursor-pointer relative z-20 rounded-lg sm:gap-3 sm:py-4 2xl:flex-row 2xl:items-center 2xl:justify-between"
                     onClick={() => setOpenIdx(isOpen ? null : idx)}
                   >
                     <div className="flex min-w-0 flex-1 items-start gap-3 sm:gap-4">
@@ -335,37 +331,40 @@ export default function AllExperiencePage() {
                           />
                         </div>
                       </div>
-                      <div className="flex min-w-0 flex-col gap-0.5 pr-4">
+                      <div className="flex min-w-0 flex-col gap-0.5 pr-2 sm:pr-4">
                         <div className="flex flex-wrap items-center gap-2">
-                          <span className="text-[14px] font-bold leading-none text-zinc-900 dark:text-zinc-100 sm:text-[17px]">
+                          <span className="text-[14px] font-bold leading-tight text-zinc-900 dark:text-zinc-100 sm:text-[17px]">
                             {item.title === "Vercel OSS Program x VengenceUI" ? (
-                              <span className="inline-flex flex-wrap items-center gap-x-2 gap-y-1 align-middle">
-                                <span className="inline-flex h-10 items-center">
-                                  Vercel OSS Program
-                                </span>
-                                <span className="inline-flex h-10 items-center text-[12px] font-semibold leading-none text-zinc-500 dark:text-zinc-500 sm:text-[13px]">
-                                  x
-                                </span>
-                                <span className="inline-flex h-10 items-center gap-2 leading-none">
-                                  <span className="inline-flex size-10 shrink-0 items-center justify-center rounded-[10px] border border-black/10 bg-zinc-50 p-[2px] shadow-sm shadow-black/15 dark:border-zinc-800 dark:bg-[#111111] dark:shadow-md dark:shadow-black/50">
-                                    <span className="inline-flex size-full items-center justify-center overflow-hidden rounded-[7px] border border-black/5 bg-white dark:border-black/20">
-                                      <Image
-                                        src="/Experience-image/vengenceui-title-bg-less.png"
-                                        alt=""
-                                        width={113}
-                                        height={96}
-                                        sizes="40px"
-                                        quality={60}
-                                        aria-hidden="true"
-                                        className="h-[18px] w-auto -translate-x-px translate-y-px rotate-180 object-contain"
-                                      />
+                              <>
+                                <span className="sm:hidden">Vercel OSS Program x VengenceUI</span>
+                                <span className="hidden flex-wrap items-center gap-x-2 gap-y-1 align-middle sm:inline-flex">
+                                  <span className="inline-flex h-10 items-center">
+                                    Vercel OSS Program
+                                  </span>
+                                  <span className="inline-flex h-10 items-center text-[13px] font-semibold leading-none text-zinc-500 dark:text-zinc-500">
+                                    x
+                                  </span>
+                                  <span className="inline-flex h-10 items-center gap-2 leading-none">
+                                    <span className="inline-flex size-10 shrink-0 items-center justify-center rounded-[10px] border border-black/10 bg-zinc-50 p-[2px] shadow-sm shadow-black/15 dark:border-zinc-800 dark:bg-[#111111] dark:shadow-md dark:shadow-black/50">
+                                      <span className="inline-flex size-full items-center justify-center overflow-hidden rounded-[7px] border border-black/5 bg-white dark:border-black/20">
+                                        <Image
+                                          src="/Experience-image/vengenceui-title-bg-less.png"
+                                          alt=""
+                                          width={113}
+                                          height={96}
+                                          sizes="40px"
+                                          quality={60}
+                                          aria-hidden="true"
+                                          className="h-[18px] w-auto -translate-x-px translate-y-px rotate-180 object-contain"
+                                        />
+                                      </span>
+                                    </span>
+                                    <span className="inline-flex h-10 items-center">
+                                      VengenceUI
                                     </span>
                                   </span>
-                                  <span className="inline-flex h-10 items-center">
-                                    VengenceUI
-                                  </span>
                                 </span>
-                              </span>
+                              </>
                             ) : (
                               item.title
                             )}
@@ -377,13 +376,13 @@ export default function AllExperiencePage() {
                           )}
                         </div>
                         <span
-                          className={`${item.title === "Vercel OSS Program x VengenceUI" ? "-mt-2" : ""} truncate text-[14px] text-zinc-600 dark:text-zinc-400 sm:text-[15px]`}
+                          className={`${item.title === "Vercel OSS Program x VengenceUI" ? "sm:-mt-2" : ""} truncate text-[14px] text-zinc-600 dark:text-zinc-400 sm:text-[15px]`}
                         >
                           {item.role}
                         </span>
                       </div>
                     </div>
-                    <div className="flex shrink-0 flex-col items-start gap-0.5 pr-5 pl-[56px] text-left 2xl:items-end 2xl:pl-0 2xl:text-right">
+                    <div className="flex shrink-0 flex-col items-start gap-0.5 pr-5 pl-[52px] text-left sm:pl-[56px] 2xl:items-end 2xl:pl-0 2xl:text-right">
                       <div className="relative flex items-center text-[13px] font-medium text-zinc-900 dark:text-zinc-100 sm:text-[14px]">
                         <span>{item.dates}</span>
                         <svg
@@ -552,7 +551,7 @@ export default function AllExperiencePage() {
           <div className="absolute -left-4 w-[2px] h-[2px] bg-black/50 dark:bg-white/[0.25] -translate-x-1/2 translate-y-[-1px] pointer-events-none z-20" />
           <div className="absolute -right-4 w-[2px] h-[2px] bg-black/50 dark:bg-white/[0.25] translate-x-1/2 translate-y-[-1px] pointer-events-none z-20" />
         </div>
-      </motion.div>
+      </div>
     </div>
   );
 }

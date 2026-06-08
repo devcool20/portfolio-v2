@@ -16,6 +16,20 @@ interface PR {
   closedAt?: string;
 }
 
+type SearchEdge = {
+  node: PR;
+};
+
+type GitHubSearchResponse = {
+  data?: {
+    search?: {
+      edges?: SearchEdge[];
+    };
+  };
+  message?: string;
+  error?: unknown;
+};
+
 type FilterType = "merged" | "open" | "closed";
 
 const SEARCH_QUERIES: Record<FilterType, string> = {
@@ -85,10 +99,10 @@ export function OpenSourceContributions({ isFullPage = false }: { isFullPage?: b
         body: JSON.stringify({ query }),
       });
 
-      const data = await response.json();
+      const data = (await response.json()) as GitHubSearchResponse;
       if (data.data?.search?.edges) {
         const fetchedPRs = data.data.search.edges
-          .map((edge: any) => edge.node)
+          .map((edge) => edge.node)
           .filter((pr: PR) => !(pr.title === "Main" && pr.repository.nameWithOwner === "Ashutoshx7/flexprice-storybook"));
         fetchedPRs.sort((a: PR, b: PR) => {
           const dateA = new Date(b.mergedAt || b.closedAt || b.createdAt).getTime();

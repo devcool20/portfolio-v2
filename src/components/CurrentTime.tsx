@@ -2,13 +2,25 @@
 
 import { useEffect, useState } from "react";
 
+function TwoDots() {
+  return (
+    <div className="mx-0.5 sm:mx-1 flex flex-col gap-2 -translate-x-[2px] sm:-translate-x-[3px]">
+      <div className="w-[2px] h-[2px] bg-zinc-400 dark:bg-zinc-500"></div>
+      <div className="w-[2px] h-[2px] bg-zinc-400 dark:bg-zinc-500"></div>
+    </div>
+  );
+}
+
 export function CurrentTime() {
   const [time, setTime] = useState<Date | null>(null);
 
   useEffect(() => {
-    setTime(new Date());
+    const initialTimer = window.setTimeout(() => setTime(new Date()), 0);
     const timer = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(timer);
+    return () => {
+      window.clearTimeout(initialTimer);
+      clearInterval(timer);
+    };
   }, []);
 
   if (!time) {
@@ -27,13 +39,6 @@ export function CurrentTime() {
   const hours = time.getHours().toString().padStart(2, "0");
   const minutes = time.getMinutes().toString().padStart(2, "0");
   const seconds = time.getSeconds().toString().padStart(2, "0");
-
-  const TwoDots = () => (
-    <div className="mx-0.5 sm:mx-1 flex flex-col gap-2 -translate-x-[2px] sm:-translate-x-[3px]">
-      <div className="w-[2px] h-[2px] bg-zinc-400 dark:bg-zinc-500"></div>
-      <div className="w-[2px] h-[2px] bg-zinc-400 dark:bg-zinc-500"></div>
-    </div>
-  );
 
   return (
     <div className="flex items-center h-[24px]">

@@ -5,7 +5,6 @@ import { useTheme } from "next-themes"
 import {
     LayoutDashboard,
     FileText,
-    Mail,
     Moon,
     Sun,
     Laptop,

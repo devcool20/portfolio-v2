@@ -18,7 +18,11 @@ export const metadata: Metadata = {
   description:
     "Full stack developer building clean, modern websites and apps with a focus on design, functionality, and attention to detail.",
   icons: {
-    icon: "/Avatar.jpeg",
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/icon.png", type: "image/png", sizes: "256x256" },
+    ],
+    apple: [{ url: "/apple-icon.png", type: "image/png", sizes: "180x180" }],
   },
   openGraph: {
     title: "Ashutoshx7",

@@ -33,7 +33,7 @@ export function GithubGraph() {
           setMonths(parsed.months || []);
           setTotalContributions(parsed.totalContributions);
           setLoading(false);
-        } catch (e) {
+        } catch {
           setLoading(true);
         }
       }

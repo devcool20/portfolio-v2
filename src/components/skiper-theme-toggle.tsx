@@ -458,18 +458,21 @@ export const useThemeToggle = ({
   blur?: boolean;
   gifUrl?: string;
 } = {}) => {
-  const { theme, setTheme, resolvedTheme } = useTheme();
+  const { setTheme, resolvedTheme } = useTheme();
 
   const [isDark, setIsDark] = useState(false);
 
   // Sync isDark state with resolved theme after hydration
   useEffect(() => {
-    setIsDark(resolvedTheme === "dark");
+    const timer = window.setTimeout(() => {
+      setIsDark(resolvedTheme === "dark");
+    }, 0);
+    return () => window.clearTimeout(timer);
   }, [resolvedTheme]);
 
   const styleId = "theme-transition-styles";
 
-  const updateStyles = useCallback((css: string, name: string) => {
+  const updateStyles = useCallback((css: string) => {
     if (typeof window === "undefined") return;
 
     let styleElement = document.getElementById(styleId) as HTMLStyleElement;
@@ -487,7 +490,7 @@ export const useThemeToggle = ({
     const nextTheme = resolvedTheme === "light" ? "dark" : "light";
     const animation = createAnimation(variant, start, blur, gifUrl);
 
-    updateStyles(animation.css, animation.name);
+    updateStyles(animation.css);
 
     if (typeof window === "undefined") return;
 
@@ -512,11 +515,9 @@ export const useThemeToggle = ({
   ]);
 
   const setCrazyLightTheme = useCallback(() => {
-    setIsDark(false);
-
     const animation = createAnimation(variant, start, blur, gifUrl);
 
-    updateStyles(animation.css, animation.name);
+    updateStyles(animation.css);
 
     if (typeof window === "undefined") return;
 
@@ -530,14 +531,12 @@ export const useThemeToggle = ({
     }
 
     document.startViewTransition(switchTheme);
-  }, [setTheme, variant, start, blur, gifUrl, updateStyles, setIsDark]);
+  }, [setTheme, variant, start, blur, gifUrl, updateStyles]);
 
   const setCrazyDarkTheme = useCallback(() => {
-    setIsDark(true);
-
     const animation = createAnimation(variant, start, blur, gifUrl);
 
-    updateStyles(animation.css, animation.name);
+    updateStyles(animation.css);
 
     if (typeof window === "undefined") return;
 
@@ -551,20 +550,14 @@ export const useThemeToggle = ({
     }
 
     document.startViewTransition(switchTheme);
-  }, [setTheme, variant, start, blur, gifUrl, updateStyles, setIsDark]);
+  }, [setTheme, variant, start, blur, gifUrl, updateStyles]);
 
   const setCrazySystemTheme = useCallback(() => {
     if (typeof window === "undefined") return;
 
-    // Check system preference for dark mode
-    const prefersDark = window.matchMedia(
-      "(prefers-color-scheme: dark)",
-    ).matches;
-    setIsDark(prefersDark);
-
     const animation = createAnimation(variant, start, blur, gifUrl);
 
-    updateStyles(animation.css, animation.name);
+    updateStyles(animation.css);
 
     const switchTheme = () => {
       setTheme("system");
@@ -576,7 +569,7 @@ export const useThemeToggle = ({
     }
 
     document.startViewTransition(switchTheme);
-  }, [setTheme, variant, start, blur, gifUrl, updateStyles, setIsDark]);
+  }, [setTheme, variant, start, blur, gifUrl, updateStyles]);
 
   return {
     isDark,
@@ -614,7 +607,8 @@ export const ThemeToggleButton = ({
   const [mounted, setMounted] = React.useState(false);
 
   useEffect(() => {
-    setMounted(true);
+    const timer = window.setTimeout(() => setMounted(true), 0);
+    return () => window.clearTimeout(timer);
   }, []);
 
   if (!mounted) {
@@ -1209,4 +1203,3 @@ export const createAnimation = (
  * Website: https://gxuri.in
  * Twitter: https://x.com/Gur__vi
  */
-

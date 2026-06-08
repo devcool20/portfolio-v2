@@ -6,7 +6,8 @@ export function CurrentDate() {
   const [date, setDate] = useState<Date | null>(null);
 
   useEffect(() => {
-    setDate(new Date());
+    const timer = window.setTimeout(() => setDate(new Date()), 0);
+    return () => window.clearTimeout(timer);
   }, []);
 
   if (!date) {

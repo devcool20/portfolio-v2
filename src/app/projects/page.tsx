@@ -91,10 +91,7 @@ export default function AllProjectsPage() {
         </div>
 
         {/* Content Section */}
-        <motion.div 
-          initial={{ opacity: 0, filter: "blur(8px)", y: 12 }}
-          animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.05 }}
+        <div
           className="ml-0 mr-0 md:ml-[30%] md:mr-[30%] pt-[calc(22vh+112px)] pb-16 px-4 flex flex-col z-10 relative"
         >
           <div className="relative pt-6 pb-6">
@@ -110,7 +107,12 @@ export default function AllProjectsPage() {
                   <div key={rowIndex} className="flex flex-col relative w-full">
                     <div className={`grid grid-cols-1 md:grid-cols-2 gap-x-10 ${rowIndex === 0 ? 'pb-10 md:pb-6 gap-y-10 md:gap-y-0' : rowIndex === Math.ceil(projectsData.length / 2) - 1 ? 'pt-0 md:pt-6 gap-y-10 md:gap-y-0' : 'pb-10 md:pb-6 pt-0 md:pt-6 gap-y-10 md:gap-y-0'}`}>
                       {rowProjects.map((project) => (
-                        <ProjectCard key={project.title} project={project} setActiveVideo={setActiveVideo} />
+                        <ProjectCard
+                          key={project.title}
+                          project={project}
+                          setActiveVideo={setActiveVideo}
+                          isPriority={rowIndex === 0}
+                        />
                       ))}
                     </div>
                     {/* Horizontal Divider after each row except the last one */}
@@ -134,7 +136,7 @@ export default function AllProjectsPage() {
             <div className="absolute -left-4 w-[2px] h-[2px] bg-black/50 dark:bg-white/[0.25] -translate-x-1/2 translate-y-[-1px] pointer-events-none z-20" />
             <div className="absolute -right-4 w-[2px] h-[2px] bg-black/50 dark:bg-white/[0.25] translate-x-1/2 translate-y-[-1px] pointer-events-none z-20" />
           </div>
-        </motion.div>
+        </div>
       </div>
 
       {/* MODAL */}

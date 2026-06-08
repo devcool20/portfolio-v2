@@ -27,7 +27,15 @@ export {
   projectsData,
 };
 
-export const ProjectCard = ({ project, setActiveVideo }: { project: Project; setActiveVideo: (v: string) => void }) => {
+export const ProjectCard = ({
+  project,
+  setActiveVideo,
+  isPriority = false,
+}: {
+  project: Project;
+  setActiveVideo: (v: string) => void;
+  isPriority?: boolean;
+}) => {
   const [hoveredTech, setHoveredTech] = useState<string | null>(null);
   const [shouldLoadHoverImage, setShouldLoadHoverImage] = useState(false);
   const { resolvedTheme } = useTheme();
@@ -46,10 +54,11 @@ export const ProjectCard = ({ project, setActiveVideo }: { project: Project; set
       onClick={() => router.push(`/projects/${project.slug}`)}
       onMouseEnter={() => setShouldLoadHoverImage(true)}
       onFocus={() => setShouldLoadHoverImage(true)}
+      onTouchStart={() => setShouldLoadHoverImage(true)}
     >
       {/* Outer Wrapper exactly like screenshot */}
       <motion.div
-        className="relative w-full aspect-[1.4] rounded-xl border border-black/5 dark:border-white/5 bg-zinc-50/80 dark:bg-[#09090b]/80 shadow-sm p-4 pb-0 flex flex-col overflow-hidden transition-all duration-300 hover:shadow-md hover:border-black/10 dark:hover:border-white/10"
+        className="relative w-full aspect-[1.25] rounded-xl border border-black/5 dark:border-white/5 bg-zinc-50/80 dark:bg-[#09090b]/80 shadow-sm p-3.5 pb-0 flex flex-col overflow-hidden transition-all duration-300 hover:shadow-md hover:border-black/10 dark:hover:border-white/10 sm:aspect-[1.4] sm:p-4 sm:pb-0"
         initial="rest"
         whileHover="hover"
         animate="rest"
@@ -128,7 +137,8 @@ export const ProjectCard = ({ project, setActiveVideo }: { project: Project; set
               alt={`${project.title} preview`}
               width={600}
               height={400}
-              sizes="(min-width: 768px) 17vw, calc(100vw - 4rem)"
+              preload={isPriority}
+              sizes="(min-width: 768px) 17vw, calc(100vw - 2rem)"
               quality={70}
               className="size-full object-cover"
             />
@@ -195,7 +205,7 @@ export const ProjectCard = ({ project, setActiveVideo }: { project: Project; set
             })}
           </div>
 
-          <div className="flex items-center gap-1 text-[12px] font-medium text-zinc-500 group-hover:text-zinc-800 dark:group-hover:text-zinc-200 transition-colors cursor-pointer shrink-0" onClick={(e) => { e.stopPropagation(); if (project.live) window.open(project.live, "_blank"); else if (project.github) window.open(project.github, "_blank"); }}>
+          <div className="flex shrink-0 items-center gap-1 text-[11px] font-medium text-zinc-500 transition-colors cursor-pointer group-hover:text-zinc-800 dark:group-hover:text-zinc-200 sm:text-[12px]" onClick={(e) => { e.stopPropagation(); if (project.live) window.open(project.live, "_blank"); else if (project.github) window.open(project.github, "_blank"); }}>
             View Project
             <svg viewBox="0 0 24 24" className="w-3 h-3" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
               <line x1="7" y1="17" x2="17" y2="7"></line>

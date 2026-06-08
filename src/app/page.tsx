@@ -80,21 +80,21 @@ export default function Home() {
       {/* Cell 1: Banner */}
       <div className="absolute left-0 right-0 md:left-[30%] md:right-[30%] top-0 h-[22vh] -z-0 pointer-events-auto overflow-hidden bg-white dark:bg-black shadow-[0_4px_12px_rgba(2,6,23,0.04)] dark:shadow-[0_4px_12px_rgba(2,6,23,0.10)]">
         <Image
-          src="/ChatGPT%20Image%20May%2022%2C%202026%2C%2012_40_29%20AM.png"
+          src="/ChatGPT%20Image%20May%2022%2C%202026%2C%2012_40_29%20AM.jpg"
           alt=""
           fill
           fetchPriority="high"
           sizes="(min-width: 768px) 40vw, 100vw"
-          quality={70}
+          quality={100}
           className="object-cover object-center dark:hidden"
         />
         <Image
-          src="/ChatGPT%20Image%20May%2022%2C%202026%2C%2012_49_39%20AM.png"
+          src="/ChatGPT%20Image%20May%2022%2C%202026%2C%2012_49_39%20AM.jpg"
           alt=""
           fill
           fetchPriority="high"
           sizes="(min-width: 768px) 40vw, 100vw"
-          quality={70}
+          quality={100}
           className="hidden object-cover object-center dark:block"
         />
         <BannerParticles />
