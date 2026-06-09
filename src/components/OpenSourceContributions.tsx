@@ -23,7 +23,7 @@ type SearchEdge = {
 type GitHubSearchResponse = {
   data?: {
     search?: {
-      edges?: SearchEdge[];
+      edges?: Array<SearchEdge | null>;
     };
   };
   message?: string;
@@ -102,7 +102,7 @@ export function OpenSourceContributions({ isFullPage = false }: { isFullPage?: b
       const data = (await response.json()) as GitHubSearchResponse;
       if (data.data?.search?.edges) {
         const fetchedPRs = data.data.search.edges
-          .map((edge) => edge.node)
+          .flatMap((edge) => (edge?.node ? [edge.node] : []))
           .filter((pr: PR) => !(pr.title === "Main" && pr.repository.nameWithOwner === "Ashutoshx7/flexprice-storybook"));
         fetchedPRs.sort((a: PR, b: PR) => {
           const dateA = new Date(b.mergedAt || b.closedAt || b.createdAt).getTime();
