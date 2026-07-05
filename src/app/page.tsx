@@ -17,33 +17,22 @@ import Image from "next/image";
 
 const skills = [
   { name: "React", icon: "react" },
-  { name: "Next", icon: "nextdotjs" },
-  { name: "Expo", icon: "expo" },
-  { name: "Django", icon: "django" },
-  { name: "Express", icon: "express" },
-  { name: "Node", icon: "nodedotjs" },
-  { name: "Bun", icon: "bun" },
+  { name: "Next.js", icon: "nextdotjs" },
+  { name: "React Native", icon: "react" },
+  { name: "TypeScript", icon: "typescript" },
+  { name: "Node.js", icon: "nodedotjs" },
+  { name: "FastAPI", icon: "fastapi" },
+  { name: "Python", icon: "python" },
+  { name: "Kafka", icon: "apachekafka" },
   { name: "PostgreSQL", icon: "postgresql" },
   { name: "MongoDB", icon: "mongodb" },
-  { name: "Redis", icon: "redis" },
-  { name: "Prisma", icon: "prisma" },
-  { name: "Zustand", icon: "https://raw.githubusercontent.com/pmndrs/zustand/main/docs/favicon.ico" },
-  { name: "Tanstack Query", icon: "reactquery" },
-  { name: "Postman", icon: "postman" },
-  { name: "Tailwind", icon: "tailwindcss" },
-  { name: "shadcn", icon: "shadcnui" },
-  { name: "Motion", icon: "framer" },
-  { name: "GSAP", icon: "greensock" },
-  { name: "JavaScript", icon: "javascript" },
-  { name: "TypeScript", icon: "typescript" },
-  { name: "Python", icon: "python" },
-  { name: "C/C++", icon: "cplusplus" },
-  { name: "SQL", icon: "databricks" },
-  { name: "Git", icon: "git" },
-  { name: "Github", icon: "github" },
-  { name: "Figma", icon: "figma" },
   { name: "Docker", icon: "docker" },
-  { name: "Linux", icon: "linux" },
+  { name: "AWS", icon: "https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/amazonwebservices.svg" },
+  { name: "Tailwind CSS", icon: "tailwindcss" },
+  { name: "GSAP", icon: "greensock" },
+  { name: "Git", icon: "git" },
+  { name: "GitHub", icon: "github" },
+  { name: "Zustand", icon: "https://raw.githubusercontent.com/pmndrs/zustand/main/docs/favicon.ico" },
 ];
 
 export default function Home() {
@@ -115,23 +104,23 @@ export default function Home() {
               {/* The inner image */}
               <div className="relative w-16 h-16 sm:w-20 sm:h-20 rounded-[3px] sm:rounded-[5px] overflow-hidden bg-zinc-100 dark:bg-zinc-900">
                 <Image
-                  src="https://github.com/ashutoshx7.png"
+                  src="https://github.com/devcool20.png"
                   alt="Profile"
                   width={240}
                   height={240}
                   quality={90}
                   fetchPriority="high"
                   sizes="(min-width: 640px) 120px, 96px"
-                  className="h-full w-full origin-center translate-y-4 scale-[1.48] object-cover opacity-90 grayscale contrast-100 mix-blend-multiply dark:mix-blend-normal"
+                  className="h-full w-full origin-center translate-y-0 scale-[1.48] object-cover opacity-90 grayscale contrast-100 mix-blend-multiply dark:mix-blend-normal"
                 />
               </div>
             </div>
 
             <div className="flex flex-col justify-center pt-8">
               <h1 className="text-[20px] sm:text-[24px] font-bold text-zinc-800 dark:text-zinc-100 tracking-tight leading-none mb-0.5 [text-shadow:-1.5px_0_0_rgba(0,200,255,0.3),1.5px_0_0_rgba(255,80,0,0.3)] dark:[text-shadow:-1.5px_0_0_rgba(0,200,255,0.6),1.5px_0_0_rgba(255,80,0,0.6)]">
-                Ashutoshx7
+                Divyanshu Sharma
               </h1>
-              <p className="text-[13px] sm:text-[14px] text-zinc-500 dark:text-zinc-400">20</p>
+              <p className="text-[13px] sm:text-[14px] text-zinc-500 dark:text-zinc-400">devcool20</p>
             </div>
           </div>
 
@@ -146,13 +135,13 @@ export default function Home() {
       {/* Flowing Content Section */}
       <div className="ml-0 mr-0 md:ml-[30%] md:mr-[30%] pt-[calc(22vh+112px)] pb-0 px-4 flex flex-col z-10 relative min-h-screen">
         <p className="text-[14px] sm:text-[15px] text-zinc-600 dark:text-zinc-300 leading-relaxed mt-4">
-          Engineer / Artist. I love building, breaking, and shipping things.
+          Full-stack product builder, F1 obsessive, and maker of useful interfaces.
         </p>
 
         <ul className="text-[14px] sm:text-[15px] text-zinc-600 dark:text-zinc-300 leading-relaxed mt-4 pl-4">
-          <li className="flex gap-1.5"><span>•</span><span>AI, open source, and developer tools excite me.</span></li>
-          <li className="flex gap-1.5"><span>•</span><span>I believe actions speak louder than words, so I put my code where my mouth is.</span></li>
-          <li className="flex gap-1.5"><span>•</span><span>Currently building <span className="font-semibold text-zinc-900 dark:text-white">Draco</span>, <span className="font-semibold text-zinc-900 dark:text-white">VengeanceUI</span>, and experimental AI tools.</span></li>
+          <li className="flex gap-1.5"><span>•</span><span>I build web and mobile products with a bias for clean interaction, sharp systems, and real users.</span></li>
+          <li className="flex gap-1.5"><span>•</span><span>I contribute to open source by picking up real issues in unfamiliar codebases, writing tests, fixing edge cases, and pushing through review.</span></li>
+          <li className="flex gap-1.5"><span>•</span><span>Currently building <span className="font-semibold text-zinc-900 dark:text-white">Precedent</span>.</span></li>
         </ul>
 
         {/* Buttons */}
@@ -196,10 +185,10 @@ export default function Home() {
           <h2 className="text-[14px] text-zinc-500 mb-2">Here are my <span className="font-medium text-zinc-800 dark:text-zinc-200">socials</span></h2>
           <div className="flex flex-wrap gap-1.5">
             {[
-              { name: 'GitHub', href: 'https://github.com/Ashutoshx7?tab=overview&from=2026-05-01&to=2026-05-15', icon: <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" stroke="currentColor" strokeWidth="2" fill="none"></path> },
-              { name: 'Twitter', href: 'https://x.com/Ashutosh_7x7', icon: <path d="M4 4l11.733 16h4.267l-11.733 -16zM4 20l6.768 -6.768M20 4l-6.768 6.768" stroke="currentColor" strokeWidth="2" fill="none" /> },
-              { name: 'LinkedIn', href: 'https://www.linkedin.com/in/ashutosh-singh-855177329/', icon: <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2zM4 2a2 2 0 1 1-2 2 2 2 0 0 1 2-2z" stroke="currentColor" strokeWidth="2" fill="none"></path> },
-              { name: 'Discord', href: '#', icon: <path d="M18 5c-1.5-.7-3.2-1-5-1s-3.5.3-5 1c-1.5 3.5-2.5 8-2.5 8 1.5 2 4.5 3 7.5 3s6-1 7.5-3c0 0-1-4.5-2.5-8zM9 13c-.8 0-1.5-.7-1.5-1.5S8.2 10 9 10s1.5.7 1.5 1.5S9.8 13 9 13zm6 0c-.8 0-1.5-.7-1.5-1.5s.7-1.5 1.5-1.5 1.5.7 1.5 1.5-.7 1.5-1.5 1.5z" fill="currentColor"></path> },
+              { name: 'GitHub', href: 'https://github.com/devcool20', icon: <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" stroke="currentColor" strokeWidth="2" fill="none"></path> },
+              { name: 'Twitter', href: 'https://x.com/dshxrmx', icon: <path d="M4 4l11.733 16h4.267l-11.733 -16zM4 20l6.768 -6.768M20 4l-6.768 6.768" stroke="currentColor" strokeWidth="2" fill="none" /> },
+              { name: 'LinkedIn', href: 'https://www.linkedin.com/in/divyanshu-sharma-b9b534113/', icon: <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2zM4 2a2 2 0 1 1-2 2 2 2 0 0 1 2-2z" stroke="currentColor" strokeWidth="2" fill="none"></path> },
+              { name: 'Instagram', href: 'https://instagram.com/d1vyanshu.sharma', icon: <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z M17.5 6.5h.01" stroke="currentColor" strokeWidth="2" fill="none" /> },
             ].map((social, i) => (
               <SocialHoverCard key={i} socialName={social.name}>
                 <SoftPillButton
@@ -414,7 +403,7 @@ export default function Home() {
             <div className="absolute bottom-0 left-0 w-[2px] h-[2px] bg-black/50 dark:bg-white/[0.25] -translate-x-1/2 translate-y-1/2 pointer-events-none z-20" />
             <div className="absolute bottom-0 right-0 w-[2px] h-[2px] bg-black/50 dark:bg-white/[0.25] translate-x-1/2 translate-y-1/2 pointer-events-none z-20" />
 
-            <Link href="https://medium.com/@ashutoshx7" target="_blank" rel="noopener noreferrer" className="relative group block mt-0">
+            <Link href="https://github.com/devcool20" target="_blank" rel="noopener noreferrer" className="relative group block mt-0">
               <div className="absolute -inset-[5px] border border-black/5 dark:border-white/5 rounded-[11px] pointer-events-none transition-colors duration-300 group-hover:border-black/10 dark:group-hover:border-white/10" />
               <div className="relative flex items-center gap-1.5 px-4 py-2 bg-zinc-50 hover:bg-zinc-100 dark:bg-[#09090b] dark:hover:bg-[#121214] text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 rounded-[6px] text-[13px] font-medium transition-all duration-300 border border-black/5 dark:border-white/5 shadow-sm shadow-black/20 dark:shadow-lg dark:shadow-black/80">
                 View All
@@ -431,12 +420,12 @@ export default function Home() {
         <div className="mt-12 flex flex-col items-center justify-center relative py-12">
           <div className="max-w-[480px] w-full flex flex-col items-center">
             <h3 className="text-[16px] font-medium text-center leading-relaxed text-zinc-500 dark:text-zinc-400 mb-6 italic">
-              &quot;Do so much work that it would be unreasonable<br className="hidden md:block" /> for you to not be successful.&quot;
+              &quot;Find the messy workflow, make it understandable,<br className="hidden md:block" /> then make it fast.&quot;
             </h3>
 
             <div className="flex items-center gap-3 text-[10px] font-medium tracking-[0.2em] text-zinc-400 dark:text-zinc-600 uppercase">
               <div className="w-4 h-[1px] bg-zinc-200 dark:bg-zinc-800" />
-              ALEX HORMOZI
+              DIVYANSHU SHARMA
               <div className="w-4 h-[1px] bg-zinc-200 dark:bg-zinc-800" />
             </div>
           </div>

@@ -1,4 +1,4 @@
-# Ashutoshx7 — Portfolio
+# Divyanshu Sharma — Portfolio
 
 A minimal, fast, and interactive developer portfolio built with **Next.js 16**, **React 19**, **Tailwind CSS v4**, and **TypeScript**.
 
@@ -105,9 +105,9 @@ For other platforms, use the static or Node.js output mode configured in `next.c
 
 ## Connect
 
-- **GitHub:** [Ashutoshx7](https://github.com/Ashutoshx7)
-- **Twitter / X:** [@Ashutosh_7x7](https://x.com/Ashutosh_7x7)
-- **LinkedIn:** [Ashutosh Singh](https://www.linkedin.com/in/ashutosh-singh-855177329/)
+- **GitHub:** [devcool20](https://github.com/devcool20)
+- **Twitter / X:** [@dshxrmx](https://x.com/dshxrmx)
+- **LinkedIn:** [Divyanshu Sharma](https://www.linkedin.com/in/divyanshu-sharma-b9b534113/)
 
 ---
 

@@ -9,19 +9,19 @@ export interface Blog {
 
 export const blogsData: Blog[] = [
   {
-    title: "My GSOC Journey: The 2-Month Sprint from Doubt to Done",
-    date: "Jun 2025",
-    claps: 392,
-    tags: ["GSOC", "Open Source"],
-    link: "/blogs/gsoc-journey",
-    isExternal: false,
+    title: "the journey of building loql",
+    date: "Feb 17, 2026",
+    claps: 120,
+    tags: ["Product", "Startup", "Tech"],
+    link: "https://loql.in/",
+    isExternal: true,
   },
   {
-    title: "JWT Authentication APIs with TypeScript, Node.js, and MongoDB.",
-    date: "Feb 2025",
-    claps: 104,
-    tags: ["Authentication", "TypeScript", "MongoDB"],
-    link: "https://medium.com/@ashutoshx7",
+    title: "my thesis on ai-generated image verification gateway",
+    date: "Feb 15, 2026",
+    claps: 85,
+    tags: ["AI", "Security", "Infrastructure"],
+    link: "https://github.com/devcool20",
     isExternal: true,
   }
 ];

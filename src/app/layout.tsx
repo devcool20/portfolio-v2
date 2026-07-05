@@ -16,9 +16,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Ashutoshx7",
+  title: "Divyanshu Sharma — Engineer & Builder",
   description:
-    "Full stack developer building clean, modern websites and apps with a focus on design, functionality, and attention to detail.",
+    "Portfolio website for Divyanshu Sharma featuring an about summary, selected projects, and social links.",
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "any" },
@@ -27,9 +27,9 @@ export const metadata: Metadata = {
     apple: [{ url: "/apple-icon.png", type: "image/png", sizes: "180x180" }],
   },
   openGraph: {
-    title: "Ashutoshx7",
+    title: "Divyanshu Sharma — Engineer & Builder",
     description:
-      "Full stack developer building clean, modern websites and apps.",
+      "Portfolio website for Divyanshu Sharma featuring an about summary, selected projects, and social links.",
     type: "website",
   },
 };

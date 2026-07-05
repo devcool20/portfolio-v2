@@ -8,11 +8,11 @@ import { FooterBackground } from "@/components/FooterBackground";
 import SoftPillButton from "@/components/pixel-perfect/soft-pill-button";
 import { ThemeToggle } from "@/components/theme-toggle";
 
-const resumePath = "/Ashutosh-Singh-Resume.pdf";
+const resumePath = "/Divyanshu-Sharma-Resume.pdf";
 
 export const metadata: Metadata = {
-  title: "Resume | Ashutoshx7",
-  description: "Resume of Ashutosh Singh, full-stack developer and open-source contributor.",
+  title: "Resume | devcool20",
+  description: "Resume of Divyanshu Sharma, full-stack product builder and open-source contributor.",
 };
 
 export default function ResumePage() {
@@ -96,7 +96,7 @@ export default function ResumePage() {
                 Resume
               </h1>
               <p className="mt-1 truncate text-[12px] text-zinc-500 dark:text-zinc-400">
-                Ashutosh Singh
+                Divyanshu Sharma
               </p>
             </div>
           </div>
@@ -116,7 +116,7 @@ export default function ResumePage() {
             </span>
             <div className="min-w-0">
               <p className="truncate text-[13px] font-semibold text-zinc-800 dark:text-zinc-200">
-                Ashutosh Singh Resume
+                Divyanshu Sharma Resume
               </p>
               <p className="text-[11px] text-zinc-400 dark:text-zinc-600">
                 PDF document
@@ -137,7 +137,7 @@ export default function ResumePage() {
             </a>
             <a
               href={resumePath}
-              download="Ashutosh-Singh-Resume.pdf"
+              download="Divyanshu-Sharma-Resume.pdf"
               aria-label="Download resume"
               title="Download resume"
             >
@@ -156,14 +156,10 @@ export default function ResumePage() {
         </div>
 
         <div className="relative aspect-[8.5/11] w-full overflow-hidden rounded-[6px] border border-black/10 bg-white shadow-sm dark:border-white/10">
-          <Image
-            src="/Ashutosh-Singh-Resume.png"
-            alt="Ashutosh Singh resume"
-            fill
-            preload
-            sizes="(min-width: 768px) 40vw, 100vw"
-            quality={75}
-            className="object-contain"
+          <iframe
+            src={`${resumePath}#toolbar=0&navpanes=0&scrollbar=0`}
+            className="w-full h-full border-none min-h-[500px]"
+            title="Divyanshu Sharma Resume"
           />
         </div>
 
