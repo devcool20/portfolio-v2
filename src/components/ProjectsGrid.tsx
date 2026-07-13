@@ -38,8 +38,22 @@ export const ProjectCard = ({
 }) => {
   const [hoveredTech, setHoveredTech] = useState<string | null>(null);
   const [shouldLoadHoverImage, setShouldLoadHoverImage] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const { resolvedTheme } = useTheme();
   const router = useRouter();
+
+  useEffect(() => {
+    const checkMobile = () => {
+      const mobile = window.innerWidth < 768 || window.matchMedia('(pointer: coarse)').matches;
+      setIsMobile(mobile);
+      if (mobile) {
+        setShouldLoadHoverImage(true);
+      }
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   const imageSrc = resolvedTheme === "light" && project.lightModeSrc ? project.lightModeSrc : project.src;
 
@@ -60,7 +74,9 @@ export const ProjectCard = ({
       <motion.div
         className="relative w-full aspect-[1.25] rounded-xl border border-black/5 dark:border-white/5 bg-zinc-50/80 dark:bg-[#09090b]/80 shadow-sm p-3.5 pb-0 flex flex-col overflow-hidden transition-all duration-300 hover:shadow-md hover:border-black/10 dark:hover:border-white/10 sm:aspect-[1.4] sm:p-4 sm:pb-0"
         initial="rest"
-        whileHover="hover"
+        whileHover={isMobile ? undefined : "hover"}
+        whileInView={isMobile ? "hover" : undefined}
+        viewport={isMobile ? { once: false, amount: 0.4 } : undefined}
         animate="rest"
       >
         <div className="flex items-center justify-end z-10 min-h-[24px]">
@@ -91,16 +107,18 @@ export const ProjectCard = ({
           transition={{ duration: 0.3, ease: "easeOut" }}
         />
 
-        <motion.h1
-          className="absolute top-4 left-4 text-[10px] font-bold text-zinc-500 dark:text-zinc-400 z-30 uppercase tracking-widest drop-shadow-[0_2px_4px_rgba(0,0,0,0.4)]"
-          variants={{
-            rest: { left: "1rem", top: "1rem", x: "0%", color: "#71717a", opacity: 0 },
-            hover: { left: "50%", top: "25%", x: "-50%", color: "#ffffff", opacity: 1 },
-          }}
-          transition={{ type: "spring", stiffness: 200, damping: 25 }}
-        >
-          Play Video
-        </motion.h1>
+        {project.video && (
+          <motion.h1
+            className="absolute top-4 left-4 text-[10px] font-bold text-zinc-500 dark:text-zinc-400 z-30 uppercase tracking-widest drop-shadow-[0_2px_4px_rgba(0,0,0,0.4)]"
+            variants={{
+              rest: { left: "1rem", top: "1rem", x: "0%", color: "#71717a", opacity: 0 },
+              hover: { left: "50%", top: "25%", x: "-50%", color: "#ffffff", opacity: 1 },
+            }}
+            transition={{ type: "spring", stiffness: 200, damping: 25 }}
+          >
+            Play Video
+          </motion.h1>
+        )}
 
         {project.video && (
           <motion.div
