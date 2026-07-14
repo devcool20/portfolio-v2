@@ -135,14 +135,12 @@ export default function Home() {
       {/* Flowing Content Section */}
       <div className="ml-0 mr-0 md:ml-[30%] md:mr-[30%] pt-[calc(22vh+112px)] pb-0 px-4 flex flex-col z-10 relative min-h-screen">
         <p className="text-[14px] sm:text-[15px] text-zinc-600 dark:text-zinc-300 leading-relaxed mt-4">
-          Full-stack product builder, F1 obsessive, and maker of useful interfaces.
+          full-stack product builder, f1 obsessive, and maker of useful interfaces.
         </p>
 
-        <ul className="text-[14px] sm:text-[15px] text-zinc-600 dark:text-zinc-300 leading-relaxed mt-4 pl-4">
-          <li className="flex gap-1.5"><span>•</span><span>I build web and mobile products with a bias for clean interaction, sharp systems, and real users.</span></li>
-          <li className="flex gap-1.5"><span>•</span><span>I contribute to open source by picking up real issues in unfamiliar codebases, writing tests, fixing edge cases, and pushing through review.</span></li>
-          <li className="flex gap-1.5"><span>•</span><span>Currently building <span className="font-semibold text-zinc-900 dark:text-white">Precedent</span>.</span></li>
-        </ul>
+        <p className="text-[14px] sm:text-[15px] text-zinc-600 dark:text-zinc-300 leading-relaxed mt-3">
+          i build web and mobile products with a bias for clean interaction, sharp systems, and real users. currently building precedent.
+        </p>
 
         {/* Buttons */}
         <div className="flex flex-wrap items-center gap-2 mt-4">

@@ -16,6 +16,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://divyanshusharma.vercel.app"),
   title: "Divyanshu Sharma — Engineer & Builder",
   description:
     "Portfolio website for Divyanshu Sharma featuring an about summary, selected projects, and social links.",
@@ -31,6 +32,21 @@ export const metadata: Metadata = {
     description:
       "Portfolio website for Divyanshu Sharma featuring an about summary, selected projects, and social links.",
     type: "website",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 460,
+        height: 460,
+        alt: "Divyanshu Sharma",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Divyanshu Sharma — Engineer & Builder",
+    description:
+      "Portfolio website for Divyanshu Sharma featuring an about summary, selected projects, and social links.",
+    images: ["/og-image.png"],
   },
 };
 
