@@ -69,7 +69,7 @@ export default function Home() {
       {/* Cell 1: Banner */}
       <div className="absolute left-0 right-0 md:left-[30%] md:right-[30%] top-0 h-[22vh] -z-0 pointer-events-auto overflow-hidden bg-white dark:bg-black shadow-[0_4px_12px_rgba(2,6,23,0.04)] dark:shadow-[0_4px_12px_rgba(2,6,23,0.10)]">
         <Image
-          src="/ChatGPT%20Image%20May%2022%2C%202026%2C%2012_40_29%20AM.jpg"
+          src="/bond-banner-light.png"
           alt=""
           fill
           fetchPriority="high"
@@ -78,7 +78,7 @@ export default function Home() {
           className="object-cover object-center dark:hidden"
         />
         <Image
-          src="/ChatGPT%20Image%20May%2022%2C%202026%2C%2012_49_39%20AM.jpg"
+          src="/bond-banner-dark.png"
           alt=""
           fill
           fetchPriority="high"

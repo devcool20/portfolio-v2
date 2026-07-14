@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 
-const darkBannerImage = "/ChatGPT%20Image%20May%2022%2C%202026%2C%2012_49_39%20AM.jpg";
+const darkBannerImage = "/bond-banner-dark.png";
 
 interface SocialProfile {
   name: string;
