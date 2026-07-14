@@ -72,7 +72,7 @@ export const ProjectCard = ({
     >
       {/* Outer Wrapper exactly like screenshot */}
       <motion.div
-        className="relative w-full aspect-[1.25] rounded-xl border border-black/5 dark:border-white/5 bg-zinc-50/80 dark:bg-[#09090b]/80 shadow-sm p-3.5 pb-0 flex flex-col overflow-hidden transition-all duration-300 hover:shadow-md hover:border-black/10 dark:hover:border-white/10 sm:aspect-[1.4] sm:p-4 sm:pb-0"
+        className="relative w-full aspect-[1.35] rounded-xl border border-black/5 dark:border-white/5 bg-zinc-50/80 dark:bg-[#09090b]/80 shadow-sm p-3.5 pb-0 flex flex-col overflow-hidden transition-all duration-300 hover:shadow-md hover:border-black/10 dark:hover:border-white/10 sm:aspect-[1.5] sm:p-4 sm:pb-0"
         initial="rest"
         whileHover={isMobile ? undefined : "hover"}
         whileInView={isMobile ? "hover" : undefined}
@@ -158,7 +158,7 @@ export const ProjectCard = ({
               preload={isPriority}
               sizes="(min-width: 768px) 17vw, calc(100vw - 2rem)"
               quality={70}
-              className="size-full object-cover"
+              className="size-full object-contain object-top"
             />
           </div>
         </motion.div>
@@ -180,7 +180,7 @@ export const ProjectCard = ({
         </p>
 
         <div className="flex items-center justify-between gap-3 mt-3">
-          <div className="flex gap-2 flex-wrap">
+          <div className="flex gap-2 flex-wrap flex-1">
             {project.tech.map((item) => {
               const key = typeof item === "string" ? item : item.label;
               const isIconItem = typeof item === "string";
