@@ -46,7 +46,7 @@ const FADE_UP_VARIANTS = {
     filter: "blur(0px)",
     transition: {
       duration: 0.8,
-      ease: [0.16, 1, 0.3, 1], // easeOutExpo
+      ease: [0.16, 1, 0.3, 1] as const, // easeOutExpo
     },
   },
 };
@@ -71,7 +71,7 @@ const ITEM_POP_VARIANTS = {
     filter: "blur(0px)",
     transition: {
       duration: 0.5,
-      ease: [0.16, 1, 0.3, 1],
+      ease: [0.16, 1, 0.3, 1] as const,
     },
   },
 };
@@ -80,7 +80,7 @@ const LINE_VARIANTS = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: { duration: 1.2, ease: [0.16, 1, 0.3, 1] },
+    transition: { duration: 1.2, ease: [0.16, 1, 0.3, 1] as const },
   },
 };
 
