@@ -39,13 +39,12 @@ const skills = [
 ];
 
 const FADE_UP_VARIANTS = {
-  hidden: { opacity: 0, y: 24, filter: "blur(6px)" },
+  hidden: { opacity: 0, y: 20 },
   visible: {
     opacity: 1,
     y: 0,
-    filter: "blur(0px)",
     transition: {
-      duration: 0.8,
+      duration: 0.6,
       ease: [0.16, 1, 0.3, 1] as const, // easeOutExpo
     },
   },
@@ -63,14 +62,13 @@ const STAGGER_CONTAINER_VARIANTS = {
 };
 
 const ITEM_POP_VARIANTS = {
-  hidden: { opacity: 0, scale: 0.95, y: 12, filter: "blur(4px)" },
+  hidden: { opacity: 0, scale: 0.96, y: 10 },
   visible: {
     opacity: 1,
     scale: 1,
     y: 0,
-    filter: "blur(0px)",
     transition: {
-      duration: 0.5,
+      duration: 0.4,
       ease: [0.16, 1, 0.3, 1] as const,
     },
   },
@@ -88,11 +86,11 @@ export default function Home() {
   return (
     <div className="min-h-screen w-full bg-white dark:bg-black relative overflow-x-hidden transition-colors duration-300">
 
-      {/* Blueprint Grid Lines & Nodes Entrance */}
-      <motion.div initial="hidden" animate="visible" variants={LINE_VARIANTS}>
-        {/* Right Side Blueprint Navigation */}
-        <RightNavbar />
+      {/* Right Side Blueprint Navigation */}
+      <RightNavbar />
 
+      {/* Blueprint Grid Lines & Nodes Entrance */}
+      <motion.div initial="hidden" animate="visible" variants={LINE_VARIANTS} className="pointer-events-none">
         {/* Vertical Lines - Ultra-fine Micro Dots */}
         <div className="absolute top-0 bottom-0 left-[30%] w-0 border-r border-black/30 dark:border-white/[0.15] pointer-events-none hidden md:block" style={{ maskImage: 'repeating-linear-gradient(to bottom, black 0, black 1px, transparent 1px, transparent 6px)', WebkitMaskImage: 'repeating-linear-gradient(to bottom, black 0, black 1px, transparent 1px, transparent 6px)' }} />
         <div className="absolute top-0 bottom-0 right-[30%] w-0 border-r border-black/30 dark:border-white/[0.15] pointer-events-none hidden md:block" style={{ maskImage: 'repeating-linear-gradient(to bottom, black 0, black 1px, transparent 1px, transparent 6px)', WebkitMaskImage: 'repeating-linear-gradient(to bottom, black 0, black 1px, transparent 1px, transparent 6px)' }} />
@@ -253,7 +251,7 @@ export default function Home() {
           className="mt-6 scroll-mt-24"
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-80px" }}
+          viewport={{ once: true, amount: 0.1 }}
           variants={STAGGER_CONTAINER_VARIANTS}
         >
           <motion.h2 variants={FADE_UP_VARIANTS} className="text-[14px] text-zinc-500 mb-2">Here are my <span className="font-medium text-zinc-800 dark:text-zinc-200">socials</span></motion.h2>
@@ -307,7 +305,7 @@ export default function Home() {
           className="mt-6 flex flex-col relative z-10 scroll-mt-24"
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-80px" }}
+          viewport={{ once: true, amount: 0.1 }}
           variants={FADE_UP_VARIANTS}
         >
           {/* Top full-width line */}
@@ -366,7 +364,7 @@ export default function Home() {
           className="mt-0 flex flex-col relative z-10 scroll-mt-24"
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-80px" }}
+          viewport={{ once: true, amount: 0.1 }}
           variants={FADE_UP_VARIANTS}
         >
           <div className="py-2 relative mt-1">
@@ -414,7 +412,7 @@ export default function Home() {
         <motion.div
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-80px" }}
+          viewport={{ once: true, amount: 0.1 }}
           variants={FADE_UP_VARIANTS}
         >
           <GithubGraph />
@@ -426,7 +424,7 @@ export default function Home() {
           className="scroll-mt-24"
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-80px" }}
+          viewport={{ once: true, amount: 0.1 }}
           variants={FADE_UP_VARIANTS}
         >
           <OpenSourceContributions />
@@ -438,7 +436,7 @@ export default function Home() {
           className="mt-6 flex flex-col relative z-10 scroll-mt-24"
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-80px" }}
+          viewport={{ once: true, amount: 0.1 }}
           variants={STAGGER_CONTAINER_VARIANTS}
         >
           {/* Top full-width line */}
@@ -489,7 +487,7 @@ export default function Home() {
           className="mt-6 flex flex-col relative scroll-mt-24"
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-80px" }}
+          viewport={{ once: true, amount: 0.1 }}
           variants={FADE_UP_VARIANTS}
         >
           {/* Top full-width line */}
@@ -541,7 +539,7 @@ export default function Home() {
           className="mt-12 flex flex-col items-center justify-center relative py-12"
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-80px" }}
+          viewport={{ once: true, amount: 0.1 }}
           variants={FADE_UP_VARIANTS}
         >
           <div className="max-w-[480px] w-full flex flex-col items-center">
@@ -562,7 +560,7 @@ export default function Home() {
           className="flex-grow w-[calc(100%+32px)] -mx-4 h-[300px] relative mt-4"
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-80px" }}
+          viewport={{ once: true, amount: 0.1 }}
           variants={FADE_UP_VARIANTS}
         >
           {/* Top full-width line */}
