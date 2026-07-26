@@ -48,7 +48,7 @@ const experiences: ExperienceData[] = [
   {
     title: "Loql",
     role: "Co-Founder",
-    dates: "August 2025 - Present",
+    dates: "August 2025 - March 2026",
     location: "Delhi, India (Hybrid)",
     src: "/Experience-image/loql.png",
     imageFit: "contain",

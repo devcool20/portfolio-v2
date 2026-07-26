@@ -205,7 +205,7 @@ export default function Home() {
           </p>
 
           <p className="text-[14px] sm:text-[15px] text-zinc-600 dark:text-zinc-300 leading-relaxed mt-3">
-            i build web and mobile products with a bias for clean interaction, sharp systems, and real users. currently building precedent.
+            i build web and mobile products with a bias for clean interaction, sharp systems, and real users. currently building <a href="https://meet-visualizer.vercel.app/" target="_blank" rel="noopener noreferrer" className="text-zinc-500 hover:underline">stash-live</a>.
           </p>
 
           {/* Buttons */}
