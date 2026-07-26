@@ -12,7 +12,7 @@ import { motion } from "framer-motion";
 
 export default function PullRequestsPage() {
   return (
-    <div className="min-h-screen w-full bg-white dark:bg-black relative overflow-x-hidden transition-colors duration-300">
+    <div className="min-h-screen w-full bg-white dark:bg-black relative overflow-x-clip transition-colors duration-300">
       {/* Right Side Blueprint Navigation */}
       <RightNavbar />
 

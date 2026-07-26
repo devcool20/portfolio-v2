@@ -129,6 +129,10 @@
   --sidebar-ring: oklch(0.556 0 0);
 }
 
+html, body {
+  overflow-x: clip;
+}
+
 html {
   scroll-behavior: smooth;
 }
