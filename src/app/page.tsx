@@ -17,6 +17,7 @@ import { BannerParticles } from "@/components/BannerParticles";
 import { FileText } from "lucide-react";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import InteractivePortrait from "@/components/InteractivePortrait";
 
 const skills = [
   { name: "React", icon: "react" },
@@ -138,7 +139,7 @@ export default function Home() {
           style={{ objectPosition: "center 35%" }}
           className="hidden object-cover scale-105 dark:block"
         />
-        {/* Radial Vignette for Dark Mode to cover gray vignette of the square image */}
+        {/* Radial Vignette for Dark Mode */}
         <div className="absolute inset-0 pointer-events-none z-[6] hidden dark:block" style={{ background: 'radial-gradient(ellipse, transparent 30%, #000000 75%)' }} />
         <BannerParticles />
         <div className="absolute inset-x-0 top-0 h-10 pointer-events-none z-[5] bg-gradient-to-b from-white/90 to-transparent dark:from-black dark:to-transparent" />
@@ -150,7 +151,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Cell 2: Profile Section - 112px height to wrap the framed image (13px gap top/bottom) */}
+      {/* Cell 2: Profile Section - 112px height */}
       <motion.div
         initial="hidden"
         animate="visible"
@@ -159,24 +160,11 @@ export default function Home() {
       >
         <div className="flex w-full items-center justify-between">
 
-          <div className="flex items-center gap-4 sm:gap-5">
-            <div className="relative p-[3px] rounded-[6px] sm:rounded-[8px] border-[1.5px] border-black/30 dark:border-white/[0.15] shrink-0">
-              {/* The inner image */}
-              <div className="relative w-16 h-16 sm:w-20 sm:h-20 rounded-[3px] sm:rounded-[5px] overflow-hidden bg-zinc-100 dark:bg-zinc-900">
-                <Image
-                  src="https://github.com/devcool20.png"
-                  alt="Profile"
-                  width={240}
-                  height={240}
-                  quality={90}
-                  fetchPriority="high"
-                  sizes="(min-width: 640px) 120px, 96px"
-                  className="h-full w-full origin-center translate-y-0 scale-[1.48] object-cover opacity-90 grayscale contrast-100 mix-blend-multiply dark:mix-blend-normal"
-                />
-              </div>
-            </div>
+          <div className="flex items-center gap-3 sm:gap-4">
+            {/* Mobile: inline portrait next to name */}
+            <InteractivePortrait className="block md:hidden w-16 h-16 sm:w-20 sm:h-20" grayscale={false} />
 
-            <div className="flex flex-col justify-center pt-8">
+            <div className="flex flex-col justify-center">
               <h1 className="text-[20px] sm:text-[24px] font-bold text-zinc-800 dark:text-zinc-100 tracking-tight leading-none mb-0.5 [text-shadow:-1.5px_0_0_rgba(0,200,255,0.3),1.5px_0_0_rgba(255,80,0,0.3)] dark:[text-shadow:-1.5px_0_0_rgba(0,200,255,0.6),1.5px_0_0_rgba(255,80,0,0.6)]">
                 Divyanshu Sharma
               </h1>
@@ -190,6 +178,19 @@ export default function Home() {
           </div>
 
         </div>
+      </motion.div>
+
+      {/* Desktop Left Lane Portrait: Centered in the 0% -> 30% left column */}
+      <motion.div
+        initial="hidden"
+        animate="visible"
+        variants={FADE_UP_VARIANTS}
+        className="hidden md:flex absolute left-0 w-[30%] top-[22vh] h-[112px] items-center justify-center z-50 pointer-events-auto"
+      >
+        <InteractivePortrait
+          className="w-28 h-28 lg:w-32 lg:h-32 xl:w-36 xl:h-36"
+          grayscale={false}
+        />
       </motion.div>
 
       {/* Flowing Content Section */}
@@ -521,7 +522,7 @@ export default function Home() {
             <div className="absolute bottom-0 left-0 w-[2px] h-[2px] bg-black/50 dark:bg-white/[0.25] -translate-x-1/2 translate-y-1/2 pointer-events-none z-20" />
             <div className="absolute bottom-0 right-0 w-[2px] h-[2px] bg-black/50 dark:bg-white/[0.25] translate-x-1/2 translate-y-1/2 pointer-events-none z-20" />
 
-            <Link href="https://github.com/devcool20" target="_blank" rel="noopener noreferrer" className="relative group block mt-0">
+            <Link href="/blogs" className="relative group block mt-0">
               <div className="absolute -inset-[5px] border border-black/5 dark:border-white/5 rounded-[11px] pointer-events-none transition-colors duration-300 group-hover:border-black/10 dark:group-hover:border-white/10" />
               <div className="relative flex items-center gap-1.5 px-4 py-2 bg-zinc-50 hover:bg-zinc-100 dark:bg-[#09090b] dark:hover:bg-[#121214] text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 rounded-[6px] text-[13px] font-medium transition-all duration-300 border border-black/5 dark:border-white/5 shadow-sm shadow-black/20 dark:shadow-lg dark:shadow-black/80">
                 View All

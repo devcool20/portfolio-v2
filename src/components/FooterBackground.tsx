@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from "react";
+import Image from "next/image";
 
 export function FooterBackground() {
   const [mousePosition, setMousePosition] = useState({ x: -1000, y: -1000 });
@@ -37,32 +38,45 @@ export function FooterBackground() {
   }, []);
 
   return (
-    <div 
+    <div
       ref={containerRef}
-      className="absolute inset-0 w-full h-full overflow-hidden"
+      className="absolute inset-0 w-full h-full overflow-hidden select-none pointer-events-none"
     >
-      {/* Base dots that fade out */}
-      <div 
-        className="absolute inset-0 w-full h-full text-zinc-400 dark:text-zinc-500 opacity-20 dark:opacity-[0.1] pointer-events-none transition-opacity duration-500"
-        style={{
-          backgroundImage: 'radial-gradient(circle, currentColor 1px, transparent 1px)',
-          backgroundSize: '16px 16px',
-          backgroundPosition: 'center',
-          maskImage: 'linear-gradient(to bottom, black 0%, transparent 100%)',
-          WebkitMaskImage: 'linear-gradient(to bottom, black 0%, transparent 100%)'
-        }}
-      />
+      {/* Light Mode: Mountain stippling blended smoothly into white */}
+      <div className="absolute inset-0 w-full h-full dark:hidden opacity-85 mix-blend-multiply">
+        <Image
+          src="/footer.jpg"
+          alt=""
+          fill
+          sizes="(min-width: 768px) 40vw, 100vw"
+          quality={90}
+          className="object-cover object-bottom"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-transparent via-transparent to-white/70" />
+      </div>
 
-      {/* Interactive hover spotlight that reveals more opaque dots */}
-      <div 
-        className="absolute inset-0 w-full h-full text-zinc-500 dark:text-zinc-400 opacity-0 pointer-events-none transition-opacity duration-700 ease-in-out"
+      {/* Dark Mode: Inverted silver-luminous stippled mountain peaks against pitch black */}
+      <div className="absolute inset-0 w-full h-full hidden dark:block opacity-90 mix-blend-screen">
+        <Image
+          src="/footer.jpg"
+          alt=""
+          fill
+          sizes="(min-width: 768px) 40vw, 100vw"
+          quality={95}
+          className="object-cover object-bottom invert brightness-110 contrast-125"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-transparent via-transparent to-black/70" />
+      </div>
+
+      {/* Subtle interactive hover spotlight effect */}
+      <div
+        className="absolute inset-0 w-full h-full pointer-events-none transition-opacity duration-500 ease-in-out hidden md:block"
         style={{
-          backgroundImage: 'radial-gradient(circle, currentColor 1px, transparent 1px)',
-          backgroundSize: '16px 16px',
-          backgroundPosition: 'center',
-          opacity: isHovering ? 0.25 : 0,
-          maskImage: `radial-gradient(250px circle at ${mousePosition.x}px ${mousePosition.y}px, black, transparent)`,
-          WebkitMaskImage: `radial-gradient(250px circle at ${mousePosition.x}px ${mousePosition.y}px, black, transparent)`
+          background: "radial-gradient(circle, currentColor 1px, transparent 1px)",
+          backgroundSize: "16px 16px",
+          opacity: isHovering ? 0.15 : 0,
+          maskImage: `radial-gradient(200px circle at ${mousePosition.x}px ${mousePosition.y}px, black, transparent)`,
+          WebkitMaskImage: `radial-gradient(200px circle at ${mousePosition.x}px ${mousePosition.y}px, black, transparent)`,
         }}
       />
     </div>

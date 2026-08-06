@@ -25,7 +25,7 @@ const socialProfiles: Record<string, SocialProfile> = {
   GitHub: {
     name: "Divyanshu Sharma",
     handle: "devcool20",
-    avatar: "https://github.com/devcool20.png",
+    avatar: "/portrait.png",
     bio: "Full-stack product builder, F1 obsessive, and maker of useful interfaces.",
     location: "Delhi, India",
     stats: [
@@ -36,7 +36,7 @@ const socialProfiles: Record<string, SocialProfile> = {
   Twitter: {
     name: "Divyanshu Sharma",
     handle: "@dshxrmx",
-    avatar: "https://github.com/devcool20.png",
+    avatar: "/portrait.png",
     banner: darkBannerImage,
     bio: "Full-stack product builder // F1 obsessive",
     location: "Delhi, India",
@@ -48,7 +48,7 @@ const socialProfiles: Record<string, SocialProfile> = {
   LinkedIn: {
     name: "Divyanshu Sharma",
     handle: "in/divyanshu-sharma-b9b534113",
-    avatar: "https://github.com/devcool20.png",
+    avatar: "/portrait.png",
     banner: darkBannerImage,
     bio: "Co-Founder @ Loql // Software Engineer",
     location: "Delhi, India",
@@ -59,7 +59,7 @@ const socialProfiles: Record<string, SocialProfile> = {
   Instagram: {
     name: "Divyanshu Sharma",
     handle: "@d1vyanshu.sharma",
-    avatar: "https://github.com/devcool20.png",
+    avatar: "/portrait.png",
     bio: "Formula 1 weekends, badminton, and long philosophical rabbit holes.",
     location: "Delhi, India",
     stats: [
@@ -69,7 +69,7 @@ const socialProfiles: Record<string, SocialProfile> = {
   Medium: {
     name: "Divyanshu Sharma",
     handle: "@devcool20",
-    avatar: "https://github.com/devcool20.png",
+    avatar: "/portrait.png",
     bio: "Writing about product taste, engineering depth, and speed.",
     location: "Delhi, India",
     stats: [
@@ -79,7 +79,7 @@ const socialProfiles: Record<string, SocialProfile> = {
   Discord: {
     name: "devcool20",
     handle: "devcool20",
-    avatar: "https://github.com/devcool20.png",
+    avatar: "/portrait.png",
     bio: "Formula 1 weekends, badminton, and long philosophical rabbit holes.",
     location: "Delhi, India",
     stats: [],

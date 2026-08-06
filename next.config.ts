@@ -1,6 +1,10 @@
 import type { NextConfig } from "next";
+import path from "path";
 
 const nextConfig: NextConfig = {
+  turbopack: {
+    root: path.resolve(__dirname),
+  },
   images: {
     deviceSizes: [360, 414, 640, 768, 1024, 1280],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
@@ -27,6 +31,22 @@ const nextConfig: NextConfig = {
         port: "",
         pathname: "/twitter/**",
         search: "",
+      },
+      {
+        protocol: "https",
+        hostname: "app.notion.com",
+      },
+      {
+        protocol: "https",
+        hostname: "www.notion.so",
+      },
+      {
+        protocol: "https",
+        hostname: "*.amazonaws.com",
+      },
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com",
       },
     ],
   },

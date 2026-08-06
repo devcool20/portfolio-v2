@@ -1,26 +1,9 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { ArrowRight, ArrowUpRight, Calendar } from "lucide-react";
-import { blogsData } from "@/data/blogsData";
-
-const ClapIcon = ({ className }: { className?: string }) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    className={className}
-  >
-    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
-    <path d="M8 11h8" />
-    <path d="M12 11v8" />
-  </svg>
-); // Using a placeholder icon or simple path for the clap. A better representation is two hands. Let's use a standard clap icon SVG.
+import { blogsData, Blog } from "@/data/blogsData";
 
 const RealClapIcon = ({ className }: { className?: string }) => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
@@ -37,10 +20,33 @@ const RealClapIcon = ({ className }: { className?: string }) => (
 );
 
 export function BlogList() {
+  const [blogs, setBlogs] = useState<Blog[]>(blogsData);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    async function fetchBlogs() {
+      try {
+        setLoading(true);
+        const res = await fetch("/api/blogs");
+        if (res.ok) {
+          const data = await res.json();
+          if (data.blogs && data.blogs.length > 0) {
+            setBlogs(data.blogs);
+          }
+        }
+      } catch (err) {
+        console.error("Failed to fetch Notion blogs, using local blogsData fallback.", err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchBlogs();
+  }, []);
+
   return (
     <div className="block">
-      {blogsData.map((blog, idx) => {
-        const isLast = idx === blogsData.length - 1;
+      {blogs.map((blog, idx) => {
+        const isLast = idx === blogs.length - 1;
 
         return (
           <Link
