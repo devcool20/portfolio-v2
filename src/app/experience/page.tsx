@@ -28,40 +28,40 @@ type ExperienceData = {
 const experiences: ExperienceData[] = [
   {
     title: "Clawvisor (YC P26)",
-    role: "Open Source Contributor",
-    dates: "May 2026 - Present",
+    role: "Backend Developer",
+    dates: "May 2026 - July 2026",
     location: "Remote",
     src: "/Experience-image/pngegg (1).png",
     imageFit: "contain",
     imageZoom: 1.2,
     description: `
-      Engineered core LLM proxy infrastructure and platform integrations for Clawvisor (YC P26), collaborating directly with the founding team to ship production features and reliability improvements
-      Delivered 25+ merged pull requests within 6 weeks across backend services, validation layers, integrations, and runtime bug fixes
-      Contributed to high-impact open-source platforms including Inth/c15t/dsar, OpenWork, Insforge, and Mem0
+      Built and hardened LLM proxy infrastructure for Clawvisor (YC P26), shipping production backend features across streaming, validation, integrations, and runtime reliability.
+      Resolved high-concurrency SQLite contention under 200+ requests/sec by tuning WAL, connection pooling, busy timeouts, and transaction boundaries.
+      Added headless runner support with programmatic approval wait APIs, structured denial metadata, token budgeting, and rate-limit queueing.
     `,
-    tech: ["LLM Proxies", "API Integrations", "Backend Services", "Validation Layers", "Python", "TypeScript"],
+    tech: ["Python", "TypeScript", "LLM Proxies", "SQLite", "Streaming", "APIs & Protocols", "Backend Infrastructure"],
     metrics: [
-      { label: "Merged PRs", value: "25+" },
-      { label: "Timeline", value: "6 Weeks" },
+      { label: "Role", value: "Backend Developer" },
+      { label: "Throughput", value: "200+ req/s" },
     ],
   },
   {
-    title: "Loql",
-    role: "Co-Founder",
-    dates: "August 2025 - March 2026",
-    location: "Delhi, India (Hybrid)",
-    src: "/Experience-image/loql.png",
+    title: "RocketHealth",
+    role: "Full Stack Developer Intern",
+    dates: "Sept 2025 - April 2026",
+    location: "Hybrid / Remote",
+    src: "/Experience-image/pngegg (1).png",
     imageFit: "contain",
     imageZoom: 1.2,
     description: `
-      Building a local peer-to-peer rental marketplace built around trust, nearby discovery, and QR handshakes
-      Architecting and shipping the web and mobile platform, focusing on clean interaction, responsive UI, and secure user verification flows
-      Designing and implementing matching and nearby discovery services to facilitate seamless renting between neighbors
+      Helped build rocket-mail, an in-house email platform for cohort-based, multi-step campaigns using AWS SES and SNS event tracking.
+      Contributed to BullMQ queue workflows supporting notifications, emails, documents, invoices, and Meta events across 5 verticals.
+      Supported the launch and data migration of the Men's and Women's Health products, helping move 6K+ users to the new platform.
     `,
-    tech: ["Next.js", "TypeScript", "React", "Node.js", "PostgreSQL", "Tailwind CSS"],
+    tech: ["TypeScript", "Node.js", "BullMQ", "AWS SES", "SNS", "Queue Workflows", "Data Migration"],
     metrics: [
-      { label: "Role", value: "Co-Founder" },
-      { label: "Platform", value: "Web & Mobile" },
+      { label: "Role", value: "Full Stack Intern" },
+      { label: "Migrated Users", value: "6K+" },
     ],
   },
   {
@@ -73,11 +73,10 @@ const experiences: ExperienceData[] = [
     imageFit: "contain",
     imageZoom: 1.2,
     description: `
-      Shipped production-ready travel booking UX flows, improving conversion and user retention
-      Developed custom AI travel planning helpers, leveraging LLMs to recommend tailored itineraries based on user preferences
-      Collaborated closely with the product and engineering teams to optimize frontend performance and resolve edge-case bugs
+      Engineered major UI/UX components, including a comprehensive airline ticketing system.
+      Developed and integrated Wanderlust, an AI-powered travel recommendation engine that personalized booking experiences and improved user engagement.
     `,
-    tech: ["React", "TypeScript", "Node.js", "FastAPI", "AI Integration", "Tailwind CSS"],
+    tech: ["React", "TypeScript", "Node.js", "FastAPI", "AI Integration", "UI/UX Systems"],
     metrics: [
       { label: "Role", value: "Developer Intern" },
       { label: "Domain", value: "AI Travel" },
