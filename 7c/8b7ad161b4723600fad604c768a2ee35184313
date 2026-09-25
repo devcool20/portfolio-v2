@@ -1,0 +1,16 @@
+src/app/experience/page.tsx
+  h_19ce13e54ae879 50,63
+src/components/ExperienceList.tsx
+  h_19ce13e54ae879 43,56
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "7c8b7ad161b4723600fad604c768a2ee35184313",
+  "prompts": {},
+  "humans": {
+    "h_19ce13e54ae879": {
+      "author": "devcool20 <sharmadivyanshu265@gmail.com>"
+    }
+  }
+}
