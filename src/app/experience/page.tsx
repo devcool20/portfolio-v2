@@ -47,7 +47,7 @@ const experiences: ExperienceData[] = [
   },
   {
     title: "RocketHealth",
-    role: "Full Stack Developer Intern",
+    role: "Full Stack Developer",
     dates: "Sept 2025 - April 2026",
     location: "Hybrid / Remote",
     src: "/Experience-image/pngegg (1).png",
@@ -60,7 +60,7 @@ const experiences: ExperienceData[] = [
     `,
     tech: ["TypeScript", "Node.js", "BullMQ", "AWS SES", "SNS", "Queue Workflows", "Data Migration"],
     metrics: [
-      { label: "Role", value: "Full Stack Intern" },
+      { label: "Role", value: "Full Stack Developer" },
       { label: "Migrated Users", value: "6K+" },
     ],
   },
