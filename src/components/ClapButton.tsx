@@ -23,7 +23,7 @@ const RealClapIcon = ({ className }: { className?: string }) => (
   </svg>
 );
 
-export function ClapButton({ initialClaps = 100, blogSlug = "default", className = "" }: ClapButtonProps) {
+export function ClapButton({ initialClaps = 100, className = "" }: ClapButtonProps) {
   const [claps, setClaps] = useState(initialClaps);
   const [userClaps, setUserClaps] = useState(0);
   const [floatingCounts, setFloatingCounts] = useState<{ id: number; count: number }[]>([]);
@@ -67,21 +67,23 @@ export function ClapButton({ initialClaps = 100, blogSlug = "default", className
 
       <button
         onClick={handleClap}
-        title="Clap / Applaud this article"
-        className={`group relative flex items-center gap-2 px-3 py-1.5 rounded-full border transition-all duration-200 select-none ${
+        type="button"
+        title="Clap / applaud this article"
+        aria-label={`Clap for this article. ${claps} claps so far.`}
+        className={`group relative flex cursor-pointer select-none items-center gap-2 rounded-full border px-3 py-1.5 transition-[background-color,border-color,color,transform] duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] active:scale-95 ${
           userClaps > 0
-            ? "border-emerald-500/50 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 shadow-sm"
-            : "border-black/10 dark:border-white/10 bg-zinc-100 dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 hover:border-emerald-500/40 hover:text-emerald-500"
+            ? "border-emerald-500/50 bg-emerald-500/10 text-emerald-600 shadow-sm dark:text-emerald-400"
+            : "border-black/10 bg-zinc-100 text-zinc-600 hover:-translate-y-px hover:border-emerald-500/40 hover:text-emerald-600 dark:border-white/10 dark:bg-ink-raised dark:text-zinc-400"
         }`}
       >
-        <motion.div
+        <motion.span
           whileTap={{ scale: 1.3, rotate: -12 }}
           transition={{ type: "spring", stiffness: 400, damping: 15 }}
           className="flex items-center justify-center"
         >
-          <RealClapIcon className="w-4 h-4 transition-transform group-hover:scale-110" />
-        </motion.div>
-        <span className="text-[13px] font-semibold tracking-tight">{claps}</span>
+          <RealClapIcon className="h-4 w-4 transition-transform duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-110" />
+        </motion.span>
+        <span className="bp-numeric text-[13px] font-semibold tracking-tight">{claps}</span>
       </button>
     </div>
   );

@@ -2,8 +2,9 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { X } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface InteractivePortraitProps {
   imageSrc?: string;
@@ -24,6 +25,7 @@ export default function InteractivePortrait({
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
+  const reduce = useReducedMotion();
 
   const stateRef = useRef({
     mouseX: 0,
@@ -35,6 +37,7 @@ export default function InteractivePortrait({
     rotY: 0,
     shadowX: 0,
     shadowY: 0,
+    frameTime: 0,
     rect: null as DOMRect | null,
   });
 
@@ -44,6 +47,9 @@ export default function InteractivePortrait({
     if (!container || !canvas) return;
 
     let animationFrameId: number;
+    const reduceMotion =
+      typeof window !== "undefined" &&
+      window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
 
     const updateRect = () => {
       if (container) {
@@ -81,23 +87,23 @@ export default function InteractivePortrait({
     window.addEventListener("scroll", updateRect, { passive: true });
 
     const textureLoader = new THREE.TextureLoader();
-    let colorTexture: THREE.Texture;
-    let depthTexture: THREE.Texture;
-
     let loadedCount = 0;
+    let disposed = false;
     const checkLoaded = () => {
+      // The loader can fire after Fast Refresh has torn this down.
+      if (disposed) return;
       loadedCount++;
       if (loadedCount >= 2) {
         setIsLoaded(true);
       }
     };
 
-    colorTexture = textureLoader.load(imageSrc, checkLoaded);
+    const colorTexture = textureLoader.load(imageSrc, checkLoaded);
     colorTexture.colorSpace = THREE.SRGBColorSpace;
     colorTexture.minFilter = THREE.LinearFilter;
     colorTexture.magFilter = THREE.LinearFilter;
 
-    depthTexture = textureLoader.load(depthMapSrc, checkLoaded);
+    const depthTexture = textureLoader.load(depthMapSrc, checkLoaded);
     depthTexture.minFilter = THREE.LinearFilter;
     depthTexture.magFilter = THREE.LinearFilter;
 
@@ -109,9 +115,10 @@ export default function InteractivePortrait({
       uMouse: { value: new THREE.Vector2(0, 0) },
       uTime: { value: 0 },
       uGrayscale: { value: grayscale ? 1.0 : 0.0 },
-      uDepthStrength: { value: 0.14 },
-      uParallaxStrength: { value: 0.09 },
+      uDepthStrength: { value: 0.0 },
+      uParallaxStrength: { value: 0.0 },
       uLightIntensity: { value: 0.22 },
+      uReveal: { value: 0 },
     };
 
     const vertexShader = `
@@ -169,40 +176,41 @@ export default function InteractivePortrait({
       uniform float uTime;
       uniform float uGrayscale;
       uniform float uLightIntensity;
+      uniform float uReveal;
 
       void main() {
         float depth = texture2D(uDepthMap, vUv).r;
-        vec2 uvOffset = uMouse * (depth - 0.35) * 0.012;
+        vec2 uvOffset = uMouse * (depth - 0.35) * 0.012 * uReveal;
         vec2 targetUv = clamp(vUv - uvOffset, 0.001, 0.999);
-        
+
         vec4 color = texture2D(uTexture, targetUv);
-        
+
         // Grayscale conversion option
         float gray = dot(color.rgb, vec3(0.299, 0.587, 0.114));
         vec3 baseColor = mix(color.rgb, vec3(gray), uGrayscale);
-        
+
         // Surface normal estimation
         float dRight = texture2D(uDepthMap, vUv + vec2(0.004, 0.0)).r;
         float dTop   = texture2D(uDepthMap, vUv + vec2(0.0, 0.004)).r;
         vec3 normal  = normalize(vec3((depth - dRight) * 12.0, (depth - dTop) * 12.0, 1.0));
-        
+
         // Light & Specular calculation
         vec3 lightPos = vec3(uMouse.x * 1.5, uMouse.y * 1.5, 1.2);
         vec3 lightDir = normalize(lightPos - vec3(vUv - 0.5, depth * 0.2));
-        
+
         float diff = max(dot(normal, lightDir), 0.0);
-        
+
         vec3 viewDir = normalize(vViewPosition);
         vec3 halfDir = normalize(lightDir + viewDir);
         float spec   = pow(max(dot(normal, halfDir), 0.0), 20.0);
-        
-        vec3 lightHighlight = vec3(1.0, 0.97, 0.92) * (diff * 0.10 + spec * 0.22) * uLightIntensity;
-        
+
+        vec3 lightHighlight = vec3(1.0, 0.97, 0.92) * (diff * 0.10 + spec * 0.22) * uLightIntensity * uReveal;
+
         float lightDist = distance(vUv, uMouse * 0.5 + 0.5);
-        float radialSheen = (1.0 - smoothstep(0.0, 0.65, lightDist)) * 0.12 * uLightIntensity;
-        
+        float radialSheen = (1.0 - smoothstep(0.0, 0.65, lightDist)) * 0.12 * uLightIntensity * uReveal;
+
         vec3 finalRgb = baseColor + lightHighlight + vec3(radialSheen);
-        
+
         gl_FragColor = vec4(finalRgb, color.a);
       }
     `;
@@ -267,13 +275,53 @@ export default function InteractivePortrait({
 
     const startTime = performance.now();
 
+    let isVisible = true;
+    let depthReveal = reduceMotion ? 1 : 0;
+
+    // The portrait "develops" like a print in a tray: the depth map fades up
+    // from flat while the plate itself lifts into place.
+    const reveal = () => {
+      if (reduceMotion) return;
+      const step = () => {
+        depthReveal = Math.min(1, depthReveal + 0.045);
+        uniforms.uDepthStrength.value = 0.14 * depthReveal;
+        uniforms.uParallaxStrength.value = 0.09 * depthReveal;
+        uniforms.uReveal.value = depthReveal;
+        if (depthReveal < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    };
+
+    const visibilityObserver = new IntersectionObserver(
+      ([entry]) => {
+        isVisible = entry.isIntersecting;
+      },
+      { threshold: 0 },
+    );
+    visibilityObserver.observe(container);
+
+    const onVisibility = () => {
+      stateRef.current.frameTime = performance.now();
+    };
+    document.addEventListener("visibilitychange", onVisibility);
+
     const animate = () => {
       animationFrameId = requestAnimationFrame(animate);
-      const elapsedTime = (performance.now() - startTime) * 0.001;
-      const st = stateRef.current;
 
-      st.mouseX += (st.targetX - st.mouseX) * 0.08;
-      st.mouseY += (st.targetY - st.mouseY) * 0.08;
+      // A full-screen WebGL pass at 60fps while scrolled three viewports away
+      // is the single most expensive thing this page could do. Skip it.
+      if (!isVisible) return;
+
+      const now = performance.now();
+      const dt = Math.min((now - stateRef.current.frameTime) / 16.6667, 3);
+      stateRef.current.frameTime = now;
+      const elapsedTime = (now - startTime) * 0.001;
+
+      const st = stateRef.current;
+      const lerp = reduceMotion ? 1 : 0.08 * dt;
+
+      st.mouseX += (st.targetX - st.mouseX) * lerp;
+      st.mouseY += (st.targetY - st.mouseY) * lerp;
 
       st.rotY = st.mouseX * 12;
       st.rotX = -st.mouseY * 8;
@@ -290,11 +338,23 @@ export default function InteractivePortrait({
       renderer.render(scene, camera);
     };
 
+    if (reduceMotion) {
+      uniforms.uDepthStrength.value = 0.14;
+      uniforms.uParallaxStrength.value = 0.09;
+      uniforms.uReveal.value = 1;
+    } else {
+      stateRef.current.frameTime = performance.now();
+      reveal();
+    }
+
     animate();
 
     return () => {
+      disposed = true;
       cancelAnimationFrame(animationFrameId);
       resizeObserver.disconnect();
+      visibilityObserver.disconnect();
+      document.removeEventListener("visibilitychange", onVisibility);
       window.removeEventListener("scroll", updateRect);
       window.removeEventListener("mousemove", handleGlobalMouseMove);
       container.removeEventListener("touchmove", handleTouchMove);
@@ -317,25 +377,34 @@ export default function InteractivePortrait({
 
   return (
     <>
-      <div
-        ref={containerRef}
-        onClick={handleCardClick}
-        className={`relative shrink-0 rounded-[6px] sm:rounded-[8px] overflow-hidden border-[1.5px] border-black/30 dark:border-white/[0.15] bg-zinc-900 transition-shadow duration-300 will-change-transform ${
-          allowExpand ? "cursor-pointer active:scale-95 transition-all duration-200" : ""
-        } ${className}`}
-        style={{
-          transformStyle: "preserve-3d",
-          transition: "box-shadow 0.15s ease-out, transform 0.15s ease-out",
-        }}
+      <motion.div
+        className={cn("shrink-0", className)}
+        initial={
+          reduce
+            ? undefined
+            : { opacity: 0, clipPath: "inset(6% 6% 6% 6% round 10px)" }
+        }
+        animate={{ opacity: 1, clipPath: "inset(0% 0% 0% 0% round 10px)" }}
+        transition={{ duration: reduce ? 0 : 0.9, ease: [0.16, 1, 0.3, 1], delay: reduce ? 0 : 0.3 }}
       >
-        <canvas
-          ref={canvasRef}
-          className="w-full h-full block rounded-[4px] sm:rounded-[6px] object-cover pointer-events-none"
-        />
-        {!isLoaded && (
-          <div className="absolute inset-0 bg-zinc-900 animate-pulse rounded-[4px]" />
-        )}
-      </div>
+        <div
+          ref={containerRef}
+          onClick={handleCardClick}
+          className={`relative h-full w-full overflow-hidden rounded-[6px] border-[1.5px] border-black/30 bg-zinc-900 transition-shadow duration-300 sm:rounded-[8px] dark:border-white/15 dark:bg-[#0b0e14] ${
+            allowExpand ? "cursor-pointer transition-transform duration-200 active:scale-[0.97]" : ""
+          }`}
+          style={{
+            transformStyle: "preserve-3d",
+            transition: "box-shadow 0.15s ease-out, transform 0.15s ease-out",
+          }}
+        >
+          <canvas
+            ref={canvasRef}
+            className="pointer-events-none block h-full w-full rounded-[4px] object-cover sm:rounded-[6px]"
+          />
+          {!isLoaded && <div className="absolute inset-0 animate-pulse rounded-[4px] bg-zinc-900" />}
+        </div>
+      </motion.div>
 
       {/* 3D UNO Card Flip & Zoom Modal */}
       <AnimatePresence>

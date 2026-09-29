@@ -1,56 +1,107 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { motion, useReducedMotion } from "framer-motion";
+import { EASE_DRAFT } from "@/lib/motion";
 
-function TwoDots() {
+const DOT_GAP = "gap-2 sm:gap-2.5";
+
+function TwoDots({ beat }: { beat: number }) {
   return (
-    <div className="mx-0.5 sm:mx-1 flex flex-col gap-2 -translate-x-[2px] sm:-translate-x-[3px]">
-      <div className="w-[2px] h-[2px] bg-zinc-600 dark:bg-zinc-500"></div>
-      <div className="w-[2px] h-[2px] bg-zinc-600 dark:bg-zinc-500"></div>
+    <div className={`${DOT_GAP} -translate-x-[1px] flex flex-col sm:-translate-x-[1.5px]`}>
+      <motion.span
+        key={`a-${beat}`}
+        className="block h-[2px] w-[2px] bg-zinc-500 dark:bg-zinc-400"
+        initial={{ opacity: 0.45 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.18, ease: EASE_DRAFT }}
+      />
+      <motion.span
+        key={`b-${beat}`}
+        className="block h-[2px] w-[2px] bg-zinc-500 dark:bg-zinc-400"
+        initial={{ opacity: 1 }}
+        animate={{ opacity: 0.45 }}
+        transition={{ duration: 0.18, ease: EASE_DRAFT }}
+      />
     </div>
+  );
+}
+
+function Digit({ value, index }: { value: string; index: number }) {
+  const reduce = useReducedMotion();
+
+  return (
+    // No overflow clipping: the dot-matrix glyphs sit close to the box edge and
+    // a hidden overflow would shave their terminals.
+    <span className="relative inline-block align-bottom">
+      <motion.span
+        // Re-keying on the character is what makes the digit re-enter.
+        key={value}
+        className="block will-change-transform"
+        initial={reduce ? undefined : { y: "-0.5em", opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{
+          duration: reduce ? 0 : 0.3,
+          ease: EASE_DRAFT,
+          delay: reduce ? 0 : index * 0.03,
+        }}
+      >
+        {value}
+      </motion.span>
+    </span>
   );
 }
 
 export function CurrentTime() {
   const [time, setTime] = useState<Date | null>(null);
+  const reduce = useReducedMotion();
 
   useEffect(() => {
-    const initialTimer = window.setTimeout(() => setTime(new Date()), 0);
-    const timer = setInterval(() => setTime(new Date()), 1000);
-    return () => {
-      window.clearTimeout(initialTimer);
-      clearInterval(timer);
-    };
+    const id = window.setInterval(() => setTime(new Date()), 1000);
+    return () => window.clearInterval(id);
   }, []);
 
-  if (!time) {
+  const parts = useMemo(() => {
+    if (!time) return null;
+    const pad = (n: number) => n.toString().padStart(2, "0");
+    return {
+      h: pad(time.getHours()),
+      m: pad(time.getMinutes()),
+      s: pad(time.getSeconds()),
+      beat: time.getSeconds(),
+    };
+  }, [time]);
+
+  const shell =
+    "bp-numeric flex items-center text-[20px] font-black tracking-[0.14em] text-zinc-600 sm:text-[24px] dark:text-zinc-400";
+
+  if (!parts) {
+    // Same footprint as the live clock, so nothing shifts on hydration.
     return (
-      <div className="flex items-center opacity-0">
-        <div 
-          className="text-[20px] sm:text-[24px] tracking-[0.15em] text-zinc-600 dark:text-zinc-500" 
-          style={{ fontFamily: '"Doto", monospace', fontWeight: 700 }}
-        >
+      <div className="flex h-6 items-center opacity-0" aria-hidden>
+        <span className={shell} style={{ fontFamily: "var(--font-doto), monospace" }}>
           00.00.00
-        </div>
+        </span>
       </div>
     );
   }
 
-  const hours = time.getHours().toString().padStart(2, "0");
-  const minutes = time.getMinutes().toString().padStart(2, "0");
-  const seconds = time.getSeconds().toString().padStart(2, "0");
-
   return (
-    <div className="flex items-center h-[24px]">
-      <div 
-        className="text-[20px] sm:text-[24px] tracking-[0.15em] flex items-center text-zinc-600 dark:text-zinc-500 h-full" 
-        style={{ fontFamily: '"Doto", monospace', fontWeight: 700 }}
+    <div className="flex h-6 items-center">
+      <div
+        className={shell}
+        style={{ fontFamily: "var(--font-doto), monospace" }}
+        role="timer"
+        aria-label={`Local time ${parts.h}:${parts.m}:${parts.s}`}
       >
-        <span>{hours}</span>
-        <TwoDots />
-        <span>{minutes}</span>
-        <TwoDots />
-        <span>{seconds}</span>
+        <Digit value={parts.h[0]} index={0} />
+        <Digit value={parts.h[1]} index={1} />
+        <TwoDots beat={reduce ? 0 : parts.beat} />
+        <Digit value={parts.m[0]} index={2} />
+        <Digit value={parts.m[1]} index={3} />
+        <TwoDots beat={reduce ? 0 : parts.beat} />
+        <Digit value={parts.s[0]} index={4} />
+        <Digit value={parts.s[1]} index={5} />
       </div>
     </div>
   );

@@ -1,49 +1,72 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import Image from "next/image";
 
+/**
+ * The stippled mountain plate used as the hero art on inner pages and as the
+ * page footer.
+ *
+ * The spotlight follows the cursor, but it writes CSS custom properties
+ * inside a rAF rather than pushing coordinates into React state — a
+ * mousemove used to re-render this subtree 60+ times a second.
+ */
 export function FooterBackground() {
-  const [mousePosition, setMousePosition] = useState({ x: -1000, y: -1000 });
-  const [isHovering, setIsHovering] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  const spotRef = useRef<HTMLDivElement>(null);
+  const frameRef = useRef(0);
+  const posRef = useRef({ x: -400, y: -400 });
+  const isHoveringRef = useRef(false);
 
   useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      if (!containerRef.current) return;
-      const rect = containerRef.current.getBoundingClientRect();
-      setMousePosition({
-        x: e.clientX - rect.left,
-        y: e.clientY - rect.top,
-      });
+    const container = containerRef.current;
+    const spot = spotRef.current;
+    if (!container) return;
+
+    const paint = () => {
+      frameRef.current = 0;
+      if (!spot) return;
+      const { x, y } = posRef.current;
+      spot.style.maskImage = `radial-gradient(200px circle at ${x}px ${y}px, black, transparent)`;
+      spot.style.webkitMaskImage = spot.style.maskImage;
+      spot.style.opacity = isHoveringRef.current ? "0.15" : "0";
     };
 
-    const handleMouseEnter = () => setIsHovering(true);
-    const handleMouseLeave = () => setIsHovering(false);
+    const onMove = (e: MouseEvent) => {
+      const rect = container.getBoundingClientRect();
+      posRef.current = { x: e.clientX - rect.left, y: e.clientY - rect.top };
+      if (!frameRef.current) frameRef.current = requestAnimationFrame(paint);
+    };
 
-    const container = containerRef.current;
-    if (container) {
-      container.addEventListener("mousemove", handleMouseMove);
-      container.addEventListener("mouseenter", handleMouseEnter);
-      container.addEventListener("mouseleave", handleMouseLeave);
-    }
+    const onEnter = () => {
+      isHoveringRef.current = true;
+      if (!frameRef.current) frameRef.current = requestAnimationFrame(paint);
+    };
+
+    const onLeave = () => {
+      isHoveringRef.current = false;
+      if (!frameRef.current) frameRef.current = requestAnimationFrame(paint);
+    };
+
+    container.addEventListener("mousemove", onMove, { passive: true });
+    container.addEventListener("mouseenter", onEnter);
+    container.addEventListener("mouseleave", onLeave);
 
     return () => {
-      if (container) {
-        container.removeEventListener("mousemove", handleMouseMove);
-        container.removeEventListener("mouseenter", handleMouseEnter);
-        container.removeEventListener("mouseleave", handleMouseLeave);
-      }
+      container.removeEventListener("mousemove", onMove);
+      container.removeEventListener("mouseenter", onEnter);
+      container.removeEventListener("mouseleave", onLeave);
+      if (frameRef.current) cancelAnimationFrame(frameRef.current);
     };
   }, []);
 
   return (
     <div
       ref={containerRef}
-      className="absolute inset-0 w-full h-full overflow-hidden select-none pointer-events-none"
+      className="pointer-events-none absolute inset-0 h-full w-full select-none overflow-hidden"
     >
-      {/* Light Mode: Mountain stippling blended smoothly into white */}
-      <div className="absolute inset-0 w-full h-full dark:hidden opacity-85 mix-blend-multiply">
+      {/* Light mode: mountain stippling blended smoothly into white */}
+      <div className="absolute inset-0 h-full w-full opacity-85 mix-blend-multiply dark:hidden">
         <Image
           src="/footer.jpg"
           alt=""
@@ -55,8 +78,8 @@ export function FooterBackground() {
         <div className="absolute inset-0 bg-gradient-to-t from-transparent via-transparent to-white/70" />
       </div>
 
-      {/* Dark Mode: Inverted silver-luminous stippled mountain peaks against pitch black */}
-      <div className="absolute inset-0 w-full h-full hidden dark:block opacity-90 mix-blend-screen">
+      {/* Dark mode: inverted silver-luminous peaks against the cool ink */}
+      <div className="absolute inset-0 hidden h-full w-full opacity-90 mix-blend-screen dark:block">
         <Image
           src="/footer.jpg"
           alt=""
@@ -65,18 +88,20 @@ export function FooterBackground() {
           quality={95}
           className="object-cover object-bottom invert brightness-110 contrast-125"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-transparent via-transparent to-black/70" />
+        {/* Fade top and bottom so the plate dissolves into the page instead of
+            ending on a hard rectangular cut. */}
+        <div className="absolute inset-0 bg-gradient-to-t from-transparent via-transparent to-[#080a0f]/70" />
+        <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#080a0f] to-transparent" />
       </div>
 
-      {/* Subtle interactive hover spotlight effect */}
+      {/* Cursor spotlight */}
       <div
-        className="absolute inset-0 w-full h-full pointer-events-none transition-opacity duration-500 ease-in-out hidden md:block"
+        ref={spotRef}
+        aria-hidden
+        className="pointer-events-none absolute inset-0 hidden h-full w-full opacity-0 transition-opacity duration-500 ease-in-out md:block"
         style={{
           background: "radial-gradient(circle, currentColor 1px, transparent 1px)",
           backgroundSize: "16px 16px",
-          opacity: isHovering ? 0.15 : 0,
-          maskImage: `radial-gradient(200px circle at ${mousePosition.x}px ${mousePosition.y}px, black, transparent)`,
-          WebkitMaskImage: `radial-gradient(200px circle at ${mousePosition.x}px ${mousePosition.y}px, black, transparent)`,
         }}
       />
     </div>

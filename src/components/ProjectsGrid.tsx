@@ -1,11 +1,11 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useTheme } from "next-themes";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { motion, AnimatePresence } from "framer-motion";
-import { X } from "lucide-react";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { X, Play } from "lucide-react";
 
 import {
   type TechIcon,
@@ -16,6 +16,8 @@ import {
   techNames,
   projectsData,
 } from "@/data/projectsData";
+import { EASE_DRAFT } from "@/lib/motion";
+import { cn } from "@/lib/utils";
 
 export {
   type TechIcon,
@@ -41,18 +43,28 @@ export const ProjectCard = ({
   const [isMobile, setIsMobile] = useState(false);
   const { resolvedTheme } = useTheme();
   const router = useRouter();
+  const reduce = useReducedMotion();
+  const cardRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const checkMobile = () => {
-      const mobile = window.innerWidth < 768 || window.matchMedia('(pointer: coarse)').matches;
+      const mobile = window.innerWidth < 768 || window.matchMedia("(pointer: coarse)").matches;
       setIsMobile(mobile);
-      if (mobile) {
-        setShouldLoadHoverImage(true);
-      }
+      if (mobile) setShouldLoadHoverImage(true);
     };
     checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
+  // Cursor-tracked spotlight. Written straight to the node's custom
+  // properties inside the event handler — no state, no re-render.
+  const handlePointerMove = useCallback((event: React.PointerEvent<HTMLDivElement>) => {
+    const el = cardRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    el.style.setProperty("--px", `${((event.clientX - rect.left) / rect.width) * 100}%`);
+    el.style.setProperty("--py", `${((event.clientY - rect.top) / rect.height) * 100}%`);
   }, []);
 
   const imageSrc = resolvedTheme === "light" && project.lightModeSrc ? project.lightModeSrc : project.src;
@@ -60,56 +72,96 @@ export const ProjectCard = ({
   const isNotStarted = project.title === "Inquiro";
   const isBuilding = project.title === "Blueprint" || project.title === "Scribble3D";
   const statusColor = isNotStarted ? "bg-zinc-400" : isBuilding ? "bg-red-500" : "bg-emerald-500";
-  const statusLabel = isNotStarted ? "Not Started" : isBuilding ? "Building" : "Live";
+  const statusLabel = isNotStarted ? "Not started" : isBuilding ? "Building" : "Live";
 
   return (
-    <div
-      className="flex flex-col group cursor-pointer"
-      onClick={() => router.push(`/projects/${project.slug}`)}
+    <motion.article
+      className="flex flex-col"
+      initial={reduce ? undefined : { opacity: 0, y: 26, scale: 0.97 }}
+      whileInView={{ opacity: 1, y: 0, scale: 1 }}
+      viewport={{ once: true, amount: 0.25 }}
+      transition={{ duration: 0.65, ease: EASE_DRAFT }}
       onMouseEnter={() => setShouldLoadHoverImage(true)}
       onFocus={() => setShouldLoadHoverImage(true)}
-      onTouchStart={() => setShouldLoadHoverImage(true)}
     >
-      {/* Outer Wrapper exactly like screenshot */}
       <motion.div
-        className="relative w-full aspect-[1.35] rounded-xl border border-black/5 dark:border-white/5 bg-zinc-50/80 dark:bg-[#09090b]/80 shadow-sm p-3.5 pb-0 flex flex-col overflow-hidden transition-all duration-300 hover:shadow-md hover:border-black/10 dark:hover:border-white/10 sm:aspect-[1.5] sm:p-4 sm:pb-0"
+        ref={cardRef}
+        onPointerMove={handlePointerMove}
+        role="link"
+        tabIndex={0}
+        aria-label={`${project.title} — ${project.description}`}
+        onClick={() => router.push(`/projects/${project.slug}`)}
+        onKeyDown={(event) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            router.push(`/projects/${project.slug}`);
+          }
+        }}
+        className={cn(
+          "group relative flex aspect-[1.35] w-full cursor-pointer flex-col overflow-hidden rounded-xl border border-black/5 p-3.5 pb-0 outline-offset-4 sm:aspect-[1.5] sm:p-4 sm:pb-0",
+          "bg-ink-sunken/80 transition-[border-color,box-shadow,transform] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]",
+          "hover:-translate-y-1 hover:border-black/10 hover:shadow-lg hover:shadow-black/[0.06]",
+          "dark:border-white/5 dark:bg-ink-sunken/80 dark:hover:border-white/15 dark:hover:shadow-black/40",
+        )}
+        variants={{ rest: {}, hover: {} }}
         initial="rest"
+        animate={isMobile ? "hover" : "rest"}
         whileHover={isMobile ? undefined : "hover"}
-        whileInView={isMobile ? "hover" : undefined}
-        viewport={isMobile ? { once: false, amount: 0.4 } : undefined}
-        animate="rest"
       >
-        <div className="flex items-center justify-end z-10 min-h-[24px]">
+        {/* Cursor spotlight */}
+        <span
+          aria-hidden
+          className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+          style={{
+            background:
+              "radial-gradient(240px circle at var(--px, 50%) var(--py, 50%), rgba(0,0,0,0.05), transparent 70%)",
+          }}
+        />
+        <span
+          aria-hidden
+          className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100 dark:opacity-0"
+          style={{
+            background:
+              "radial-gradient(240px circle at var(--px, 50%) var(--py, 50%), rgba(255,255,255,0.05), transparent 70%)",
+          }}
+        />
+
+        <div className="z-10 flex min-h-[24px] items-center justify-end">
           {project.hasPin && (
-            <div className="w-6 h-6 rounded-[6px] bg-transparent border border-zinc-200/80 dark:border-zinc-800/80 flex items-center justify-center text-zinc-400 dark:text-zinc-500">
-              <svg viewBox="0 0 24 24" className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M12 17v5" /><path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z" />
+            <span className="flex h-6 w-6 items-center justify-center rounded-[6px] border border-zinc-200/80 text-zinc-400 transition-colors duration-200 group-hover:border-zinc-300 group-hover:text-zinc-600 dark:border-zinc-800/80 dark:text-zinc-500 dark:group-hover:border-zinc-700 dark:group-hover:text-zinc-300">
+              <svg
+                viewBox="0 0 24 24"
+                className="h-3.5 w-3.5"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M12 17v5" />
+                <path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a2 2 0 0 0 1 1h12a2 2 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a2 2 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 2 0 0 1 1 1z" />
               </svg>
-            </div>
+            </span>
           )}
         </div>
 
-        {/* Ambient Hover Background */}
-        <motion.div
+        {/* Ambient plate */}
+        <motion.span
           className="absolute inset-0 bg-cover bg-center"
           style={{
-            backgroundImage: shouldLoadHoverImage
-              && project.backgroundImage
-              ? `url('${project.backgroundImage}')`
-              : undefined,
+            backgroundImage:
+              shouldLoadHoverImage && project.backgroundImage
+                ? `url('${project.backgroundImage}')`
+                : undefined,
             backgroundSize: "cover",
             backgroundPosition: "center",
           }}
-          variants={{
-            rest: { opacity: 0, scale: 1 },
-            hover: { opacity: 1, scale: 1.05 },
-          }}
-          transition={{ duration: 0.3, ease: "easeOut" }}
+          variants={{ rest: { opacity: 0, scale: 1 }, hover: { opacity: 1, scale: 1.05 } }}
+          transition={{ duration: 0.35, ease: EASE_DRAFT }}
         />
-
         {project.video && (
-          <motion.h1
-            className="absolute top-4 left-4 text-[10px] font-bold text-zinc-500 dark:text-zinc-400 z-30 uppercase tracking-widest drop-shadow-[0_2px_4px_rgba(0,0,0,0.4)]"
+          <motion.span
+            className="absolute left-4 top-4 z-30 text-[10px] font-bold uppercase tracking-widest text-zinc-500 drop-shadow-[0_2px_4px_rgba(0,0,0,0.4)] dark:text-zinc-400"
             variants={{
               rest: { left: "1rem", top: "1rem", x: "0%", color: "#71717a", opacity: 0 },
               hover: { left: "50%", top: "25%", x: "-50%", color: "#ffffff", opacity: 1 },
@@ -117,39 +169,47 @@ export const ProjectCard = ({
             transition={{ type: "spring", stiffness: 200, damping: 25 }}
           >
             Play Video
-          </motion.h1>
+          </motion.span>
         )}
 
         {project.video && (
-          <motion.div
-            className="absolute inset-0 z-40 flex items-center justify-center pointer-events-none group-hover:pointer-events-auto"
+          <motion.span
+            className="pointer-events-none absolute inset-0 z-40 flex items-center justify-center"
             variants={{ rest: { scale: 0.5, opacity: 0 }, hover: { scale: 1, opacity: 1 } }}
             transition={{ type: "spring", stiffness: 300, damping: 20, delay: 0.05 }}
           >
-            <div 
-              className="h-10 w-10 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg cursor-pointer hover:scale-110 active:scale-95 transition-transform duration-200 border border-white/50"
-              onClick={(e) => {
-                e.stopPropagation();
+            <span
+              role="button"
+              tabIndex={isMobile ? 0 : -1}
+              aria-label="Play video"
+              onClick={(event) => {
+                event.stopPropagation();
                 if (project.video) setActiveVideo(project.video);
               }}
+              onKeyDown={(event) => {
+                if (event.key === "Enter" || event.key === " ") {
+                  event.preventDefault();
+                  event.stopPropagation();
+                  if (project.video) setActiveVideo(project.video);
+                }
+              }}
+              className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-white/50 bg-white/90 shadow-lg backdrop-blur-sm transition-transform duration-200 hover:scale-110 active:scale-95"
             >
-              <svg className="w-4 h-4 text-zinc-900 ml-0.5 fill-current" viewBox="0 0 24 24">
-                <path d="M5.25 5.653v12.694c0 .856.926 1.39 1.668.958l11.1-6.347a1.125 1.125 0 000-1.916L6.918 4.695c-.742-.432-1.668.102-1.668.958z" />
-              </svg>
-            </div>
-          </motion.div>
+              <Play className="ml-0.5 h-4 w-4 fill-zinc-900 text-zinc-900" />
+            </span>
+          </motion.span>
         )}
 
-        {/* Floating screenshot sitting directly at the bottom of the outer wrapper */}
-        <motion.div
-          className="absolute bottom-0 left-1/2 w-[85%] rounded-t-[10px] bg-white dark:bg-[#0a0a0a] p-0 shadow-[0_-8px_30px_rgba(0,0,0,0.06)] dark:shadow-[0_-8px_30px_rgba(0,0,0,0.5)] z-20 border border-black/5 dark:border-white/[0.15] border-b-0"
+        {/* Floating screenshot, seated in the bottom of the plate */}
+        <motion.span
+          className="absolute bottom-0 left-1/2 z-20 w-[85%] rounded-t-[10px] border border-b-0 border-black/5 bg-white shadow-[0_-8px_30px_rgba(0,0,0,0.06)] dark:border-white/15 dark:bg-[#0a0d13] dark:shadow-[0_-8px_30px_rgba(0,0,0,0.5)]"
           variants={{
             rest: { height: "78%", y: 0, x: "-50%" },
-            hover: { height: "72%", y: 4, x: "-50%" },
+            hover: { height: "72%", y: 6, x: "-50%" },
           }}
           transition={{ type: "spring", stiffness: 260, damping: 20 }}
         >
-          <div className="size-full overflow-hidden rounded-t-[9px]">
+          <span className="block size-full overflow-hidden rounded-t-[9px]">
             <Image
               src={imageSrc}
               alt={`${project.title} preview`}
@@ -160,27 +220,38 @@ export const ProjectCard = ({
               quality={70}
               className="size-full object-contain object-top"
             />
-          </div>
-        </motion.div>
+          </span>
+        </motion.span>
       </motion.div>
 
-      {/* Content Area directly below the wrapper */}
-      <div className="mt-4 flex flex-col px-0.5">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-0">
-          <h3 className="text-[15px] font-bold text-zinc-900 dark:text-zinc-100 leading-tight">{project.title}</h3>
+      {/* Caption */}
+      <div className="mt-4 flex flex-col px-0.5">        <div className="flex flex-col justify-between gap-2 sm:flex-row sm:items-center sm:gap-0">
+          <h3 className="text-[15px] font-bold leading-tight text-zinc-900 dark:text-zinc-100">
+            {project.title}
+          </h3>
 
-          <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-full border border-zinc-200/50 dark:border-zinc-800/50 bg-white dark:bg-zinc-900/50 w-fit shrink-0">
-            <div className={`w-1.5 h-1.5 rounded-full ${statusColor}`} />
+          <div className="flex w-fit shrink-0 items-center gap-1.5 rounded-full border border-zinc-200/50 bg-white px-2 py-0.5 dark:border-zinc-800/50 dark:bg-ink-raised">
+            <span className="relative flex h-1.5 w-1.5">
+              {isBuilding && (
+                <span
+                  className={cn(
+                    "absolute inline-flex h-full w-full animate-ping rounded-full opacity-70",
+                    statusColor,
+                  )}
+                />
+              )}
+              <span className={cn("relative inline-flex h-1.5 w-1.5 rounded-full", statusColor)} />
+            </span>
             <span className="text-[11px] font-medium text-zinc-500 dark:text-zinc-400">{statusLabel}</span>
           </div>
         </div>
 
-        <p className="mt-2 sm:mt-1.5 text-[13px] text-zinc-500 dark:text-zinc-400 leading-relaxed pr-2">
+        <p className="mt-1.5 pr-2 text-pretty text-[13px] leading-relaxed text-zinc-500 sm:mt-2 dark:text-zinc-400">
           {project.description}
         </p>
 
-        <div className="flex items-center justify-between gap-3 mt-3">
-          <div className="flex gap-2 flex-wrap flex-1">
+        <div className="mt-3 flex items-center justify-between gap-3">
+          <div className="flex flex-1 flex-wrap gap-2">
             {project.tech.map((item) => {
               const key = typeof item === "string" ? item : item.label;
               const isIconItem = typeof item === "string";
@@ -188,7 +259,7 @@ export const ProjectCard = ({
               const uniqueId = `${project.title}-${key}`;
 
               return (
-                <div
+                <span
                   key={key}
                   className="relative"
                   onMouseEnter={() => setHoveredTech(uniqueId)}
@@ -197,120 +268,159 @@ export const ProjectCard = ({
                   {isIconItem ? (
                     (() => {
                       const TechIcon = iconMap[item];
-                      return <TechIcon className="w-4 h-4 md:w-3.5 md:h-3.5 text-zinc-400 dark:text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200 transition-colors" />;
+                      return (
+                        <TechIcon className="h-4 w-4 text-zinc-400 transition-colors duration-200 hover:text-zinc-800 md:h-3.5 md:w-3.5 dark:text-zinc-500 dark:hover:text-zinc-200" />
+                      );
                     })()
                   ) : (
-                    <span className="px-1.5 py-0.5 rounded border border-black/30 dark:border-white/[0.15] text-[9px] text-zinc-500 dark:text-zinc-400 leading-none">
+                    <span className="rounded border border-black/30 px-1.5 py-0.5 text-[9px] leading-none text-zinc-500 dark:border-white/15 dark:text-zinc-400">
                       {item.label}
                     </span>
                   )}
                   <AnimatePresence>
                     {hoveredTech === uniqueId && (
-                      <motion.div
+                      <motion.span
                         initial={{ opacity: 0, y: 5 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: 5 }}
-                        className="absolute -top-7 left-1/2 -translate-x-1/2 z-50 pointer-events-none"
+                        transition={{ duration: 0.16, ease: EASE_DRAFT }}
+                        className="pointer-events-none absolute -top-7 left-1/2 z-50 -translate-x-1/2"
                       >
-                        <div className="bg-zinc-800 dark:bg-zinc-100 text-zinc-100 dark:text-zinc-900 text-[10px] px-2 py-0.5 rounded shadow-xl whitespace-nowrap">
+                        <span className="block whitespace-nowrap rounded bg-zinc-800 px-2 py-0.5 text-[10px] text-zinc-100 shadow-xl dark:bg-zinc-100 dark:text-zinc-900">
                           {tooltipText}
-                        </div>
-                      </motion.div>
+                        </span>
+                      </motion.span>
                     )}
                   </AnimatePresence>
-                </div>
+                </span>
               );
             })}
           </div>
 
-          <div className="flex shrink-0 items-center gap-1 text-[11px] font-medium text-zinc-500 transition-colors cursor-pointer group-hover:text-zinc-800 dark:group-hover:text-zinc-200 sm:text-[12px]" onClick={(e) => { e.stopPropagation(); if (project.live) window.open(project.live, "_blank"); else if (project.github) window.open(project.github, "_blank"); }}>
+          <button
+            type="button"
+            onClick={(event) => {
+              event.stopPropagation();
+              const href = project.live ?? project.github;
+              if (href) window.open(href, "_blank", "noopener,noreferrer");
+            }}
+            className="group/link flex shrink-0 cursor-pointer items-center gap-1 text-[11px] font-medium text-zinc-500 transition-colors duration-200 hover:text-zinc-900 sm:text-[12px] dark:group-hover:text-zinc-200"
+          >
             View Project
-            <svg viewBox="0 0 24 24" className="w-3 h-3" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <line x1="7" y1="17" x2="17" y2="7"></line>
-              <polyline points="7 7 17 7 17 17"></polyline>
+            <svg
+              viewBox="0 0 24 24"
+              className="h-3 w-3 transition-transform duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <line x1="7" y1="17" x2="17" y2="7" />
+              <polyline points="7 7 17 7 17 17" />
             </svg>
-          </div>
+          </button>
         </div>
       </div>
-    </div>
+    </motion.article>
   );
 };
+
+/** Shared lightbox for project videos. */
+export function VideoModal({
+  src,
+  onClose,
+}: {
+  src: string | null;
+  onClose: () => void;
+}) {
+  useEffect(() => {
+    if (!src) return;
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
+    window.addEventListener("keydown", onKey);
+    document.body.style.overflow = "hidden";
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = "";
+    };
+  }, [src, onClose]);
+
+  return (
+    <AnimatePresence>
+      {src && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.2 }}
+          onClick={onClose}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Project video"
+          className="fixed inset-0 z-[100] flex cursor-pointer items-center justify-center bg-black/80 backdrop-blur-md"
+        >
+          <motion.div
+            initial={{ scale: 0.96, opacity: 0, y: 12 }}
+            animate={{ scale: 1, opacity: 1, y: 0 }}
+            exit={{ scale: 0.97, opacity: 0, y: 8 }}
+            transition={{ duration: 0.3, ease: EASE_DRAFT }}
+            onClick={(e) => e.stopPropagation()}
+            className="relative w-[92%] max-w-3xl overflow-hidden rounded-xl bg-black shadow-2xl"
+          >
+            <button
+              type="button"
+              onClick={onClose}
+              aria-label="Close video"
+              className="absolute right-3 top-3 z-50 cursor-pointer rounded-full bg-neutral-800/80 p-2 transition-colors duration-200 hover:bg-neutral-700"
+            >
+              <X size={18} className="text-neutral-200" />
+            </button>
+
+            {src.includes("youtube") ? (
+              <iframe
+                src={src}
+                title="Project video"
+                className="aspect-video w-full border-0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+            ) : (
+              <video src={src} className="h-auto w-full" controls autoPlay playsInline />
+            )}
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}
 
 export function ProjectsGrid() {
   const [activeVideo, setActiveVideo] = useState<string | null>(null);
 
-  useEffect(() => {
-    const handler = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setActiveVideo(null);
-    };
-    window.addEventListener("keydown", handler);
-    return () => window.removeEventListener("keydown", handler);
-  }, []);
-
   return (
     <>
-      <div className="flex flex-col relative z-10 w-full">
-        {/* Row 1 */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-10 md:gap-y-0 pb-10 md:pb-6">
+      <div className="relative z-10 flex w-full flex-col">
+        <div className="grid grid-cols-1 gap-x-10 gap-y-10 pb-10 md:grid-cols-2 md:gap-y-0 md:pb-6">
           {projectsData.slice(0, 2).map((project) => (
             <ProjectCard key={project.title} project={project} setActiveVideo={setActiveVideo} />
           ))}
         </div>
 
-        {/* Middle Horizontal Line Container */}
-        <div className="relative w-full h-0 hidden md:block">
-          <div className="absolute left-[-100vw] right-[-100vw] h-0 border-b border-black/30 dark:border-white/[0.15] pointer-events-none" style={{ maskImage: 'repeating-linear-gradient(to right, black 0, black 1px, transparent 1px, transparent 6px)', WebkitMaskImage: 'repeating-linear-gradient(to right, black 0, black 1px, transparent 1px, transparent 6px)' }} />
-          {/* Intersections */}
-          <div className="absolute top-0 -left-4 w-[2px] h-[2px] bg-black/40 dark:bg-white/[0.25] -translate-x-1/2 -translate-y-1/2 pointer-events-none z-20" />
-          <div className="absolute top-0 -right-4 w-[2px] h-[2px] bg-black/40 dark:bg-white/[0.25] translate-x-1/2 -translate-y-1/2 pointer-events-none z-20" />
-          <div className="absolute top-0 left-1/2 w-[2px] h-[2px] bg-black/40 dark:bg-white/[0.25] -translate-x-1/2 -translate-y-1/2 pointer-events-none z-20" />
+        <div className="relative hidden h-0 w-full md:block">
+          <div className="bp-rule-h absolute -inset-x-[100vw] bottom-0 border-b" />
+          <span className="bp-node pointer-events-none absolute left-0 top-0 z-20 h-[2px] w-[2px] -translate-x-1/2 -translate-y-1/2" />
+          <span className="bp-node pointer-events-none absolute left-1/2 top-0 z-20 h-[2px] w-[2px] -translate-x-1/2 -translate-y-1/2" />
+          <span className="bp-node pointer-events-none absolute right-0 top-0 z-20 h-[2px] w-[2px] translate-x-1/2 -translate-y-1/2" />
         </div>
 
-        {/* Row 2 */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-10 md:gap-y-0 pt-0 md:pt-6">
+        <div className="grid grid-cols-1 gap-x-10 gap-y-10 pt-0 md:grid-cols-2 md:gap-y-0 md:pt-6">
           {projectsData.slice(2, 4).map((project) => (
             <ProjectCard key={project.title} project={project} setActiveVideo={setActiveVideo} />
           ))}
         </div>
       </div>
 
-      {/* MODAL */}
-      <AnimatePresence>
-        {activeVideo && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setActiveVideo(null)}
-            className="fixed inset-0 bg-black/70 backdrop-blur-md flex items-center justify-center z-[100] cursor-pointer"
-          >
-            <motion.div
-              initial={{ scale: 0.95, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.95, opacity: 0 }}
-              onClick={(e) => e.stopPropagation()}
-              className="relative bg-black rounded-xl overflow-hidden w-[90%] max-w-3xl shadow-2xl"
-            >
-              <button
-                onClick={() => setActiveVideo(null)}
-                className="absolute top-3 right-3 p-2 bg-neutral-800/80 hover:bg-neutral-700 rounded-full cursor-pointer transition-colors z-50"
-              >
-                <X size={20} className="text-neutral-200" />
-              </button>
-
-              {activeVideo.includes("youtube") ? (
-                <iframe
-                  src={activeVideo}
-                  className="w-full aspect-video border-0"
-                  allowFullScreen
-                ></iframe>
-              ) : (
-                <video src={activeVideo} className="w-full h-auto" controls autoPlay />
-              )}
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <VideoModal src={activeVideo} onClose={() => setActiveVideo(null)} />
     </>
   );
 }

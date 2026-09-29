@@ -101,10 +101,27 @@ export function BannerParticles() {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
+    // Honour the OS-level motion preference: a static scatter of motes is
+    // the same image, minus the drift.
+    const reduceMotion =
+      typeof window !== "undefined" &&
+      window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+
+    // Scale the emitter down on small/coarse-pointer devices.
+    const isCompact =
+      window.innerWidth < 768 || window.matchMedia?.("(pointer: coarse)").matches;
+    const particleCount = reduceMotion
+      ? Math.round(settings.particleCount * 0.4)
+      : isCompact
+        ? Math.round(settings.particleCount * 0.55)
+        : settings.particleCount;
+
     let width = 0;
     let height = 0;
     let animationFrameId: number;
     let isUnmounted = false;
+    let isVisible = true;
+    let time = 0;
 
     updateCache();
     const particleImage = createDefaultImage();
@@ -166,24 +183,24 @@ export function BannerParticles() {
         this.spinY = (Math.random() - 0.5) * 0.1;
       }
 
-      update() {
+      update(dt = 1) {
         const targetSpeed = cache.minWind + (cache.maxWind - cache.minWind) * this.windFactor;
         this.vx += (targetSpeed - this.vx) * 0.1;
-        this.x += this.vx * settings.direction;
+        this.x += this.vx * settings.direction * dt;
 
         const gravityMod = 1.5 - this.windFactor;
-        this.vy += settings.gravity * 0.05 * gravityMod;
+        this.vy += settings.gravity * 0.05 * gravityMod * dt;
 
         const wave = Math.sin(this.x * 0.01 * settings.direction + this.waveOffset);
-        this.vy += wave * settings.turbulence * 0.05;
+        this.vy += wave * settings.turbulence * 0.05 * dt;
         this.vy *= 0.98;
 
-        this.y += this.vy;
-        this.angleZ += this.spinZ + this.vx * 0.002;
+        this.y += this.vy * dt;
+        this.angleZ += (this.spinZ + this.vx * 0.002) * dt;
 
         if (settings.tumbleStrength > 0) {
-          this.angleX += this.spinX * settings.tumbleStrength;
-          this.angleY += this.spinY * settings.tumbleStrength;
+          this.angleX += this.spinX * settings.tumbleStrength * dt;
+          this.angleY += this.spinY * settings.tumbleStrength * dt;
         }
 
         const buffer = 200;
@@ -215,8 +232,12 @@ export function BannerParticles() {
     const resize = () => {
       const parent = canvas.parentElement;
       if (parent) {
-        width = canvas.width = parent.clientWidth;
-        height = canvas.height = parent.clientHeight;
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        width = parent.clientWidth;
+        height = parent.clientHeight;
+        canvas.width = Math.round(width * dpr);
+        canvas.height = Math.round(height * dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
         ctx.imageSmoothingEnabled = true;
         ctx.imageSmoothingQuality = "high";
       }
@@ -224,7 +245,7 @@ export function BannerParticles() {
 
     const initParticles = () => {
       particles = [];
-      for (let i = 0; i < settings.particleCount; i++) {
+      for (let i = 0; i < particleCount; i++) {
         // Init half on screen for immediate effect, half off screen
         const initOnScreen = Math.random() > 0.5;
         const particle = new Particle(initOnScreen);
@@ -232,29 +253,67 @@ export function BannerParticles() {
       }
     };
 
-    const animate = () => {
-      if (isUnmounted) return;
+    const drawFrame = (dt: number) => {
       ctx.clearRect(0, 0, width, height);
-
       for (const particle of particles) {
-        particle.update();
+        particle.update(dt);
         particle.draw();
       }
-
-      animationFrameId = requestAnimationFrame(animate);
     };
 
-    setTimeout(() => {
+    const animate = () => {
       if (isUnmounted) return;
+      animationFrameId = requestAnimationFrame(animate);
+
+      // Don't burn frames on a hero that has scrolled away.
+      if (!isVisible) return;
+
+      const now = performance.now();
+      const dt = Math.min((now - time) / 16.6667, 3);
+      time = now;
+      drawFrame(dt);
+    };
+
+    const start = () => {
       resize();
       initParticles();
+      if (reduceMotion) {
+        // Settle the field to a believable arrangement, then hold it.
+        for (let i = 0; i < 240; i++) {
+          for (const particle of particles) particle.update(1.6);
+        }
+        drawFrame(1);
+        return;
+      }
+      time = performance.now();
       animate();
+    };
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isVisible = entry.isIntersecting;
+      },
+      { threshold: 0 },
+    );
+    observer.observe(canvas);
+
+    const onVisibility = () => {
+      if (!document.hidden) time = performance.now();
+    };
+    document.addEventListener("visibilitychange", onVisibility);
+
+    const startId = window.setTimeout(() => {
+      if (isUnmounted) return;
+      start();
     }, 0);
 
     window.addEventListener("resize", resize);
 
     return () => {
       isUnmounted = true;
+      window.clearTimeout(startId);
+      observer.disconnect();
+      document.removeEventListener("visibilitychange", onVisibility);
       window.removeEventListener("resize", resize);
       if (animationFrameId) {
         cancelAnimationFrame(animationFrameId);

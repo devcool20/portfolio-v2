@@ -1,6 +1,8 @@
 "use client";
 
 import React, { useEffect, useMemo, useState } from "react";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { EASE_DRAFT } from "@/lib/motion";
 
 interface ContributionDay {
   contributionCount: number;
@@ -26,12 +28,42 @@ interface TooltipState {
   y: number;
 }
 
+/** Ease a number toward its target so the total counts up rather than snapping. */
+function useCountUp(target: number, paused: boolean) {
+  const [value, setValue] = useState(0);
+
+  useEffect(() => {
+    if (paused) return;
+
+    const reduce =
+      typeof window !== "undefined" &&
+      window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+
+    let frame = 0;
+    const start = performance.now();
+    const duration = reduce ? 0 : 700;
+
+    const tick = (now: number) => {
+      const t = duration === 0 ? 1 : Math.min(1, (now - start) / duration);
+      const eased = 1 - Math.pow(1 - t, 3);
+      setValue(Math.round(target * eased));
+      if (t < 1) frame = requestAnimationFrame(tick);
+    };
+
+    frame = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frame);
+  }, [target, paused]);
+
+  return value;
+}
+
 export function GithubGraph() {
   const [weeks, setWeeks] = useState<ContributionWeek[]>([]);
   const [months, setMonths] = useState<ContributionMonth[]>([]);
   const [totalContributions, setTotalContributions] = useState(0);
   const [loading, setLoading] = useState(true);
   const [tooltip, setTooltip] = useState<TooltipState | null>(null);
+  const reduce = useReducedMotion();
 
   const emptyWeeks = useMemo<ContributionWeek[]>(() => {
     const today = new Date();
@@ -160,12 +192,7 @@ export function GithubGraph() {
     }).format(new Date(`${date}T00:00:00`));
   };
 
-  const showTooltip = (
-    day: ContributionDay,
-    event:
-      | React.MouseEvent<HTMLDivElement>
-      | React.FocusEvent<HTMLDivElement>
-  ) => {
+  const showTooltip = (day: ContributionDay, event: React.SyntheticEvent<HTMLElement>) => {
     const rect = event.currentTarget.getBoundingClientRect();
     setTooltip({
       count: day.contributionCount,
@@ -182,54 +209,55 @@ export function GithubGraph() {
     loading && totalContributions === 0
       ? "Loading GitHub contribution activity"
       : `${totalContributions} GitHub activities in the last year`;
-  const dashedLineMask = {
-    maskImage: "repeating-linear-gradient(to right, black 0, black 1px, transparent 1px, transparent 6px)",
-    WebkitMaskImage: "repeating-linear-gradient(to right, black 0, black 1px, transparent 1px, transparent 6px)",
-  };
+
+  // Animate the total up to its real value rather than snapping it in.
+  const counter = useCountUp(totalContributions, loading && totalContributions === 0);
 
   return (
     <section
-      className="relative z-10 mt-6 flex flex-col scroll-mt-24"
+      className="relative z-10 flex flex-col scroll-mt-24"
       aria-labelledby="github-activity-title"
       aria-describedby="github-activity-summary"
     >
       {/* Top full-width dashed line */}
-      <div
-        className="absolute top-0 left-[-100vw] right-[-100vw] h-0 border-t border-black/30 pointer-events-none dark:border-white/[0.15]"
-        style={dashedLineMask}
-      />
-      <div className="absolute top-0 -left-4 z-20 size-[2px] -translate-x-1/2 -translate-y-1/2 bg-black/50 pointer-events-none dark:bg-white/[0.25]" />
-      <div className="absolute top-0 -right-4 z-20 size-[2px] translate-x-1/2 -translate-y-1/2 bg-black/50 pointer-events-none dark:bg-white/[0.25]" />
+      <div className="bp-rule-h pointer-events-none absolute -inset-x-[100vw] top-0 border-t" />
+      <div className="bp-node pointer-events-none absolute left-0 top-0 z-20 h-[2px] w-[2px] -translate-x-1/2 -translate-y-1/2" />
+      <div className="bp-node pointer-events-none absolute right-0 top-0 z-20 h-[2px] w-[2px] translate-x-1/2 -translate-y-1/2" />
 
       {/* Heading */}
       <div className="relative py-2">
         <div className="flex items-center justify-between gap-3">
-          <h2 id="github-activity-title" className="text-[18px] font-bold text-zinc-900 dark:text-zinc-100 tracking-tight">
+          <h2 id="github-activity-title" className="text-[18px] font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
             GitHub Activity
           </h2>
-          <p className="text-right text-[11px] text-zinc-500 dark:text-zinc-400" aria-live="polite">
-            {graphStatus}
+          <p className="text-right text-[11px] tabular-nums text-zinc-500 dark:text-zinc-400" aria-live="polite">
+            {loading && totalContributions === 0
+              ? graphStatus
+              : `${counter.toLocaleString()} GitHub activities in the last year`}
           </p>
         </div>
 
         {/* Bottom full-width dashed line under heading */}
-        <div
-          className="absolute bottom-0 left-[-100vw] right-[-100vw] h-0 border-b border-black/30 pointer-events-none dark:border-white/[0.15]"
-          style={dashedLineMask}
-        />
-        <div className="absolute bottom-0 -left-4 z-20 size-[2px] -translate-x-1/2 translate-y-1/2 bg-black/50 pointer-events-none dark:bg-white/[0.25]" />
-        <div className="absolute bottom-0 -right-4 z-20 size-[2px] translate-x-1/2 translate-y-1/2 bg-black/50 pointer-events-none dark:bg-white/[0.25]" />
+        <div className="bp-rule-h pointer-events-none absolute -inset-x-[100vw] bottom-0 border-b" />
+        <div className="bp-node pointer-events-none absolute bottom-0 left-0 z-20 h-[2px] w-[2px] -translate-x-1/2 translate-y-1/2" />
+        <div className="bp-node pointer-events-none absolute bottom-0 right-0 z-20 h-[2px] w-[2px] translate-x-1/2 translate-y-1/2" />
       </div>
 
       <p id="github-activity-summary" className="sr-only">
-        Calendar heatmap showing daily GitHub contribution counts for devcool20 over the last year. Scroll horizontally to inspect all weeks.
+        Calendar heatmap showing daily GitHub contribution counts for devcool20 over the last year.
       </p>
 
-      {/* Graph content — sits directly on the page background */}
-      <div className="relative py-4">
+      {/* Graph content */}
+      <motion.div
+        className="relative py-4"
+        initial={reduce ? undefined : { opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ duration: 0.6, ease: EASE_DRAFT }}
+      >
         <div className="w-full">
           <div>
-            <div className="mb-2 flex w-full justify-between text-[10px] text-zinc-400 dark:text-zinc-500">
+            <div className="mb-2 flex w-full justify-between text-[10px] text-zinc-500 dark:text-zinc-500">
               {displayMonths.map((month, index) => (
                 <span key={`${month}-${index}`}>{month}</span>
               ))}
@@ -248,7 +276,18 @@ export function GithubGraph() {
                     </div>
                   ))
                 : graphWeeks.map((week, colIndex) => (
-                    <div key={colIndex} className="flex flex-col gap-[2px]">
+                    <motion.div
+                      key={colIndex}
+                      className="flex flex-col gap-[2px]"
+                      initial={reduce ? undefined : { opacity: 0, y: 6 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true, amount: 0.1 }}
+                      transition={{
+                        duration: 0.4,
+                        ease: EASE_DRAFT,
+                        delay: reduce ? 0 : Math.min(colIndex, 26) * 0.014,
+                      }}
+                    >
                       {colIndex === 0 &&
                         Array.from({ length: 7 - week.contributionDays.length }).map((_, i) => (
                           <div key={`empty-top-${i}`} className="aspect-square w-full rounded-[2px] bg-transparent" />
@@ -259,13 +298,17 @@ export function GithubGraph() {
                         const color = contributionLevels[level];
 
                         return (
-                          <div
+                          <button
+                            type="button"
                             key={day.date}
-                            aria-hidden="true"
                             aria-label={`${day.contributionCount} contributions on ${formatDate(day.date)}`}
-                            className={`aspect-square w-full rounded-[2px] opacity-80 outline-none transition-[opacity,transform] hover:scale-125 hover:opacity-100 dark:opacity-70 dark:hover:opacity-100 ${color.cell}`}
+                            className={`aspect-square w-full cursor-pointer rounded-[2px] outline-offset-1 transition-[transform,opacity,box-shadow] duration-150 ease-[cubic-bezier(0.16,1,0.3,1)] hover:z-10 hover:scale-[1.45] hover:shadow-md ${color.cell} ${
+                              day.contributionCount === 0 ? "opacity-60" : "opacity-85 dark:opacity-75"
+                            }`}
                             onMouseEnter={(event) => showTooltip(day, event)}
                             onMouseLeave={() => setTooltip(null)}
+                            onFocus={(event) => showTooltip(day, event)}
+                            onBlur={() => setTooltip(null)}
                           />
                         );
                       })}
@@ -275,7 +318,7 @@ export function GithubGraph() {
                         Array.from({ length: 7 - week.contributionDays.length }).map((_, i) => (
                           <div key={`empty-bottom-${i}`} className="aspect-square w-full rounded-[2px] bg-transparent" />
                         ))}
-                    </div>
+                    </motion.div>
                   ))}
             </div>
           </div>
@@ -288,30 +331,34 @@ export function GithubGraph() {
               <div
                 key={index}
                 aria-hidden="true"
-                className={`size-2 rounded-[2px] opacity-80 dark:opacity-70 ${level.cell}`}
+                className={`h-2 w-2 rounded-[2px] opacity-80 dark:opacity-70 ${level.cell}`}
               />
             ))}
             <span className="text-[11px] text-zinc-500 dark:text-zinc-400">More active</span>
           </div>
         </div>
 
-        {tooltip && (
-          <div
-            className="pointer-events-none fixed z-[100] -translate-x-1/2 -translate-y-[calc(100%+8px)] rounded-md border border-zinc-200 bg-white px-2.5 py-1.5 text-[11px] font-medium text-zinc-700 shadow-lg shadow-zinc-950/10 dark:border-white/10 dark:bg-zinc-950 dark:text-zinc-200 dark:shadow-black/40"
-            style={{ left: tooltip.x, top: tooltip.y }}
-          >
-            {tooltip.count} contributions on {tooltip.date}
-          </div>
-        )}
-      </div>
+        <AnimatePresence>
+          {tooltip && (
+            <motion.div
+              role="tooltip"
+              initial={{ opacity: 0, y: 4, scale: 0.94 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 2, scale: 0.96 }}
+              transition={{ duration: 0.16, ease: EASE_DRAFT }}
+              className="pointer-events-none fixed z-[100] -translate-x-1/2 -translate-y-[calc(100%+8px)] rounded-md border border-zinc-200 bg-white px-2.5 py-1.5 text-[11px] font-medium text-zinc-700 shadow-lg shadow-zinc-950/10 dark:border-white/10 dark:bg-[#12161f] dark:text-zinc-200 dark:shadow-black/50"
+              style={{ left: tooltip.x, top: tooltip.y }}
+            >
+              {tooltip.count} {tooltip.count === 1 ? "contribution" : "contributions"} on {tooltip.date}
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.div>
 
       {/* Bottom full-width dashed line */}
-      <div
-        className="absolute bottom-0 left-[-100vw] right-[-100vw] h-0 border-b border-black/30 pointer-events-none dark:border-white/[0.15]"
-        style={dashedLineMask}
-      />
-      <div className="absolute bottom-0 -left-4 z-20 size-[2px] -translate-x-1/2 translate-y-1/2 bg-black/50 pointer-events-none dark:bg-white/[0.25]" />
-      <div className="absolute bottom-0 -right-4 z-20 size-[2px] translate-x-1/2 translate-y-1/2 bg-black/50 pointer-events-none dark:bg-white/[0.25]" />
+      <div className="bp-rule-h pointer-events-none absolute -inset-x-[100vw] bottom-0 border-b" />
+      <div className="bp-node pointer-events-none absolute bottom-0 left-0 z-20 h-[2px] w-[2px] -translate-x-1/2 translate-y-1/2" />
+      <div className="bp-node pointer-events-none absolute bottom-0 right-0 z-20 h-[2px] w-[2px] translate-x-1/2 translate-y-1/2" />
     </section>
   );
 }
