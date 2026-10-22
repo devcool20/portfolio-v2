@@ -1,0 +1,41 @@
+src/components/shell/page-shell.tsx
+  s_aaa514ea88c06d::t_24686118bc0efb 89-91
+docs/character-artwork.md
+  s_aaa514ea88c06d::t_7ef50b8d4856a2 7-10
+  s_aaa514ea88c06d::t_2cee0d35afd35e 11,18-19
+  s_aaa514ea88c06d::t_588ea8e83b5dab 1-6,12-16,20-24,29-57
+  s_aaa514ea88c06d::t_4e88f8449cba88 17
+  s_aaa514ea88c06d::t_da70d5255b4ea2 25-28
+src/components/character/animated-character.module.css
+  s_aaa514ea88c06d::t_1f5466e1a6162a 6-13,16-17,36-38,42,60-70,72-94,104-109,122-124
+  s_aaa514ea88c06d::t_7f878411d490a2 1-5,14-15,18-35,39-41,43-59,71,95-103,110-121,125
+src/components/AnimatedCharacter.tsx
+  s_aaa514ea88c06d::t_ca14fd4b255462 174,279,380
+  s_aaa514ea88c06d::t_13126d873f1ad3 33-34,39-40,43-51,59-64,68-69,71-75,77,88-95,129-166,168-173,176,178-184,186-187,198,203,205-210,214-216,237,247,276,278,280-292,294,299-300,321-336,379,381
+  s_aaa514ea88c06d::t_7f878411d490a2 3,5-11,13-14,16-17,19-22,32,35,41-42,52-58,65-67,70,79-80,82-87,98-100,102-108,110,112-127,189-197,199-202,204,212-213,217-224,226-236,238-245,249-262,264,266-269,271,273,277,295-298,301-304,306-312,314-318,337-346,348-373,375-378
+  s_aaa514ea88c06d::t_9b89de5f0c0cd9 305,319-320,347
+  s_aaa514ea88c06d::t_25cc2b143a6840 4,23-31,36-38
+src/components/character/character-config.ts
+  s_aaa514ea88c06d::t_9b89de5f0c0cd9 8,17,30,32,36-39,41,45-48,50,57-58
+  s_aaa514ea88c06d::t_7ef50b8d4856a2 5
+  s_aaa514ea88c06d::t_13126d873f1ad3 18-23
+  s_aaa514ea88c06d::t_7f878411d490a2 1-4,6-7,9-16,24-29,31,33-35,40,42-44,49,51-56,59-63
+src/app/page.tsx
+  s_aaa514ea88c06d::t_7f878411d490a2 12,99-101,103,119
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "156af4fd5cd03c12aa8a05522b1308dbab0742be",
+  "prompts": {},
+  "sessions": {
+    "s_aaa514ea88c06d": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a15fec-818a-7880-a43c-e8ef3867e163",
+        "model": "gpt-6-astra"
+      },
+      "human_author": "devcool20 <sharmadivyanshu265@gmail.com>"
+    }
+  }
+}
