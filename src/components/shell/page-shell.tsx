@@ -86,7 +86,9 @@ export function PageShell({
         )}
       >        <div className="flex w-full items-center justify-between gap-3">
           <motion.div
-            {...rise(INTRO.name)}
+            // The custom identity owns its text entrance. Keep its static
+            // portrait visible even before hydration or without JavaScript.
+            {...(identity ? {} : rise(INTRO.name))}
             className="flex min-w-0 items-center gap-3 sm:gap-5"
           >
             {back && (

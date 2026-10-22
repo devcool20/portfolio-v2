@@ -9,7 +9,7 @@ import { PageShell } from "@/components/shell/page-shell";
 import { HeroBanner } from "@/components/shell/hero-banner";
 import { ViewAll } from "@/components/shell/view-all";
 import { Section, SectionRow } from "@/components/blueprint/section";
-import InteractivePortrait from "@/components/InteractivePortrait";
+import AnimatedCharacter from "@/components/AnimatedCharacter";
 import SoftPillButton from "@/components/pixel-perfect/soft-pill-button";
 import SocialHoverCard from "@/components/pixel-perfect/social-hover-card";
 import { ExperienceList } from "@/components/ExperienceList";
@@ -96,15 +96,11 @@ export default function Home() {
       rail={<RightNavbar />}
       hero={<HeroBanner />}
       identity={
-        <div className="flex items-center gap-3 sm:gap-4">
-          {/* Inline portrait on small screens */}
-          <InteractivePortrait
-            className="block h-16 w-16 sm:h-20 sm:w-20 md:hidden"
-            grayscale={false}
-          />
-          <div className="flex flex-col justify-center">
+        <div className="flex min-w-0 items-center gap-2 sm:gap-4">
+          <AnimatedCharacter variant="compact" />
+          <div className="flex min-w-0 flex-col justify-center">
             <motion.h1
-              className="bp-title mb-0.5 text-[20px] font-bold leading-none tracking-tight text-zinc-800 sm:text-[24px] dark:text-zinc-100"
+              className="bp-title mb-0.5 text-[20px] font-bold leading-[1.1] tracking-tight text-zinc-800 sm:text-[24px] dark:text-zinc-100"
               {...rise(INTRO.name)}
             >
               Divyanshu Sharma
@@ -120,16 +116,7 @@ export default function Home() {
       }
       contentClassName="pb-0"
       leftRail={
-        <motion.div
-          initial={reduce ? undefined : { opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5, delay: INTRO.portrait }}
-        >
-          <InteractivePortrait
-            className="h-28 w-28 lg:h-32 lg:w-32 xl:h-36 xl:w-36"
-            grayscale={false}
-          />
-        </motion.div>
+        <AnimatedCharacter variant="desktop" />
       }
     >
       {/* ---- Lead copy ------------------------------------------------- */}

@@ -1,0 +1,125 @@
+.character {
+  position: relative;
+  flex-shrink: 0;
+  isolation: isolate;
+  user-select: none;
+  display: block;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.character:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; border-radius: 12px; }
+
+.desktop { width: 112px; height: 112px; }
+.compact { width: 64px; height: 64px; }
+
+.crop {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  /* Only soften the cropped lower edge. There is no card or opaque backdrop. */
+  mask-image: linear-gradient(#000 94%, transparent 100%);
+}
+
+.artboard {
+  position: absolute;
+  width: 108%;
+  aspect-ratio: 1;
+  left: -4%;
+  top: -1%;
+  perspective: 700px;
+  transform-origin: 50% 0;
+  transition: transform 240ms cubic-bezier(0.23, 1, 0.32, 1);
+  pointer-events: none;
+}
+
+.compact .artboard { width: 176%; left: -38%; top: -1%; }
+.compact[data-waving="true"] .artboard { transform: scale(0.76); }
+
+.fallback,
+.rig,
+.breathe,
+.body,
+.head {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.fallback { object-fit: contain; }
+.character[data-animated="true"] .fallback { visibility: hidden; }
+.body { transform-origin: 50% 85%; }
+.head { backface-visibility: hidden; }
+.rig svg { display: block; width: 100%; height: 100%; overflow: visible; }
+
+.restingBody, .wavingBody { transition: opacity 170ms ease-out; }
+.wavingBody { opacity: 0; }
+.character[data-waving="true"] .restingBody { opacity: 0; }
+.character[data-waving="true"] .wavingBody { opacity: 1; }
+.wavingHand {
+  transform-box: view-box;
+  animation: wave 660ms ease-in-out infinite;
+  animation-play-state: paused;
+}
+.character[data-active="true"][data-waving="true"] .wavingHand { animation-play-state: running; }
+
+.greeting {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  right: -10px;
+  padding: 7px 10px;
+  border-radius: 12px 12px 12px 3px;
+  background: var(--foreground);
+  color: var(--background);
+  font-size: 12px;
+  font-weight: 650;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  box-shadow: 0 2px 8px #00000014;
+  opacity: 0;
+  transform: translateY(4px) scale(0.94);
+  transform-origin: 0 100%;
+  transition: opacity 150ms ease-out, transform 200ms cubic-bezier(0.23, 1, 0.32, 1);
+  pointer-events: none;
+}
+.compact .greeting { top: -17px; right: -8px; }
+.character[data-greeting="true"] .greeting { opacity: 1; transform: none; }
+
+.breathe {
+  transform-origin: 50% 90%;
+  animation: breathe 4.6s ease-in-out infinite;
+  animation-play-state: paused;
+}
+.character[data-active="true"] .breathe { animation-play-state: running; }
+
+@keyframes breathe {
+  0%, 100% { transform: translateY(0) scaleY(1); }
+  50% { transform: translateY(-1.1%) scaleY(1.014); }
+}
+
+@keyframes wave {
+  0%, 100% { transform: rotate(-9deg); }
+  50% { transform: rotate(12deg); }
+}
+
+@media (min-width: 640px) { .compact { width: 80px; height: 80px; } }
+@media (min-width: 768px) { .compact { display: none; } }
+@media (max-width: 767px) { .desktop { display: none; } }
+@media (min-width: 1024px) { .desktop { width: 128px; height: 128px; } }
+@media (min-width: 1280px) { .desktop { width: 144px; height: 144px; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .rig { display: none; }
+  .character[data-animated="true"] .fallback { visibility: visible; }
+  .breathe { animation: none; }
+  .wavingHand { animation: none; }
+  .artboard, .greeting, .restingBody, .wavingBody { transition: none; }
+  .greeting { transform: none; }
+}
