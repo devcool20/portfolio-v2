@@ -11,12 +11,12 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import { EASE_DRAFT, INTRO } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
-export const HERO_CELL = "top-0 h-[22vh]";
-export const HEADER_CELL = "top-[22vh] h-[112px]";
-export const CONTENT_OFFSET = "pt-[calc(22vh+112px)]";
+export const HERO_CELL = "top-0 h-[var(--hero-height)]";
+export const HEADER_CELL = "top-[var(--hero-height)] h-[var(--header-height)]";
+export const CONTENT_OFFSET = "pt-[calc(var(--hero-height)+var(--header-height))]";
 
 type PageShellProps = {
-  /** Rendered inside the 22vh hero cell. */
+  /** Rendered inside the responsive hero cell. */
   hero: React.ReactNode;
   /** Page title in the header cell. Omit for the home page, which shows the name. */
   title?: string;
@@ -29,7 +29,7 @@ type PageShellProps = {
   controls?: React.ReactNode;
   /** Replaces the default title block (home page identity cell). */
   identity?: React.ReactNode;
-  /** Rendered centred in the left 30% lane, on the header rule. */
+  /** Rendered in the left rail beside the identity header. */
   leftRail?: React.ReactNode;
   children: React.ReactNode;
   className?: string;
@@ -39,8 +39,8 @@ type PageShellProps = {
 };
 
 /**
- * The frame every route sits inside: the hero cell, the 112px header cell and
- * the 30/40/30 content column, plus the drafting grid behind it all.
+ * Shared hero, identity and content frame. CSS tokens also position the
+ * drafting rules and side rails, so the pieces cannot drift independently.
  *
  * Previously this was copy-pasted across seven pages, which is why the
  * entrance choreography could never be changed in one place.
@@ -74,14 +74,14 @@ export function PageShell({
       <BlueprintGrid />
 
       {/* Cell 1 — hero art */}
-      <div className={cn("pointer-events-auto absolute left-0 right-0 z-0 md:left-[30%] md:right-[30%]", HERO_CELL)}>
+      <div className={cn("pointer-events-auto absolute left-0 right-0 z-0 md:left-[var(--page-gutter)] md:right-[var(--page-gutter)]", HERO_CELL)}>
         {hero}
       </div>
 
       {/* Cell 2 — header */}
       <header
         className={cn(
-          "absolute left-0 right-0 z-50 flex items-center px-4 md:left-[30%] md:right-[30%]",
+          "absolute left-0 right-0 z-50 flex items-center px-5 md:left-[var(--page-gutter)] md:right-[var(--page-gutter)] md:px-6",
           HEADER_CELL,
         )}
       >        <div className="flex w-full items-center justify-between gap-3">
@@ -115,7 +115,7 @@ export function PageShell({
 
           <motion.div
             {...rise(INTRO.name + 0.06)}
-            className="flex h-20 shrink-0 items-start justify-end gap-2 py-1 sm:h-24 sm:gap-3"
+            className="flex shrink-0 items-center justify-end gap-2 sm:gap-3"
           >
             {controls}
             <CommandMenu />
@@ -124,13 +124,13 @@ export function PageShell({
         </div>
       </header>
 
-      {/* Left lane — the 30% column beside the header cell */}
+      {/* Left rail beside the identity cell */}
       {leftRail && (
         <div
           className={cn(
             "pointer-events-none absolute left-0 z-50 hidden items-center justify-center md:flex",
             HEADER_CELL,
-            "w-[30%]",
+            "w-[var(--page-gutter)]",
           )}
         >
           <div className="pointer-events-auto">{leftRail}</div>
@@ -141,7 +141,7 @@ export function PageShell({
       <main
         id="main"
         className={cn(
-          "relative z-10 ml-0 mr-0 flex flex-col px-4 pb-16 md:ml-[30%] md:mr-[30%]",
+          "relative z-10 ml-0 mr-0 flex flex-col px-5 pb-16 md:ml-[var(--page-gutter)] md:mr-[var(--page-gutter)] md:px-6",
           CONTENT_OFFSET,
           contentClassName,
         )}

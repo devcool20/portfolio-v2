@@ -100,7 +100,7 @@ export default function Home() {
           <AnimatedCharacter variant="compact" />
           <div className="flex min-w-0 flex-col justify-center">
             <motion.h1
-              className="bp-title mb-0.5 text-[20px] font-bold leading-[1.1] tracking-tight text-zinc-800 sm:text-[24px] dark:text-zinc-100"
+              className="bp-title mb-0.5 text-[18px] font-bold leading-[1.1] tracking-tight text-zinc-800 min-[390px]:text-[20px] sm:text-[24px] dark:text-zinc-100"
               {...rise(INTRO.name)}
             >
               Divyanshu Sharma

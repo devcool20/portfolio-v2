@@ -82,14 +82,14 @@ export function RightNavbar() {
 
   return (
     <div
-      className="pointer-events-none fixed inset-0 z-50 hidden lg:block"
+      className="pointer-events-none fixed inset-0 z-50 hidden min-[1100px]:block"
       style={{ width: "calc(100vw - var(--removed-body-scroll-bar-size, 0px))" }}
     >
       <nav
         aria-label="Section index"
-        className="pointer-events-auto absolute top-[22vh] left-[calc(69%+32px)] mt-2 flex flex-col"
+        className="section-index pointer-events-auto absolute flex flex-col"
       >
-        <h3 className="mb-3 text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-400 dark:text-zinc-500">
+        <h3 className="mb-5 text-[11px] font-medium tracking-[0.04em] text-zinc-500 dark:text-zinc-400">
           Index
         </h3>
 
@@ -103,7 +103,7 @@ export function RightNavbar() {
             />
           </div>
 
-          <ul className="flex flex-col gap-3.5">
+          <ul className="flex flex-col gap-1">
             {SECTIONS.map((link, i) => {
               const isActive = activeSection === link.href.slice(1);
               const isPassed = activeIndex > -1 && i < activeIndex;
@@ -114,10 +114,10 @@ export function RightNavbar() {
                     href={link.href}
                     aria-current={isActive ? "true" : undefined}
                     className={cn(
-                      "group flex items-center gap-2.5 text-[12px] font-medium tracking-[0.05em] transition-colors duration-200",
+                      "group flex min-h-10 items-center gap-2.5 text-[13px] font-medium transition-colors duration-200",
                       isActive
                         ? "text-zinc-900 dark:text-zinc-100"
-                        : "text-zinc-400 hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300",
+                        : "text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-100",
                     )}
                   >
                     <span
@@ -148,7 +148,7 @@ export function RightNavbar() {
         </div>
 
         {/* Read-out, so the rail reports a number as well as a shape. */}
-        <div className="mt-4 flex items-center gap-1.5 text-[10px] tabular-nums text-zinc-300 dark:text-zinc-700">
+        <div className="mt-5 flex items-center gap-1.5 text-[10px] tabular-nums text-zinc-500 dark:text-zinc-400">
           <motion.span className="font-mono">{readout}</motion.span>
           <span className="h-px w-3 bg-current opacity-40" />
           <span className="font-mono">100</span>

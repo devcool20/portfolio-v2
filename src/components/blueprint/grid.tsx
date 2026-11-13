@@ -48,10 +48,10 @@ export function IntersectionNodes({ delay = 0 }: { delay?: number }) {
   const reduce = useReducedMotion();
 
   const positions = [
-    { top: "22vh", left: "30%" },
-    { top: "22vh", right: "30%" },
-    { top: "calc(22vh + 112px)", left: "30%" },
-    { top: "calc(22vh + 112px)", right: "30%" },
+    { top: "var(--hero-height)", left: "var(--page-gutter)" },
+    { top: "var(--hero-height)", right: "var(--page-gutter)" },
+    { top: "calc(var(--hero-height) + var(--header-height))", left: "var(--page-gutter)" },
+    { top: "calc(var(--hero-height) + var(--header-height))", right: "var(--page-gutter)" },
   ];
 
   return (
@@ -88,10 +88,10 @@ export function IntersectionNodes({ delay = 0 }: { delay?: number }) {
 export function BlueprintGrid() {
   return (
     <div aria-hidden className="pointer-events-none">
-      <VerticalRule className="left-[30%]" delay={INTRO.ruleLeft} />
-      <VerticalRule className="right-[30%]" delay={INTRO.ruleRight} />
-      <HorizontalRule className="top-[22vh]" delay={INTRO.ruleTop} />
-      <HorizontalRule className="top-[calc(22vh+112px)]" delay={INTRO.ruleHeader} />
+      <VerticalRule className="left-[var(--page-gutter)]" delay={INTRO.ruleLeft} />
+      <VerticalRule className="right-[var(--page-gutter)]" delay={INTRO.ruleRight} />
+      <HorizontalRule className="top-[var(--hero-height)]" delay={INTRO.ruleTop} />
+      <HorizontalRule className="top-[calc(var(--hero-height)+var(--header-height))]" delay={INTRO.ruleHeader} />
       <IntersectionNodes delay={INTRO.node} />
     </div>
   );
