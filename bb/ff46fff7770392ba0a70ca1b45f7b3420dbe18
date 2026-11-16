@@ -1,0 +1,20 @@
+src/components/ExperienceList.tsx
+  s_93f62a5cd76e2e::t_2ea8f6a5e6be51 34
+  s_93f62a5cd76e2e::t_9bbcc876e00d59 31
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "bbff46fff7770392ba0a70ca1b45f7b3420dbe18",
+  "prompts": {},
+  "sessions": {
+    "s_93f62a5cd76e2e": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a1d558-5200-74e3-8682-57d98bb510d9",
+        "model": "gpt-6.1-sol"
+      },
+      "human_author": null
+    }
+  }
+}
