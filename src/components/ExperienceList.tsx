@@ -28,7 +28,7 @@ export function ExperienceRow({
   return (
     <motion.div
       className="group relative"
-      initial={reduce ? undefined : { opacity: 0, x: -14, filter: "blur(4px)" }}
+      initial={false}
       whileInView={{ opacity: 1, x: 0, filter: "blur(0px)" }}
       viewport={{ once: true, amount: 0.4 }}
       transition={{ duration: 0.5, ease: EASE_DRAFT, delay }}
