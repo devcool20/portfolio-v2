@@ -8,7 +8,7 @@ import { ExperienceRow } from "@/components/ExperienceList";
 import { experiences } from "@/data/experiencesData";
 
 export default function AllExperiencePage() {
-  const [openIdx, setOpenIdx] = useState<number | null>(() => experiences.findIndex(item => item.title === "RocketHealth"));
+  const [openIdx, setOpenIdx] = useState<number | null>(null);
 
   return (
     <PageShell
