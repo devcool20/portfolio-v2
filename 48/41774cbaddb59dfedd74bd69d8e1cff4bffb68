@@ -1,0 +1,19 @@
+src/components/ExperienceList.tsx
+  s_93f62a5cd76e2e::t_3a85e6b3633587 137
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "4841774cbaddb59dfedd74bd69d8e1cff4bffb68",
+  "prompts": {},
+  "sessions": {
+    "s_93f62a5cd76e2e": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a1d558-5200-74e3-8682-57d98bb510d9",
+        "model": "gpt-6.1-sol"
+      },
+      "human_author": "devcool20 <sharmadivyanshu265@gmail.com>"
+    }
+  }
+}
