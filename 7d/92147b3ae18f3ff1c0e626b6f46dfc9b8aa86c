@@ -1,0 +1,21 @@
+src/app/experience/page.tsx
+  s_93f62a5cd76e2e::t_71578168d23d2f 11
+src/components/ExperienceList.tsx
+  s_93f62a5cd76e2e::t_71578168d23d2f 108,188,197-204,215
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "7d92147b3ae18f3ff1c0e626b6f46dfc9b8aa86c",
+  "prompts": {},
+  "sessions": {
+    "s_93f62a5cd76e2e": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a1d558-5200-74e3-8682-57d98bb510d9",
+        "model": "gpt-6.1-sol"
+      },
+      "human_author": "devcool20 <sharmadivyanshu265@gmail.com>"
+    }
+  }
+}
