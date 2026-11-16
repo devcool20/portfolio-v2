@@ -31,7 +31,7 @@ export function ExperienceRow({
       initial={false}
       whileInView={{ opacity: 1, x: 0, filter: "blur(0px)" }}
       viewport={{ once: true, amount: 0.4 }}
-      transition={{ duration: 0.5, ease: EASE_DRAFT, delay }}
+      transition={{ duration: reduce ? 0 : 0.5, ease: EASE_DRAFT, delay: reduce ? 0 : delay }}
     >
       {!isLast && (
         <div className="pointer-events-none absolute -inset-x-4 bottom-0 z-10">
