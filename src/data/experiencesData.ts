@@ -11,6 +11,7 @@ export type ExperienceData = {
   tech: string[];
   metrics?: { label: string; value: string }[];
   screenshot?: string;
+  appLink?: string;
 };
 
 /**
@@ -39,6 +40,7 @@ export const experiences: ExperienceData[] = [
   },
   {
     title: "RocketHealth",
+    appLink: "https://play.google.com/store/apps/details?id=com.journalrocketapp",
     role: "Full Stack Developer",
     dates: "Sept 2025 - April 2026",
     location: "Hybrid / Remote",
@@ -46,14 +48,13 @@ export const experiences: ExperienceData[] = [
     imageFit: "contain",
     imageZoom: 1.2,
     description: `
-      Helped build rocket-mail, an in-house email platform for cohort-based, multi-step campaigns using AWS SES and SNS event tracking.
-      Contributed to BullMQ queue workflows supporting notifications, emails, documents, invoices, and Meta events across 5 verticals.
-      Supported the launch and data migration of the Men's and Women's Health products, helping move 6K+ users to the new platform.
+      Built Rocket Journal, a React Native voice-enabled mood journal for day-and-night mood, habit, and reflection logging, with scribbling and rant mode.
+      Developed its FastAPI backend to support daily diary entries and expressive journaling workflows across voice, text, and reflection experiences.
     `,
-    tech: ["TypeScript", "Node.js", "BullMQ", "AWS SES", "SNS", "Queue Workflows", "Data Migration"],
+    tech: ["React Native", "FastAPI", "Python", "Voice Journaling"],
     metrics: [
       { label: "Role", value: "Full Stack Developer" },
-      { label: "Migrated Users", value: "6K+" },
+      { label: "Product", value: "Rocket Journal" },
     ],
   },
   {

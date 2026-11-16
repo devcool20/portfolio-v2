@@ -102,6 +102,16 @@ export function ExperienceRow({
         </span>
       </button>
 
+      {item.appLink && (
+        <a href={item.appLink} target="_blank" rel="noopener noreferrer"
+          className="group/app relative z-20 mb-4 ml-[52px] inline-flex min-h-10 items-center gap-2 rounded-md border border-zinc-200 bg-ink-raised px-3 py-2 text-[12px] font-medium text-zinc-800 transition-[background-color,color,transform] duration-200 hover:bg-ink-sunken active:scale-[0.97] focus-visible:outline-2 focus-visible:outline-offset-4 sm:ml-[56px] dark:border-zinc-800 dark:text-zinc-100 motion-reduce:transition-none motion-reduce:transform-none"
+          aria-label="Get Rocket Journal on Google Play (opens in a new tab)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="h-4 w-4" aria-hidden="true"><path d="M5 3.5v17l14-8.5L5 3.5Z" strokeLinejoin="round" /></svg>
+          Get Rocket Journal on Google Play
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="h-3.5 w-3.5 transition-transform duration-200 group-hover/app:-translate-y-0.5 group-hover/app:translate-x-0.5 motion-reduce:transition-none motion-reduce:transform-none" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10" /></svg>
+        </a>
+      )}
+
       {/* grid-template-rows, so the panel expands without animating height */}
       <div
         id={`experience-panel-${idx}`}
@@ -203,7 +213,7 @@ export function ExperienceRow({
 }
 
 export function ExperienceList() {
-  const [openIdx, setOpenIdx] = useState<number | null>(null);
+  const [openIdx, setOpenIdx] = useState<number | null>(() => experiences.findIndex(item => item.title === "RocketHealth"));
 
   return (
     <div className="block">
