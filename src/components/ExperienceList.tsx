@@ -134,7 +134,7 @@ export function ExperienceRow({
                       className="relative min-w-0 px-3 py-2 after:absolute after:bottom-0 after:right-0 after:top-0 after:w-0 after:border-r after:border-black/30 after:[mask-image:repeating-linear-gradient(to_bottom,black_0,black_1px,transparent_1px,transparent_6px)] dark:after:border-white/15 [&:nth-child(2n)]:after:hidden 2xl:[&:not(:last-child)]:after:block 2xl:[&:last-child]:after:hidden"
                     >
                       <p
-                        className={`${metric.value.includes(" - ") ? "text-[13px]" : "text-[16px]"} whitespace-nowrap font-bold leading-none text-zinc-900 dark:text-zinc-100`}
+                        className={`${metric.value.includes(" - ") ? "text-[13px]" : "text-[16px]"} break-words text-pretty font-bold leading-snug text-zinc-900 dark:text-zinc-100`}
                       >
                         {metric.value}
                       </p>
